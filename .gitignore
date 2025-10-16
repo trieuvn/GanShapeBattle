@@ -1,21 +1,87 @@
-.gradle
-**/build/
-!**/src/**/build/
+# ===================================================================
+# Mẫu .gitignore cho dự án Java, Android và Groovy
+# ===================================================================
 
-# Ignore Gradle GUI config
-gradle-app.setting
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
-
-# Avoid ignore Gradle wrappper properties
-!gradle-wrapper.properties
-
-# Cache of project
-.gradletasknamecache
-
-# Eclipse Gradle plugin generated files
-# Eclipse Core
-.project
-# JDT-specific (Eclipse Java Development Tools)
+# ==> IDEs & Tool-specific files <==
+# -----------------------------------
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
 .classpath
+.project
+.settings/
+.factorypath
+build/
+local.properties
+
+# ==> Build & Temporary files <==
+# -------------------------------
+*.class
+*.jar
+*.war
+*.ear
+*.apk
+*.aab
+*.ap_
+*.dex
+*.aAR
+gen/
+out/
+bin/
+target/
+*.log
+captures/
+.externalNativeBuild/
+.cxx/
+
+# ==> Android Studio files <==
+# ----------------------------
+/build
+/.gradle
+/captures
+.DS_Store
+local.properties
+*.keystore
+*.jks
+*.cer
+# Bỏ qua các file do Google Services tạo ra
+google-services.json
+
+# ==> Groovy files <==
+# --------------------
+*.class
+*.groovy.class
+# Thư mục cache của Groovy
+.groovy/
+
+# ==> Gradle files <==
+# --------------------
+.gradle/
+build/
+# Bỏ qua các file wrapper nếu bạn không muốn commit chúng (tuy nhiên, nên commit để đảm bảo build nhất quán)
+# gradle/wrapper/gradle-wrapper.jar
+
+# ==> Operating System files <==
+# ------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==> Miscellaneous <==
+# ---------------------
+# File nén
+*.zip
+*.rar
+*.7z
+# Log files
+*.log
+# File crash của máy ảo Java
+hs_err_pid*
