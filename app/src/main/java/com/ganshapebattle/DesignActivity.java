@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import java.util.UUID;
 import android.provider.MediaStore;
@@ -26,6 +27,8 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
     private DrawingView drawView;
     private ImageButton currPaint, drawBtn, eraseBtn, newBtn, saveBtn;
     private float smallBrush, mediumBrush, largeBrush;
+    private ImageView ganImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,10 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
 
         saveBtn = (ImageButton)findViewById(R.id.save_btn);
         saveBtn.setOnClickListener(this);
+
+        ganImage = (ImageView)findViewById(R.id.ganimage);
+        ganImage.setImageBitmap(drawView.getGanImage());
+        ganImage.setOnClickListener(this);
     }
 
     public void paintClicked(View view){
@@ -154,15 +161,15 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
         else if(view.getId()==R.id.new_btn){
             //new button
             AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
-            newDialog.setTitle("New drawing");
-            newDialog.setMessage("Start new drawing (you will lose the current drawing)?");
-            newDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+            newDialog.setTitle(R.string.new_drawing);
+            newDialog.setMessage(R.string.start_new_msg);
+            newDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int which){
                     drawView.startNew();
                     dialog.dismiss();
                 }
             });
-            newDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+            newDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int which){
                     dialog.cancel();
                 }
@@ -172,9 +179,9 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
         else if(view.getId()==R.id.save_btn){
             //save drawing
             AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
-            saveDialog.setTitle("Save drawing");
-            saveDialog.setMessage("Save drawing to device Gallery?");
-            saveDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+            saveDialog.setTitle(R.string.savedrawing);
+            saveDialog.setMessage(R.string.savedrawing_msg);
+            saveDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int which){
                     //save drawing
                     drawView.setDrawingCacheEnabled(true);
@@ -183,23 +190,66 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
                             UUID.randomUUID().toString()+".png", "drawing");
                     if(imgSaved!=null){
                         Toast savedToast = Toast.makeText(getApplicationContext(),
-                                "Drawing saved to Gallery!", Toast.LENGTH_SHORT);
+                                R.string.drawing_saved_to_gallery, Toast.LENGTH_SHORT);
                         savedToast.show();
                     }
                     else{
                         Toast unsavedToast = Toast.makeText(getApplicationContext(),
-                                "Oops! Image could not be saved.", Toast.LENGTH_SHORT);
+                                R.string.oops_image_could_not_be_saved, Toast.LENGTH_SHORT);
                         unsavedToast.show();
                     }
                     drawView.destroyDrawingCache();
                 }
             });
-            saveDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+            saveDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener(){
                 public void onClick(DialogInterface dialog, int which){
                     dialog.cancel();
                 }
             });
             saveDialog.show();
+        }
+        else if (view.getId() == R.id.ganimage){
+            AlertDialog.Builder ganImageDialog = new AlertDialog.Builder(this);
+            ganImageDialog.setTitle(R.string.super_gan_image);
+
+            ImageView imageView = new ImageView(this);
+
+            imageView.setImageBitmap(drawView.getGanImage());
+
+            int padding = 60;
+            imageView.setPadding(padding, padding, padding, padding);
+            imageView.setAdjustViewBounds(true);
+
+            ganImageDialog.setView(imageView);
+            ganImageDialog.setPositiveButton(R.string.ok, null);
+            ganImageDialog.create().show();
+        }
+        else if (view.getId() == R.id.transform_btn){
+            AlertDialog.Builder ganImageDialog = new AlertDialog.Builder(this);
+            ganImageDialog.setTitle(R.string.super_gan_image);
+
+            ImageView imageView = new ImageView(this);
+
+            imageView.setImageBitmap(drawView.getGanImage());
+
+            int padding = 60;
+            imageView.setPadding(padding, padding, padding, padding);
+            imageView.setAdjustViewBounds(true);
+
+            ganImageDialog.setView(imageView);
+            ganImageDialog.setPositiveButton(R.string.take, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //TODO: lấy ảnh
+                }
+            });
+            ganImageDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //TODO: lấy ảnh
+                }
+            });
+            ganImageDialog.create().show();
         }
     }
 }

@@ -4,8 +4,21 @@
     <string name="brush">Brush</string>
     <string name="erase">Erase</string>
     <string name="save">Save</string>
+    <string name="transform">TRANSFORM!!!</string>
     <string name="paint">Paint</string>
     <string name="sml">Small</string>
     <string name="med">Medium</string>
     <string name="lrg">Large</string>
+    <string name="take">Take</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="yes">Yes</string>
+    <string name="savedrawing">Save drawing</string>
+    <string name="savedrawing_msg">Save drawing to device Gallery?</string>
+    <string name="drawing_saved_to_gallery">Drawing saved to Gallery!</string>
+    <string name="oops_image_could_not_be_saved">Oops! Image could not be saved.</string>
+    <string name="paint_pressed">#FF660000</string>
+    <string name="new_drawing">New drawing</string>
+    <string name="start_new_msg">Start new drawing (you will lose the current drawing)?</string>
+    <string name="super_gan_image">Super Gan image"</string>
 </resources>

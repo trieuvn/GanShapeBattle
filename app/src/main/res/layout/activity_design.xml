@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -12,6 +13,12 @@
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <ImageButton
             android:id="@+id/new_btn"
@@ -40,7 +47,20 @@
             android:layout_height="fill_parent"
             android:contentDescription="@string/save"
             android:src="@drawable/save" />
+
+        <ImageView
+            android:id="@+id/ganimage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:srcCompat="@drawable/default_ganimage" />
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/transform_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/transform" />
 
     <com.ganshapebattle.view.DrawingView
         android:id="@+id/drawing"
@@ -192,4 +212,5 @@
                 android:tag="#FF000000" />
         </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

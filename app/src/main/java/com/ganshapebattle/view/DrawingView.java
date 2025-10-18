@@ -1,5 +1,6 @@
 package com.ganshapebattle.view;
 
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.View;
 import android.content.Context;
@@ -29,6 +30,7 @@ public class DrawingView extends View
     private Bitmap canvasBitmap;
     private float brushSize, lastBrushSize;
     private boolean erase=false;
+    private Bitmap ganImage;
 
     public DrawingView(Context context, AttributeSet attrs){
         super(context, attrs);
@@ -47,6 +49,7 @@ public class DrawingView extends View
         canvasPaint = new Paint(Paint.DITHER_FLAG);
         brushSize = getResources().getInteger(R.integer.medium_size);
         lastBrushSize = brushSize;
+        ganImage = BitmapFactory.decodeResource(getResources(), R.drawable.default_ganimage);
     }
 
     public void setLastBrushSize(float lastSize){
@@ -54,6 +57,14 @@ public class DrawingView extends View
     }
     public float getLastBrushSize(){
         return lastBrushSize;
+    }
+
+    public Bitmap getGanImage() {
+        return ganImage;
+    }
+
+    public void setGanImage(Bitmap ganImage) {
+        this.ganImage = ganImage;
     }
 
     @Override
