@@ -14,12 +14,14 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+
 public class UserService {
     private final OkHttpClient client = new OkHttpClient();
     private final Gson gson = new Gson();
     private final String supabaseUrl = "https://cggimbfrkwjexvtaabbq.supabase.co";
     private final String supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnZ2ltYmZya3dqZXh2dGFhYmJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NDk1NDUsImV4cCI6MjA3NjEyNTU0NX0.78h5Lzrr_APZvi99MESsRDukcprXhG8pbX9UVqKuOcA";
     private final String TABLE_NAME = "User";
+    private final String BUCKET_NAME = "avatars"; // <-- THÊM DÒNG NÀY
 
     public void getAllUsers(SupabaseCallback<List<User>> callback) {
         Request request = new Request.Builder()
@@ -157,6 +159,47 @@ public class UserService {
                     callback.onSuccess("Xóa User thành công");
                 } else {
                     callback.onFailure(new IOException("Lỗi: " + response.code() + " " + response.body().string()));
+                }
+            }
+        });
+    }
+    /**
+     * Tải ảnh lên Supabase Storage và trả về URL công khai của ảnh.
+     * @param fileName Tên file để lưu trên storage (ví dụ: "user1_avatar.jpg").
+     * @param imageData Dữ liệu ảnh dưới dạng mảng byte.
+     * @param callback Callback để xử lý kết quả.
+     */
+    public void uploadAvatar(String fileName, byte[] imageData, SupabaseCallback<String> callback) {
+        // Tạo URL để upload lên Storage
+        String url = supabaseUrl + "/storage/v1/object/" + BUCKET_NAME + "/" + fileName;
+
+        // Tạo body của request từ dữ liệu ảnh
+        RequestBody body = RequestBody.create(imageData, MediaType.get("image/jpeg"));
+
+        // Xây dựng request
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", supabaseKey)
+                .addHeader("Authorization", "Bearer " + supabaseKey)
+                .addHeader("Content-Type", "image/jpeg")
+                .addHeader("x-upsert", "true") // Ghi đè nếu file đã tồn tại
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    // Sau khi upload thành công, xây dựng URL công khai để lưu vào database
+                    String publicUrl = supabaseUrl + "/storage/v1/object/public/" + BUCKET_NAME + "/" + fileName;
+                    callback.onSuccess(publicUrl);
+                } else {
+                    callback.onFailure(new IOException("Lỗi upload ảnh: " + response.code() + " " + response.body().string()));
                 }
             }
         });

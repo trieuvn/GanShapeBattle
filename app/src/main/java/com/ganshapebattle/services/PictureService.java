@@ -20,7 +20,7 @@ public class PictureService {
     private final String supabaseUrl = "https://cggimbfrkwjexvtaabbq.supabase.co";
     private final String supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnZ2ltYmZya3dqZXh2dGFhYmJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NDk1NDUsImV4cCI6MjA3NjEyNTU0NX0.78h5Lzrr_APZvi99MESsRDukcprXhG8pbX9UVqKuOcA";
     private final String TABLE_NAME = "Picture";
-
+    private final String BUCKET_NAME = "pictures"; // <-- THÊM DÒNG NÀY
     public void getAllPictures(SupabaseCallback<List<Picture>> callback) {
         Request request = new Request.Builder()
                 .url(supabaseUrl + "/rest/v1/" + TABLE_NAME + "?select=*")
@@ -157,6 +157,34 @@ public class PictureService {
                     callback.onSuccess("Xóa Picture thành công");
                 } else {
                     callback.onFailure(new IOException("Lỗi: " + response.code() + " " + response.body().string()));
+                }
+            }
+        });
+    }
+    public void uploadPictureImage(String fileName, byte[] imageData, SupabaseCallback<String> callback) {
+        String url = supabaseUrl + "/storage/v1/object/" + BUCKET_NAME + "/" + fileName;
+        RequestBody body = RequestBody.create(imageData, MediaType.get("image/jpeg"));
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", supabaseKey)
+                .addHeader("Authorization", "Bearer " + supabaseKey)
+                .addHeader("x-upsert", "true")
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String publicUrl = supabaseUrl + "/storage/v1/object/public/" + BUCKET_NAME + "/" + fileName;
+                    callback.onSuccess(publicUrl);
+                } else {
+                    callback.onFailure(new IOException("Lỗi upload ảnh: " + response.code() + " " + response.body().string()));
                 }
             }
         });

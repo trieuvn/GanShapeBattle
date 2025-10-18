@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".AddEditGalleryActivity">
+
+    <TextView
+        android:id="@+id/tvGalleryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:text="Tạo bộ sưu tập mới"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <EditText android:id="@+id/etGalleryName" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Tên bộ sưu tập" android:layout_marginBottom="16dp"/>
+    <EditText android:id="@+id/etGalleryDescription" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Mô tả" android:layout_marginBottom="16dp"/>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Loại bộ sưu tập"/>
+    <Spinner android:id="@+id/spinnerGalleryType" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnSaveGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Lưu bộ sưu tập" />
+</LinearLayout>
