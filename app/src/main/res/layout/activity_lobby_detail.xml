@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LobbyDetailActivity">
@@ -11,20 +12,75 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView android:textStyle="bold" android:text="Lobby ID" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-        <TextView android:id="@+id/tvLobbyId" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:layout_marginBottom="16dp" tools:text="lobby-uuid-123"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lobby ID"
+            android:textStyle="bold" />
 
-        <TextView android:textStyle="bold" android:text="Admin" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-        <TextView android:id="@+id/tvLobbyAdmin" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:layout_marginBottom="16dp" tools:text="admin_user"/>
+        <TextView
+            android:id="@+id/tvLobbyId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textSize="18sp"
+            tools:text="lobby-uuid-123" />
 
-        <TextView android:textStyle="bold" android:text="Chế độ chơi" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-        <TextView android:id="@+id/tvLobbyMode" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:layout_marginBottom="16dp" tools:text="Classic"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:textStyle="bold" />
 
-        <TextView android:textStyle="bold" android:text="Trạng thái" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-        <TextView android:id="@+id/tvLobbyStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:layout_marginBottom="16dp" tools:text="Waiting"/>
+        <TextView
+            android:id="@+id/tvLobbyAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textSize="18sp"
+            tools:text="admin_user" />
 
-        <TextView android:textStyle="bold" android:text="Số người chơi tối đa" android:layout_width="wrap_content" android:layout_height="wrap_content"/>
-        <TextView android:id="@+id/tvLobbyMaxPlayers" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:layout_marginBottom="16dp" tools:text="8"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chế độ chơi"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvLobbyMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textSize="18sp"
+            tools:text="Classic" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trạng thái"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvLobbyStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textSize="18sp"
+            tools:text="Waiting" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số người chơi tối đa"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvLobbyMaxPlayers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textSize="18sp"
+            tools:text="8" />
 
         <Button
             android:id="@+id/btnCalculateRanks"
@@ -36,25 +92,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnUpdateLobby"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:text="Cập nhật"
-                android:layout_marginEnd="8dp"/>
+                android:text="Cập nhật" />
 
             <Button
                 android:id="@+id/btnDeleteLobby"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:text="Xóa"
                 android:backgroundTint="@android:color/holo_red_light"
-                android:layout_marginStart="8dp"/>
+                android:text="Xóa" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

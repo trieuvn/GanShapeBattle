@@ -14,11 +14,12 @@
 
         <!-- HEADER: nền xanh -->
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#0099FF"
-            android:paddingBottom="20dp"
-            android:paddingTop="20dp">
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
 
             <TextView
                 android:id="@+id/idDashboard"
@@ -58,7 +59,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/avatar"
+                android:src="@drawable/ic_player"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

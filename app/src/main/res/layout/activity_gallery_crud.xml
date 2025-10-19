@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GalleryCRUDActivity">
@@ -9,16 +10,16 @@
         android:id="@+id/searchViewGalleries"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:iconifiedByDefault="false"
-        android:queryHint="Tìm kiếm theo tên bộ sưu tập..."
-        android:layout_margin="8dp"/>
+        android:queryHint="Tìm kiếm theo tên bộ sưu tập..." />
 
     <ListView
         android:id="@+id/lvGalleries"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchViewGalleries"
-        android:layout_above="@+id/btnAddGallery" />
+        android:layout_above="@+id/btnAddGallery"
+        android:layout_below="@id/searchViewGalleries" />
 
     <Button
         android:id="@+id/btnAddGallery"

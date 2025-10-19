@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PlayerCRUDActivity">
@@ -9,16 +10,16 @@
         android:id="@+id/searchViewPlayers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:iconifiedByDefault="false"
-        android:queryHint="Tìm kiếm theo username..."
-        android:layout_margin="8dp"/>
+        android:queryHint="Tìm kiếm theo username..." />
 
     <ListView
         android:id="@+id/lvPlayers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchViewPlayers"
-        android:layout_above="@+id/btnAddPlayer" />
+        android:layout_above="@+id/btnAddPlayer"
+        android:layout_below="@id/searchViewPlayers" />
 
     <Button
         android:id="@+id/btnAddPlayer"

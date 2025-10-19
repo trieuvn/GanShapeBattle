@@ -47,4 +47,5 @@
     <string name="new_drawing">New drawing</string>
     <string name="start_new_msg">Start new drawing (you will lose the current drawing)?</string>
     <string name="super_gan_image">Super Gan image"</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>

@@ -1,78 +1,79 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#F3F7FF"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F3F7FF">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
+            android:layout_marginBottom="16dp"
             android:text="🎮 Game Room"
-            android:textSize="24sp"
-            android:textStyle="bold"
             android:textColor="#1976D2"
-            android:layout_marginBottom="16dp"/>
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <!-- Thông tin phòng -->
         <LinearLayout
-            android:orientation="vertical"
-            android:background="#FFFFFF"
-            android:elevation="3dp"
-            android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:background="#FFFFFF"
+            android:elevation="3dp"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/tvRoomInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Room: #12345 | Mode: Design Battle"
                 android:textColor="#1565C0"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Chọn chế độ chơi -->
         <TextView
+            android:layout_marginBottom="8dp"
             android:text="Mode"
-            android:textStyle="bold"
             android:textColor="#0D47A1"
-            android:layout_marginBottom="8dp"/>
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinnerMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#1976D2"
-            android:spinnerMode="dropdown"/>
+            android:spinnerMode="dropdown" />
 
         <!-- Vote cho người chơi -->
         <TextView
+            android:layout_marginTop="24dp"
             android:text="Vote for Best Design"
-            android:textStyle="bold"
             android:textColor="#0D47A1"
-            android:layout_marginTop="24dp"/>
+            android:textStyle="bold" />
 
         <ListView
             android:id="@+id/lvPlayersVote"
-            android:divider="#E0E0E0"
-            android:dividerHeight="1dp"
             android:layout_width="match_parent"
             android:layout_height="300dp"
+            android:layout_marginTop="8dp"
             android:background="#FFFFFF"
-            android:layout_marginTop="8dp"/>
+            android:divider="#E0E0E0"
+            android:dividerHeight="1dp" />
 
         <Button
             android:id="@+id/btnSubmitVote"
-            android:text="✅ Submit Vote"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#64B5F6"
-            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#64B5F6"
+            android:text="✅ Submit Vote"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 </ScrollView>

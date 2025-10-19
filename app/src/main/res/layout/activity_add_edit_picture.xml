@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddEditPictureActivity">
@@ -39,62 +40,107 @@
             android:layout_marginBottom="24dp"
             android:text="Chọn ảnh" />
 
-        <EditText android:id="@+id/etPictureName" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Tên ảnh" android:layout_marginBottom="16dp"/>
-        <EditText android:id="@+id/etPictureDescription" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Mô tả" android:layout_marginBottom="16dp"/>
+        <EditText
+            android:id="@+id/etPictureName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Tên ảnh" />
+
+        <EditText
+            android:id="@+id/etPictureDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="Mô tả" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Loại"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
+
         <RadioGroup
             android:id="@+id/radioGroupType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-            <RadioButton android:id="@+id/rbTypeArt" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nghệ thuật"/>
-            <RadioButton android:id="@+id/rbTypePhoto" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nhiếp ảnh"/>
-            <RadioButton android:id="@+id/rbTypeDigital" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Digital Art"/>
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbTypeArt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nghệ thuật" />
+
+            <RadioButton
+                android:id="@+id/rbTypePhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nhiếp ảnh" />
+
+            <RadioButton
+                android:id="@+id/rbTypeDigital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Digital Art" />
         </RadioGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tags"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
+
         <LinearLayout
             android:id="@+id/checkboxGroupTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-            <CheckBox android:id="@+id/cbTagNature" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thiên nhiên"/>
-            <CheckBox android:id="@+id/cbTagCity" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thành phố"/>
-            <CheckBox android:id="@+id/cbTagPeople" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Con người"/>
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cbTagNature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thiên nhiên" />
+
+            <CheckBox
+                android:id="@+id/cbTagCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thành phố" />
+
+            <CheckBox
+                android:id="@+id/cbTagPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Con người" />
         </LinearLayout>
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn bộ sưu tập (Gallery)"/>
+            android:text="Chọn bộ sưu tập (Gallery)" />
+
         <Spinner
             android:id="@+id/spinnerPictureGallery"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp" />
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn người tạo (User)"/>
+            android:text="Chọn người tạo (User)" />
+
         <Spinner
             android:id="@+id/spinnerPictureUser"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp" />
 
         <Button
             android:id="@+id/btnSavePicture"

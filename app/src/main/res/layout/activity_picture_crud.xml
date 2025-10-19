@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PictureCRUDActivity">
@@ -10,16 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
         android:iconifiedByDefault="false"
-        android:queryHint="Tìm kiếm theo tên ảnh..."
-        android:layout_margin="8dp"/>
+        android:queryHint="Tìm kiếm theo tên ảnh..." />
 
     <ListView
         android:id="@+id/lvPictures"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchViewPictures"
-        android:layout_above="@+id/btnAddPicture" />
+        android:layout_above="@+id/btnAddPicture"
+        android:layout_below="@id/searchViewPictures" />
 
     <Button
         android:id="@+id/btnAddPicture"
