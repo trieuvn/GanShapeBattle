@@ -1,9 +1,11 @@
-package com.ganshapebattle; // Thay đổi thành package của bạn
+package com.ganshapebattle.admin; // Thay đổi thành package của bạn
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.ganshapebattle.R;
 
 public class MenuActivity extends AppCompatActivity {
 

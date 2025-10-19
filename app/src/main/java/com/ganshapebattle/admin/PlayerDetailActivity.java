@@ -1,4 +1,4 @@
-package com.ganshapebattle;
+package com.ganshapebattle.admin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ganshapebattle.R;
 import com.ganshapebattle.models.Player;
 import com.ganshapebattle.services.PlayerService;
 import com.ganshapebattle.services.SupabaseCallback;

@@ -1,4 +1,4 @@
-package com.ganshapebattle;
+package com.ganshapebattle.admin;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ganshapebattle.R;
 import com.ganshapebattle.models.Gallery;
 import com.ganshapebattle.services.GalleryService;
 import com.ganshapebattle.services.SupabaseCallback;

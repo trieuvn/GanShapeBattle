@@ -29,7 +29,7 @@
             android:name=".DesignActivity"
             android:exported="false" />
         <activity
-            android:name=".Admin"
+            android:name=".admin.Admin"
             android:exported="false" />
         <activity
             android:name=".ForgotPassword"
@@ -47,10 +47,10 @@
             android:name=".GameRoom"
             android:exported="false" />
         <activity
-            android:name=".CreateCategory"
+            android:name=".admin.CreateCategory"
             android:exported="false" />
         <activity
-            android:name=".Gallery"
+            android:name=".admin.Gallery"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -61,22 +61,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".UserCRUDActivity" />
-        <activity android:name=".UserDetailActivity" />
-        <activity android:name=".AddEditUserActivity" />
-        <activity android:name=".PictureCRUDActivity" />
-        <activity android:name=".PictureDetailActivity" />
-        <activity android:name=".AddEditPictureActivity" />
-        <activity android:name=".LobbyCRUDActivity" />
-        <activity android:name=".LobbyDetailActivity" />
-        <activity android:name=".AddEditLobbyActivity" />
-        <activity android:name=".GalleryCRUDActivity" />
-        <activity android:name=".GalleryDetailActivity" />
-        <activity android:name=".AddEditGalleryActivity" />
-        <activity android:name=".PlayerCRUDActivity" />
-        <activity android:name=".PlayerDetailActivity" />
-        <activity android:name=".AddEditPlayerActivity" />
+        <activity android:name=".admin.MenuActivity" />
+        <activity android:name=".admin.UserCRUDActivity" />
+        <activity android:name=".admin.UserDetailActivity" />
+        <activity android:name=".admin.AddEditUserActivity" />
+        <activity android:name=".admin.PictureCRUDActivity" />
+        <activity android:name=".admin.PictureDetailActivity" />
+        <activity android:name=".admin.AddEditPictureActivity" />
+        <activity android:name=".admin.LobbyCRUDActivity" />
+        <activity android:name=".admin.LobbyDetailActivity" />
+        <activity android:name=".admin.AddEditLobbyActivity" />
+        <activity android:name=".admin.GalleryCRUDActivity" />
+        <activity android:name=".admin.GalleryDetailActivity" />
+        <activity android:name=".admin.AddEditGalleryActivity" />
+        <activity android:name=".admin.PlayerCRUDActivity" />
+        <activity android:name=".admin.PlayerDetailActivity" />
+        <activity android:name=".admin.AddEditPlayerActivity" />
     </application>
 
 </manifest>

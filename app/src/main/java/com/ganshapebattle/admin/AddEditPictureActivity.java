@@ -1,4 +1,4 @@
-package com.ganshapebattle;
+package com.ganshapebattle.admin;
 
 import android.Manifest;
 import android.content.Intent;
@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.ganshapebattle.R;
 import com.ganshapebattle.models.Gallery;
 import com.ganshapebattle.models.Picture;
 import com.ganshapebattle.models.User;

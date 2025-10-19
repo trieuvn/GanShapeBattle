@@ -1,4 +1,4 @@
-package com.ganshapebattle; // Thay đổi thành package của bạn
+package com.ganshapebattle.admin; // Thay đổi thành package của bạn
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ganshapebattle.R;
 import com.ganshapebattle.models.User;
 import com.ganshapebattle.services.SupabaseCallback;
 import com.ganshapebattle.services.UserService;

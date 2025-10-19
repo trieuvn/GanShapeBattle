@@ -1,4 +1,4 @@
-package com.ganshapebattle;
+package com.ganshapebattle.admin;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ganshapebattle.R;
 import com.ganshapebattle.models.Lobby;
 import com.ganshapebattle.models.Picture;
 import com.ganshapebattle.models.Player;

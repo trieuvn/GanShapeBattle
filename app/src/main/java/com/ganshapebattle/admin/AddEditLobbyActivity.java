@@ -1,4 +1,4 @@
-package com.ganshapebattle;
+package com.ganshapebattle.admin;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 // THÊM CÁC DÒNG NÀY VÀO
+import com.ganshapebattle.R;
 import com.ganshapebattle.models.User;
 
 import java.text.SimpleDateFormat;
