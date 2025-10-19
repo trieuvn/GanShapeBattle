@@ -25,11 +25,17 @@ public class Lobby {
     @SerializedName("voteTime")
     private int voteTime;
 
+    @SerializedName("createdDate")
+    private String createdDate;
+
+    @SerializedName("beginDate")
+    private String beginDate;
+
     // Constructors
     public Lobby() {
     }
 
-    public Lobby(String id, String adminUsername, String mode, String status, int maxPlayer, int designTime, int voteTime) {
+    public Lobby(String id, String adminUsername, String mode, String status, int maxPlayer, int designTime, int voteTime, String createdDate, String beginDate) {
         this.id = id;
         this.adminUsername = adminUsername;
         this.mode = mode;
@@ -37,6 +43,8 @@ public class Lobby {
         this.maxPlayer = maxPlayer;
         this.designTime = designTime;
         this.voteTime = voteTime;
+        this.createdDate = createdDate;
+        this.beginDate = beginDate;
     }
 
     // Getters and Setters
@@ -54,4 +62,9 @@ public class Lobby {
     public void setDesignTime(int designTime) { this.designTime = designTime; }
     public int getVoteTime() { return voteTime; }
     public void setVoteTime(int voteTime) { this.voteTime = voteTime; }
+
+    public String getCreatedDate() { return createdDate; }
+    public void setCreatedDate(String createdDate) { this.createdDate = createdDate; }
+    public String getBeginDate() { return beginDate; }
+    public void setBeginDate(String beginDate) { this.beginDate = beginDate; }
 }

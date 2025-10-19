@@ -1,5 +1,6 @@
 package com.ganshapebattle;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -11,7 +12,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 // THÊM CÁC DÒNG NÀY VÀO
 import com.ganshapebattle.models.User;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import com.ganshapebattle.models.Lobby;
 import com.ganshapebattle.services.LobbyService;
@@ -25,7 +30,7 @@ public class AddEditLobbyActivity extends AppCompatActivity {
     private static final String TAG = "AddEditLobbyActivity";
 
     private TextView tvTitle;
-    private EditText etAdmin, etMaxPlayers, etDesignTime, etVoteTime;
+    private EditText etAdmin, etMaxPlayers, etDesignTime, etVoteTime, etCreatedDate, etBeginDate;
     private Button btnSaveLobby;
     private Spinner spinnerMode, spinnerStatus; // <-- Khai báo Spinner
 
@@ -34,6 +39,7 @@ public class AddEditLobbyActivity extends AppCompatActivity {
     private Lobby lobbyToEdit;
     private Spinner spinnerAdmin; // Thay thế EditText etAdmin
     private UserService userService; // Thêm UserService
+
 
     // Dữ liệu cho các Spinner
     private final String[] lobbyModes = {"Classic", "Timed", "Challenge", "Freestyle"};
@@ -51,6 +57,9 @@ public class AddEditLobbyActivity extends AppCompatActivity {
         etDesignTime = findViewById(R.id.etLobbyDesignTime);
         etVoteTime = findViewById(R.id.etLobbyVoteTime);
         btnSaveLobby = findViewById(R.id.btnSaveLobby);
+        etCreatedDate = findViewById(R.id.etCreatedDate);
+        etBeginDate = findViewById(R.id.etBeginDate);
+
         spinnerMode = findViewById(R.id.spinnerLobbyMode); // <-- Ánh xạ Spinner
         spinnerStatus = findViewById(R.id.spinnerLobbyStatus); // <-- Ánh xạ Spinner
 
@@ -70,6 +79,10 @@ public class AddEditLobbyActivity extends AppCompatActivity {
         } else {
             tvTitle.setText("Tạo phòng chơi mới");
         }
+
+        etCreatedDate.setOnClickListener(v -> showDatePickerDialogCreatedDate());
+
+        etBeginDate.setOnClickListener(v -> showDatePickerDialogBeginDate());
 
         btnSaveLobby.setOnClickListener(v -> saveLobby());
     }
@@ -130,6 +143,8 @@ public class AddEditLobbyActivity extends AppCompatActivity {
                         etMaxPlayers.setText(String.valueOf(lobby.getMaxPlayer()));
                         etDesignTime.setText(String.valueOf(lobby.getDesignTime()));
                         etVoteTime.setText(String.valueOf(lobby.getVoteTime()));
+                        etCreatedDate.setText(lobby.getCreatedDate());
+                        etBeginDate.setText(lobby.getBeginDate());
 
                         // Chọn giá trị đúng cho Spinner
                         setSpinnerSelection(spinnerMode, lobbyModes, lobby.getMode());
@@ -171,6 +186,8 @@ public class AddEditLobbyActivity extends AppCompatActivity {
             lobbyToSave.setMaxPlayer(Integer.parseInt(etMaxPlayers.getText().toString()));
             lobbyToSave.setDesignTime(Integer.parseInt(etDesignTime.getText().toString()));
             lobbyToSave.setVoteTime(Integer.parseInt(etVoteTime.getText().toString()));
+            lobbyToSave.setCreatedDate(etCreatedDate.getText().toString().trim());
+            lobbyToSave.setBeginDate(etBeginDate.getText().toString().trim());
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Vui lòng nhập đúng định dạng số", Toast.LENGTH_SHORT).show();
             return;
@@ -206,5 +223,35 @@ public class AddEditLobbyActivity extends AppCompatActivity {
         } else {
             lobbyService.updateLobby(currentLobbyId, lobby, callback);
         }
+    }
+
+    private void showDatePickerDialogCreatedDate() {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    c.set(selectedYear, selectedMonth, selectedDay);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    etCreatedDate.setText(sdf.format(c.getTime()));
+                }, year, month, day);
+        datePickerDialog.show();
+    }
+
+    private void showDatePickerDialogBeginDate() {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    c.set(selectedYear, selectedMonth, selectedDay);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    etBeginDate.setText(sdf.format(c.getTime()));
+                }, year, month, day);
+        datePickerDialog.show();
     }
 }

@@ -58,6 +58,36 @@
         <EditText android:id="@+id/etLobbyDesignTime" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Thời gian thiết kế (giây)" android:inputType="number" android:layout_marginBottom="16dp"/>
         <EditText android:id="@+id/etLobbyVoteTime" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Thời gian bình chọn (giây)" android:inputType="number" android:layout_marginBottom="16dp"/>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCreatedDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="(YYYY-MM-DD)"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="date"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etBeginDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="(YYYY-MM-DD)"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="date"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/btnSaveLobby"
             android:layout_width="match_parent"
