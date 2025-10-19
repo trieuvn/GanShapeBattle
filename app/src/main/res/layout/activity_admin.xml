@@ -285,7 +285,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:clickable="true">
 
                         <ImageView
                             android:id="@+id/taskImage"
@@ -319,7 +320,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:clickable="true">
 
                         <ImageView
                             android:id="@+id/shapeImage"
@@ -361,7 +363,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:clickable="true">
 
                         <ImageView
                             android:id="@+id/participantImage"
@@ -395,7 +398,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:clickable="true">
 
                         <ImageView
                             android:id="@+id/reportImage"
