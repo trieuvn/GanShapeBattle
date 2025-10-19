@@ -10,6 +10,8 @@ constraintlayout = "2.2.1"
 annotation = "1.6.0"
 lifecycleLivedataKtx = "2.6.1"
 lifecycleViewmodelKtx = "2.6.1"
+kotlin = "2.2.0"
+coreKtx = "1.17.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -22,7 +24,9 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
