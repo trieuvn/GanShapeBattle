@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LobbyCRUDActivity">
+
+    <SearchView
+        android:id="@+id/searchViewLobbies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Tìm kiếm theo Lobby ID..."
+        android:layout_margin="8dp"/>
+
+    <ListView
+        android:id="@+id/lvLobbies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchViewLobbies"
+        android:layout_above="@+id/btnAddLobby" />
+
+    <Button
+        android:id="@+id/btnAddLobby"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:text="Tạo phòng chơi mới" />
+
+</RelativeLayout>
