@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Ánh xạ TextView từ layout
-        hello = findViewById(R.id.hello);
 
         // Khởi tạo SupabaseService
         SupabaseService client = new SupabaseService();
