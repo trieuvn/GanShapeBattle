@@ -97,27 +97,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void handleGetUserById() {
-        String username = usernameInput.getText().toString().trim();
-        if (username.isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập Username", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        resultTextView.setText("Đang tìm " + username + "...");
-        userService.getUserByUsername(username, new SupabaseCallback<User>() {
-            @Override
-            public void onSuccess(User user) {
-                runOnUiThread(() -> {
-                    if (user != null) {
-                        String userDetails = "Tìm thấy User:\n" +
-                                "- Username: " + user.getUsername() + "\n" +
-                                "- Email: " + user.getEmail();
-                        resultTextView.setText(userDetails);
-                    } else {
-                        resultTextView.setText("Không tìm thấy user với username: " + username);
-                    }
-                });
-            }
 
             @Override
             public void onFailure(Exception e) {

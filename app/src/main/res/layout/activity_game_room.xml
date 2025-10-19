@@ -1,0 +1,78 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#F3F7FF"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="🎮 Game Room"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#1976D2"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Thông tin phòng -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="#FFFFFF"
+            android:elevation="3dp"
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/tvRoomInfo"
+                android:text="Room: #12345 | Mode: Design Battle"
+                android:textColor="#1565C0"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <!-- Chọn chế độ chơi -->
+        <TextView
+            android:text="Mode"
+            android:textStyle="bold"
+            android:textColor="#0D47A1"
+            android:layout_marginBottom="8dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#1976D2"
+            android:spinnerMode="dropdown"/>
+
+        <!-- Vote cho người chơi -->
+        <TextView
+            android:text="Vote for Best Design"
+            android:textStyle="bold"
+            android:textColor="#0D47A1"
+            android:layout_marginTop="24dp"/>
+
+        <ListView
+            android:id="@+id/lvPlayersVote"
+            android:divider="#E0E0E0"
+            android:dividerHeight="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="#FFFFFF"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/btnSubmitVote"
+            android:text="✅ Submit Vote"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#64B5F6"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</ScrollView>
