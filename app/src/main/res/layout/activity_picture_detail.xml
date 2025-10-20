@@ -1,104 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="12dp"
     tools:context=".admin.PictureDetailActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
+        <!-- Image -->
         <ImageView
             android:id="@+id/ivPictureImage"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
             android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tên ảnh"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvPictureName"
+        <!-- Card chứa tất cả thông tin -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="Tên ảnh mẫu" />
+            android:padding="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mô tả"
-            android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvPictureDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="Mô tả ảnh mẫu" />
+                <!-- Tên ảnh -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20px"
+                    android:layout_marginBottom="2dp"
+                    android:text="Tên ảnh"
+                    android:textColor="#333333"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ngày tạo"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvPictureName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20px"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    tools:text="Tên ảnh mẫu" />
 
-        <TextView
-            android:id="@+id/tvPictureCreatedDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="2025-10-18" />
+                <!-- Mô tả -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20px"
+                    android:layout_marginBottom="2dp"
+                    android:text="Mô tả"
+                    android:textColor="#333333"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Loại"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvPictureDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20px"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    tools:text="Mô tả ảnh mẫu" />
 
-        <TextView
-            android:id="@+id/tvPictureType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="Loại ảnh" />
+                <!-- Ngày tạo -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20px"
+                    android:layout_marginBottom="2dp"
+                    android:text="Ngày tạo"
+                    android:textColor="#333333"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/tvPictureCreatedDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20px"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    tools:text="2025-10-18" />
+
+                <!-- Loại -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20px"
+                    android:layout_marginBottom="2dp"
+                    android:text="Loại"
+                    android:textColor="#333333"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvPictureType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20px"
+                    android:layout_marginBottom="0dp"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    tools:text="Loại ảnh" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginTop="4dp">
 
-            <Button
-                android:id="@+id/btnUpdatePicture"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpdateUser"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="1"
-                android:text="Cập nhật" />
+                android:background="@drawable/btn_update_gradient"
+                android:paddingVertical="14dp"
+                android:text="Cập nhật"
+                android:textColor="#ffffff"
+                android:textSize="22sp"
+                app:backgroundTint="@null" />
 
-            <Button
-                android:id="@+id/btnDeletePicture"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteUser"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:layout_weight="1"
-                android:backgroundTint="@android:color/holo_red_light"
-                android:text="Xóa" />
+                android:background="@drawable/btn_delete_gradient"
+                android:paddingVertical="14dp"
+                android:text="Xóa"
+                android:textColor="#ffffff"
+                android:textSize="22sp"
+                app:backgroundTint="@null" />
         </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
