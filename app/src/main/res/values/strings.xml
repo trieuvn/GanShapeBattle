@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">GanShapeBattle</string>
     <string name="top_icon">TOP ICON</string>
     <string name="email">Email</string>
@@ -46,6 +46,24 @@
     <string name="paint_pressed">#FF660000</string>
     <string name="new_drawing">New drawing</string>
     <string name="start_new_msg">Start new drawing (you will lose the current drawing)?</string>
-    <string name="super_gan_image">Super Gan image"</string>
+    <string name="super_gan_image">Super Gan image</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string-array name="prompt_photorealistic_segmentation_v2">
+        <item>You are a literal rendering engine, not a creative artist.</item>
+        <item>Your task is to convert the provided color-coded image mask into a photorealistic scene.</item>
+        <item></item>
+        <item>Your output MUST strictly follow this mapping. Render ONLY these elements:</item>
+        <item>- Blue = sky</item>
+        <item>- Grey = clouds</item>
+        <item>- White = water (ocean or sea)</item>
+        <item>- Green = grass</item>
+        <item>- Brown = rock</item>
+        <item>- Purple = river</item>
+        <item>- Red = animals</item>
+        <item>- Pink = houses</item>
+        <item></item>
+        <item>If a color is NOT in the image, DO NOT render its corresponding object.</item>
+        <item>Do not add any other details, objects, or inferred elements. Stick precisely to the mask.</item>
+    </string-array>
+    <string name="transforming">Transforming</string>
 </resources>
