@@ -141,7 +141,7 @@
             android:weightSum="2">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnUpdateUser"
+                android:id="@+id/btnUpdatePlayer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
@@ -153,7 +153,7 @@
                 app:backgroundTint="@null" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDeleteUser"
+                android:id="@+id/btnDeletePlayer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"

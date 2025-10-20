@@ -132,7 +132,7 @@
             android:layout_marginTop="4dp">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnUpdateUser"
+                android:id="@+id/btnUpdatePicture"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
@@ -145,7 +145,7 @@
                 app:backgroundTint="@null" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDeleteUser"
+                android:id="@+id/btnDeletePicture"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
