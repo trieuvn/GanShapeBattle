@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Nền bảng nhiệm vụ -->
+    <path
+        android:fillColor="#2196F3"
+    android:pathData="M4,4h16a1,1 0 0,1 1,1v14a1,1 0 0,1 -1,1H4a1,1 0 0,1 -1,-1V5a1,1 0 0,1 1,-1z" />
+
+    <!-- Dòng nội dung 1 -->
+    <path
+        android:fillColor="#BBDEFB"
+    android:pathData="M6,7v2h12V7H6z" />
+
+    <!-- Dòng nội dung 2 -->
+    <path
+        android:fillColor="#BBDEFB"
+        android:pathData="M6,11v2h12v-2H6z" />
+
+    <!-- Dòng nội dung 3 -->
+    <path
+        android:fillColor="#BBDEFB"
+        android:pathData="M6,15v2h8v-2H6z" />
+</vector>

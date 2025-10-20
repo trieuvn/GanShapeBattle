@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +19,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GanShapeBattle">
         <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".DesignActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.Admin"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPassword"
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".ui.login.ForgotPassword" -->
+        <!-- android:exported="false" -->
+        <!-- android:label="@string/title_activity_forgot_password" /> -->
+        <activity
+            android:name=".Register"
+            android:exported="false" />
+        <activity
+            android:name=".Leaderboard"
+            android:exported="false" />
+        <activity
+            android:name=".GameRoom"
+            android:exported="false" />
+        <activity
+            android:name=".admin.CreateCategory"
+            android:exported="false" />
+        <activity
+            android:name=".admin.Gallery"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -22,6 +61,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".admin.MenuActivity" />
+        <activity android:name=".admin.UserCRUDActivity" />
+        <activity android:name=".admin.UserDetailActivity" />
+        <activity android:name=".admin.AddEditUserActivity" />
+        <activity android:name=".admin.PictureCRUDActivity" />
+        <activity android:name=".admin.PictureDetailActivity" />
+        <activity android:name=".admin.AddEditPictureActivity" />
+        <activity android:name=".admin.LobbyCRUDActivity" />
+        <activity android:name=".admin.LobbyDetailActivity" />
+        <activity android:name=".admin.AddEditLobbyActivity" />
+        <activity android:name=".admin.GalleryCRUDActivity" />
+        <activity android:name=".admin.GalleryDetailActivity" />
+        <activity android:name=".admin.AddEditGalleryActivity" />
+        <activity android:name=".admin.PlayerCRUDActivity" />
+        <activity android:name=".admin.PlayerDetailActivity" />
+        <activity android:name=".admin.AddEditPlayerActivity" />
     </application>
 
 </manifest>

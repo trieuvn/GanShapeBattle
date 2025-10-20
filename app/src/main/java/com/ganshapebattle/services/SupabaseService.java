@@ -1,4 +1,4 @@
-package com.ganshapebattle.service;
+package com.ganshapebattle.services;
 
 import okhttp3.Call;
 import okhttp3.Callback;
