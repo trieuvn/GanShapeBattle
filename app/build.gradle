@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     id 'com.google.gms.google-services'
-    alias(libs.plugins.kotlin.android)
+//    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -31,9 +31,9 @@ android {
     buildFeatures {
         viewBinding true
     }
-    kotlinOptions {
-        jvmTarget = '11'
-    }
+//    kotlinOptions {
+//        jvmTarget = '11'
+//    }
     buildToolsVersion '36.1.0'
 }
 dependencies {
@@ -42,9 +42,9 @@ dependencies {
     implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
-    implementation libs.annotation
-    implementation libs.lifecycle.livedata.ktx
-    implementation libs.lifecycle.viewmodel.ktx
+//    implementation libs.annotation
+//    implementation libs.lifecycle.livedata.ktx
+//    implementation libs.lifecycle.viewmodel.ktx
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
@@ -78,5 +78,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0' // Hoặc phiên bản mới nhất
     implementation 'de.hdodenhof:circleimageview:3.1.0' // Hoặc phiên bản mới nhất
 
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.android.gms:play-services-auth:21.2.0' // Hoặc phiên bản mới nhất
 
 }
