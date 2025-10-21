@@ -1,6 +1,8 @@
 package com.ganshapebattle.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.ganshapebattle.services.*;
+import com.ganshapebattle.services.SupabaseCallback;
 
 public class Player {
 
@@ -42,4 +44,51 @@ public class Player {
     public void setRank(int rank) { this.rank = rank; }
     public String getPictureId() { return pictureId; }
     public void setPictureId(String pictureId) { this.pictureId = pictureId; }
+
+    // --- Additional Methods ---
+
+    /**
+     * Lấy thông tin picture của player này
+     * @param callback Callback để xử lý kết quả
+     */
+    public void getPicture(SupabaseCallback<Picture> callback) {
+        if (pictureId == null || pictureId.isEmpty()) {
+            callback.onSuccess(null);
+            return;
+        }
+        
+        PictureService pictureService = new PictureService();
+        // Lấy picture có id = this.pictureId
+        pictureService.getPictureById(pictureId, callback);
+    }
+
+    /**
+     * Lấy thông tin user của player này
+     * @param callback Callback để xử lý kết quả
+     */
+    public void getUser(SupabaseCallback<User> callback) {
+        if (username == null || username.isEmpty()) {
+            callback.onSuccess(null);
+            return;
+        }
+        
+        UserService userService = new UserService();
+        // Lấy user có username = this.username
+        userService.getUserByUsername(username, callback);
+    }
+
+    /**
+     * Lấy thông tin lobby của player này
+     * @param callback Callback để xử lý kết quả
+     */
+    public void getLobby(SupabaseCallback<Lobby> callback) {
+        if (lobbyId == null || lobbyId.isEmpty()) {
+            callback.onSuccess(null);
+            return;
+        }
+        
+        LobbyService lobbyService = new LobbyService();
+        // Lấy lobby có id = this.lobbyId
+        lobbyService.getLobbyById(lobbyId, callback);
+    }
 }
