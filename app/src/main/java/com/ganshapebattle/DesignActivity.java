@@ -1,18 +1,28 @@
 package com.ganshapebattle;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+
 import android.provider.MediaStore;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -20,7 +30,12 @@ import android.content.DialogInterface;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.ganshapebattle.models.MLKit;
 import com.ganshapebattle.view.DrawingView;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 
 public class DesignActivity extends AppCompatActivity implements OnClickListener {
 
@@ -28,6 +43,9 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
     private ImageButton currPaint, drawBtn, eraseBtn, newBtn, saveBtn;
     private float smallBrush, mediumBrush, largeBrush;
     private ImageView ganImage;
+
+    private Button transformBtn;
+    private Context context;
 
 
     @Override
@@ -40,6 +58,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        context = this;
 
         drawView = (DrawingView)findViewById(R.id.drawing);
         LinearLayout paintLayout = (LinearLayout)findViewById(R.id.paint_colors);
@@ -64,6 +83,9 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
         ganImage = (ImageView)findViewById(R.id.ganimage);
         ganImage.setImageBitmap(drawView.getGanImage());
         ganImage.setOnClickListener(this);
+
+        transformBtn = (Button)findViewById(R.id.transform_btn);
+        transformBtn.setOnClickListener(this);
     }
 
     public void paintClicked(View view){
@@ -77,6 +99,80 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
         }
         drawView.setErase(false);
         drawView.setBrushSize(drawView.getLastBrushSize());
+    }
+
+    private void startTransformEdit() {
+        AlertDialog.Builder transformingDialogBuilder = new AlertDialog.Builder(context);
+
+        LayoutInflater inflater = this.getLayoutInflater(); // Hoặc LayoutInflater.from(context)
+        View dialogView = inflater.inflate(R.layout.dialog_loading, null);
+
+        transformingDialogBuilder.setView(dialogView);
+
+        ImageView gifImageView = dialogView.findViewById(R.id.gif_image_view);
+
+        Glide.with(context)
+                .load(R.drawable.transforming)
+                .into(gifImageView);
+
+        transformingDialogBuilder.setTitle(getResources().getString(R.string.transforming));
+
+        AlertDialog transformingDialog = transformingDialogBuilder.create();
+        transformingDialog.show();
+        drawView.setDrawingCacheEnabled(true);
+        Bitmap originalBitmap = drawView.getDrawingCache();
+
+        String[] promptLines = getResources().getStringArray(R.array.prompt_photorealistic_segmentation_v2);
+
+// 2. Nối mảng lại thành một String duy nhất, dùng ký tự xuống dòng "\n"
+        StringBuilder promptBuilder = new StringBuilder();
+        for (String line : promptLines) {
+            promptBuilder.append(line).append("\n");
+        }
+        String imageEditPrompt = promptBuilder.toString();
+
+        Executor mainExecutor = ContextCompat.getMainExecutor(this);
+
+        Log.d("DesignActivity", "Calling static editImage function...");
+
+        ListenableFuture<Bitmap> bitmapFuture = MLKit.editImage(
+                originalBitmap,
+                imageEditPrompt,
+                mainExecutor
+        );
+
+        Futures.addCallback(bitmapFuture, new FutureCallback<Bitmap>() {
+            @Override
+            public void onSuccess(Bitmap generatedBitmap) {
+                drawView.setGanImage(generatedBitmap);
+                ganImage.setImageBitmap(generatedBitmap);
+                transformingDialog.cancel();
+                AlertDialog.Builder ganImageDialog = new AlertDialog.Builder(context);
+                ganImageDialog.setTitle(R.string.super_gan_image);
+
+                ImageView imageView = new ImageView(context);
+
+                imageView.setImageBitmap(drawView.getGanImage());
+
+                int padding = 60;
+                imageView.setPadding(padding, padding, padding, padding);
+                imageView.setAdjustViewBounds(true);
+
+                ganImageDialog.setView(imageView);
+                ganImageDialog.setPositiveButton(R.string.ok, null);
+                ganImageDialog.create().show();
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                AlertDialog.Builder saveDialog = new AlertDialog.Builder(context);
+                saveDialog.setTitle("FAIL");
+                saveDialog.setMessage("That sucks...");
+                saveDialog.show();
+                transformingDialog.cancel();
+            }
+        }, mainExecutor); // Callback này cũng chạy trên Main Thread
+        drawView.destroyDrawingCache();
     }
 
     @Override
@@ -225,31 +321,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
             ganImageDialog.create().show();
         }
         else if (view.getId() == R.id.transform_btn){
-            AlertDialog.Builder ganImageDialog = new AlertDialog.Builder(this);
-            ganImageDialog.setTitle(R.string.super_gan_image);
-
-            ImageView imageView = new ImageView(this);
-
-            imageView.setImageBitmap(drawView.getGanImage());
-
-            int padding = 60;
-            imageView.setPadding(padding, padding, padding, padding);
-            imageView.setAdjustViewBounds(true);
-
-            ganImageDialog.setView(imageView);
-            ganImageDialog.setPositiveButton(R.string.take, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //TODO: lấy ảnh
-                }
-            });
-            ganImageDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //TODO: lấy ảnh
-                }
-            });
-            ganImageDialog.create().show();
+            startTransformEdit();
         }
     }
 }
