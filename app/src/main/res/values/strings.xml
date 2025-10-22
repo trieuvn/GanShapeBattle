@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">GanShapeBattle</string>
+
+    <string name="default_web_client_id">772500808523-9s3jgqcf5bsfd58d1g8mrprkohbtqhjc.apps.googleusercontent.com</string>
     <string name="top_icon">TOP ICON</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -21,7 +23,6 @@
     <string name="register">Register</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="already_have_account_login">Already have an account? Login</string>
-
     <string name="forgot_password_title">Forgot Password?</string>
     <string name="forgot_password_instruction">Enter your registered email to reset your password</string>
     <string name="send_reset_link">Send Reset Link</string>

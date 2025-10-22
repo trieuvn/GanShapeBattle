@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GanShapeBattle">
         <activity
-            android:name=".LoginActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".DesignActivity"
@@ -49,12 +49,26 @@
             android:name=".admin.Gallery"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="com.ganshapebattle"
+                    android:host="auth"
+                    android:pathPrefix="/reset-password" />
             </intent-filter>
         </activity>
         <activity android:name=".admin.MenuActivity" />
@@ -73,6 +87,8 @@
         <activity android:name=".admin.PlayerCRUDActivity" />
         <activity android:name=".admin.PlayerDetailActivity" />
         <activity android:name=".admin.AddEditPlayerActivity" />
+        <activity android:name=".VerifyOtpActivity" />
+        <activity android:name=".VerifySignupOtpActivity" />
     </application>
 
 </manifest>
