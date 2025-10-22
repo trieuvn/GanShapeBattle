@@ -22,10 +22,6 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="false"
-            android:label="@string/title_activity_login" />
-        <activity
             android:name=".DesignActivity"
             android:exported="false" />
         <activity

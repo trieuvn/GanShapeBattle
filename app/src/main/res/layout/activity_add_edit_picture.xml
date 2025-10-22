@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F7FA"
     tools:context=".admin.AddEditPictureActivity">
 
     <LinearLayout
@@ -12,141 +14,180 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvPictureTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:text="Thêm hình ảnh mới"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/ivSelectedImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:background="#E0E0E0"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_default_avatar" />
-
-        <Button
-            android:id="@+id/btnSelectImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:text="Chọn ảnh" />
-
-        <EditText
-            android:id="@+id/etPictureName"
+        <!-- CardView bao quanh toàn bộ nội dung -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Tên ảnh" />
+            android:layout_margin="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="#FFFFFF">
 
-        <EditText
-            android:id="@+id/etPictureDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Mô tả" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Loại"
-            android:textStyle="bold" />
-
-        <RadioGroup
-            android:id="@+id/radioGroupType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rbTypeArt"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nghệ thuật" />
+                android:orientation="vertical"
+                android:padding="20dp">
 
-            <RadioButton
-                android:id="@+id/rbTypePhoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nhiếp ảnh" />
+                <TextView
+                    android:id="@+id/tvPictureTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="24dp"
+                    android:text="Thêm hình ảnh mới"
+                    android:textColor="#1E3A8A"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-            <RadioButton
-                android:id="@+id/rbTypeDigital"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Digital Art" />
-        </RadioGroup>
+                <ImageView
+                    android:id="@+id/ivSelectedImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/bg_image_border"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_default_avatar" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tags"
-            android:textStyle="bold" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSelectImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="24dp"
+                    android:text="Chọn ảnh"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:background="@drawable/btn_gradient_blue"
+                    android:paddingVertical="12dp"
+                    app:cornerRadius="10dp"
+                    app:backgroundTint="@null" />
 
-        <LinearLayout
-            android:id="@+id/checkboxGroupTags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/etPictureName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="Tên ảnh"
+                    android:background="@drawable/edittext_border" />
 
-            <CheckBox
-                android:id="@+id/cbTagNature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thiên nhiên" />
+                <EditText
+                    android:id="@+id/etPictureDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="Mô tả"
+                    android:background="@drawable/edittext_border" />
 
-            <CheckBox
-                android:id="@+id/cbTagCity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thành phố" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loại"
+                    android:textColor="#1E3A8A"
+                    android:textStyle="bold" />
 
-            <CheckBox
-                android:id="@+id/cbTagPeople"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Con người" />
-        </LinearLayout>
+                <RadioGroup
+                    android:id="@+id/radioGroupType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
 
+                    <RadioButton
+                        android:id="@+id/rbTypeArt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nghệ thuật" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chọn bộ sưu tập (Gallery)" />
+                    <RadioButton
+                        android:id="@+id/rbTypePhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nhiếp ảnh" />
 
-        <Spinner
-            android:id="@+id/spinnerPictureGallery"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp" />
+                    <RadioButton
+                        android:id="@+id/rbTypeDigital"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Digital Art" />
+                </RadioGroup>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tags"
+                    android:textColor="#1E3A8A"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chọn người tạo (User)" />
+                <LinearLayout
+                    android:id="@+id/checkboxGroupTags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/spinnerPictureUser"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp" />
+                    <CheckBox
+                        android:id="@+id/cbTagNature"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thiên nhiên" />
 
-        <Button
-            android:id="@+id/btnSavePicture"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Lưu hình ảnh" />
+                    <CheckBox
+                        android:id="@+id/cbTagCity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thành phố" />
+
+                    <CheckBox
+                        android:id="@+id/cbTagPeople"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Con người" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn bộ sưu tập (Gallery)"
+                    android:textColor="#1E3A8A"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinnerPictureGallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/spinner_border" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chọn người tạo (User)"
+                    android:textColor="#1E3A8A"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spinnerPictureUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/spinner_border" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSavePicture"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/btn_gradient_blue"
+                    android:paddingVertical="14dp"
+                    android:text="Lưu hình ảnh"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    app:backgroundTint="@null"
+                    app:cornerRadius="12dp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ScrollView>
