@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".admin.GalleryCRUDActivity">
 
-    <SearchView
+    <!-- SearchView -->
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/searchViewGalleries"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:background="@drawable/searchview_background"
         android:iconifiedByDefault="false"
-        android:queryHint="Tìm kiếm theo tên bộ sưu tập..." />
+        android:queryHint="Tìm kiếm theo tên bộ sưu tập..."
+        android:padding="8dp"
+        android:layout_marginBottom="8dp"/>
 
+    <!-- ListView -->
     <ListView
         android:id="@+id/lvGalleries"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/btnAddGallery"
-        android:layout_below="@id/searchViewGalleries" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"/>
 
-    <Button
+    <!-- Button tạo gallery -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddGallery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:text="Tạo bộ sưu tập mới" />
-
-</RelativeLayout>
+        android:text="Tạo bộ sưu tập mới"
+        style="@style/Widget.MaterialComponents.Button"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>
