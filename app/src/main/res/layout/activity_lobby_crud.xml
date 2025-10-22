@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".admin.LobbyCRUDActivity">
 
-    <SearchView
+    <!-- Search -->
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/searchViewLobbies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:background="@drawable/searchview_background"
         android:iconifiedByDefault="false"
-        android:queryHint="Tìm kiếm theo Lobby ID..." />
+        android:queryHint="Tìm kiếm theo Lobby ID..."
+        android:padding="8dp"
+        android:layout_marginBottom="8dp"/>
 
+    <!-- ListView -->
     <ListView
         android:id="@+id/lvLobbies"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/btnAddLobby"
-        android:layout_below="@id/searchViewLobbies" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"/>
 
-    <Button
+    <!-- Button tạo lobby -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddLobby"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:text="Tạo phòng chơi mới" />
-
-</RelativeLayout>
+        android:text="Tạo phòng chơi mới"
+        style="@style/Widget.MaterialComponents.Button"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>

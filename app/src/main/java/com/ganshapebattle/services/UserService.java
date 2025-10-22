@@ -1,11 +1,17 @@
 package com.ganshapebattle.services;
 
+import android.util.Log;
+
 import com.ganshapebattle.models.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -21,7 +27,129 @@ public class UserService {
     private final String supabaseUrl = "https://cggimbfrkwjexvtaabbq.supabase.co";
     private final String supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnZ2ltYmZya3dqZXh2dGFhYmJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA1NDk1NDUsImV4cCI6MjA3NjEyNTU0NX0.78h5Lzrr_APZvi99MESsRDukcprXhG8pbX9UVqKuOcA";
     private final String TABLE_NAME = "User";
-    private final String BUCKET_NAME = "avatars"; // <-- THÊM DÒNG NÀY
+    private final String BUCKET_NAME = "avatars";
+
+    // ================= PHẦN MỚI BẮT ĐẦU =================
+
+    /**
+     * Xác thực người dùng bằng email và mật khẩu qua API Auth của Supabase.
+     * @param email Email của người dùng.
+     * @param password Mật khẩu của người dùng.
+     * @param callback Callback để xử lý kết quả (thành công hoặc thất bại).
+     */
+    public void loginUser(String email, String password, SupabaseCallback<String> callback) {
+        // URL cho việc xác thực qua email/password của Supabase
+        String url = supabaseUrl + "/auth/v1/token?grant_type=password";
+
+        // Tạo body cho request dưới dạng JSON
+        Map<String, String> credentials = new HashMap<>();
+        credentials.put("email", email);
+        credentials.put("password", password);
+        String jsonBody = gson.toJson(credentials);
+        RequestBody body = RequestBody.create(jsonBody, MediaType.get("application/json; charset=utf-8"));
+
+        // Xây dựng request
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", supabaseKey)
+                .addHeader("Content-Type", "application/json")
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    // Bạn có thể parse response.body().string() để lấy access_token nếu cần
+                    callback.onSuccess("Đăng nhập thành công!");
+                } else {
+                    callback.onFailure(new IOException("Email hoặc mật khẩu không đúng. Mã lỗi: " + response.code()));
+                }
+            }
+        });
+    }
+    // ================== PHẦN MỚI BẮT ĐẦU ==================
+
+    /**
+     * Đăng ký người dùng mới qua API Auth của Supabase.
+     */
+    public void registerUser(String email, String password, SupabaseCallback<String> callback) {
+        String url = supabaseUrl + "/auth/v1/signup";
+
+        Map<String, String> credentials = new HashMap<>();
+        credentials.put("email", email);
+        credentials.put("password", password);
+        String jsonBody = gson.toJson(credentials);
+        RequestBody body = RequestBody.create(jsonBody, MediaType.get("application/json; charset=utf-8"));
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", supabaseKey)
+                .addHeader("Content-Type", "application/json")
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    callback.onSuccess("Đăng ký thành công! Vui lòng kiểm tra email để xác nhận.");
+                } else {
+                    String errorBody = response.body().string();
+                    // Parse lỗi từ Supabase để thông báo rõ hơn, ví dụ "User already registered"
+                    callback.onFailure(new IOException("Đăng ký thất bại: " + errorBody));
+                }
+            }
+        });
+    }
+
+    /**
+     * Gửi yêu cầu khôi phục mật khẩu qua API Auth của Supabase.
+     */
+    public void sendPasswordReset(String email, SupabaseCallback<String> callback) {
+        String url = supabaseUrl + "/auth/v1/recover";
+
+        Map<String, String> emailMap = new HashMap<>();
+        emailMap.put("email", email);
+        String jsonBody = gson.toJson(emailMap);
+        RequestBody body = RequestBody.create(jsonBody, MediaType.get("application/json; charset=utf-8"));
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", supabaseKey)
+                .addHeader("Content-Type", "application/json")
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    callback.onSuccess("Nếu email tồn tại, một liên kết khôi phục đã được gửi.");
+                } else {
+                    callback.onFailure(new IOException("Yêu cầu thất bại. Mã lỗi: " + response.code()));
+                }
+            }
+        });
+    }
+
+    // =================== PHẦN MỚI KẾT THÚC ===================
+
 
     public void getAllUsers(SupabaseCallback<List<User>> callback) {
         Request request = new Request.Builder()
@@ -200,6 +328,180 @@ public class UserService {
                     callback.onSuccess(publicUrl);
                 } else {
                     callback.onFailure(new IOException("Lỗi upload ảnh: " + response.code() + " " + response.body().string()));
+                }
+            }
+        });
+    }
+    // Thêm phương thức này vào bên trong class UserService
+
+    public void updateUserPassword(String accessToken, String newPassword, SupabaseCallback<String> callback) {
+        String url = supabaseUrl + "/auth/v1/user";
+
+        Map<String, String> passwordMap = new HashMap<>();
+        passwordMap.put("password", newPassword);
+        String jsonBody = gson.toJson(passwordMap);
+        RequestBody body = RequestBody.create(jsonBody, MediaType.get("application/json; charset=utf-8"));
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", supabaseKey)
+                .addHeader("Authorization", "Bearer " + accessToken) // Dùng token để xác thực
+                .put(body) // Sử dụng phương thức PUT
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    callback.onSuccess("Cập nhật mật khẩu thành công!");
+                } else {
+                    callback.onFailure(new IOException("Không thể cập nhật mật khẩu. Lỗi: " + response.code()));
+                }
+            }
+        });
+    }
+    // Thêm 2 phương thức này vào bên trong class UserService
+
+    /**
+     * Gửi yêu cầu gửi mã OTP reset mật khẩu đến email người dùng.
+     */
+    public void sendPasswordResetOtp(String email, SupabaseCallback<String> callback) {
+        String url = supabaseUrl + "/auth/v1/otp";
+
+        Map<String, String> emailMap = new HashMap<>();
+        emailMap.put("email", email);
+        // Bạn có thể thêm create_user: false để đảm bảo không tạo user mới nếu email không tồn tại
+        // emailMap.put("create_user", "false");
+        String jsonBody = gson.toJson(emailMap);
+        RequestBody body = RequestBody.create(jsonBody, MediaType.get("application/json; charset=utf-8"));
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", supabaseKey)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    callback.onSuccess("Mã OTP đã được gửi đến email của bạn.");
+                } else {
+                    callback.onFailure(new IOException("Không thể gửi OTP. Lỗi: " + response.body().string()));
+                }
+            }
+        });
+    }
+
+    /**
+     * Xác thực mã OTP và trả về access_token để có thể đổi mật khẩu.
+     */
+    // Trong tệp UserService.java
+
+    // Thay thế toàn bộ hàm cũ bằng hàm này trong UserService.java
+
+    public void verifyPasswordResetOtp(String email, String otp, SupabaseCallback<String> callback) {
+        String url = supabaseUrl + "/auth/v1/verify";
+
+        Log.d("SupabaseDebug", "--- Bắt đầu xác thực OTP ---");
+        Log.d("SupabaseDebug", "URL được gọi: " + url);
+        Log.d("SupabaseDebug", "Email gửi đi: " + email);
+        Log.d("SupabaseDebug", "OTP (Token) gửi đi: " + otp);
+
+        Map<String, String> verificationData = new HashMap<>();
+        verificationData.put("email", email);
+        verificationData.put("token", otp);
+        verificationData.put("type", "recovery");
+        String jsonBody = gson.toJson(verificationData);
+        RequestBody body = RequestBody.create(jsonBody, MediaType.get("application/json; charset=utf-8"));
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", supabaseKey)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("SupabaseDebug", "Yêu cầu thất bại onFailure.", e);
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseBody = response.body().string(); // Đọc body ra trước
+                if (response.isSuccessful()) {
+                    Log.d("SupabaseDebug", "Xác thực OTP thành công! Body: " + responseBody);
+                    try {
+                        // SỬA LỖI Ở ĐÂY: Dùng Map<String, Object> để xử lý các kiểu dữ liệu khác nhau
+                        Type type = new TypeToken<Map<String, Object>>(){}.getType();
+                        Map<String, Object> responseMap = gson.fromJson(responseBody, type);
+
+                        String accessToken = (String) responseMap.get("access_token");
+
+                        if (accessToken != null) {
+                            callback.onSuccess(accessToken);
+                        } else {
+                            callback.onFailure(new IOException("Không nhận được access token từ response."));
+                        }
+                    } catch (Exception e) {
+                        Log.e("SupabaseDebug", "Lỗi khi parse JSON thành công.", e);
+                        callback.onFailure(e);
+                    }
+                } else {
+                    Log.e("SupabaseDebug", "Xác thực OTP thất bại. Mã lỗi: " + response.code() + ", Body: " + responseBody);
+                    callback.onFailure(new IOException("Mã OTP không hợp lệ. Lỗi: " + responseBody));
+                }
+            }
+        });
+    }
+
+// Hàm updateUserPassword đã có sẵn của bạn sẽ được tái sử dụng, không cần thay đổi.
+    // Thêm phương thức này vào bên trong class UserService
+
+    /**
+     * Xác thực mã OTP cho việc đăng ký tài khoản mới.
+     */
+    public void verifySignupOtp(String email, String otp, SupabaseCallback<String> callback) {
+        String url = supabaseUrl + "/auth/v1/verify";
+
+        Map<String, String> verificationData = new HashMap<>();
+        verificationData.put("email", email);
+        verificationData.put("token", otp);
+        verificationData.put("type", "signup"); // <-- Type là "signup"
+        String jsonBody = gson.toJson(verificationData);
+        RequestBody body = RequestBody.create(jsonBody, MediaType.get("application/json; charset=utf-8"));
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", supabaseKey)
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    // Xác thực thành công, tài khoản đã được kích hoạt
+                    callback.onSuccess("Xác thực tài khoản thành công!");
+                } else {
+                    callback.onFailure(new IOException("Mã OTP không hợp lệ. Lỗi: " + response.body().string()));
                 }
             }
         });

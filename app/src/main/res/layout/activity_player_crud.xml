@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".admin.PlayerCRUDActivity">
 
-    <SearchView
+    <!-- Search -->
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/searchViewPlayers"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_height="52dp"
+        android:background="@drawable/searchview_background"
         android:iconifiedByDefault="false"
+        android:padding="8dp"
         android:queryHint="Tìm kiếm theo username..." />
 
+    <!-- List of players -->
     <ListView
         android:id="@+id/lvPlayers"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/btnAddPlayer"
-        android:layout_below="@id/searchViewPlayers" />
+        android:layout_height="52dp"
+        android:layout_weight="1"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
 
-    <Button
+    <!-- Button -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddPlayer"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:text="Chấm điểm người chơi" />
+        android:text="Chấm điểm người chơi"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorPrimary" />
 
-</RelativeLayout>
+</LinearLayout>

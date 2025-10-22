@@ -12,13 +12,14 @@
         android:padding="16dp">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:text="🎮 Game Room"
             android:textColor="#1976D2"
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <!-- Thông tin phòng -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -37,8 +38,9 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Chọn chế độ chơi -->
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="Mode"
             android:textColor="#0D47A1"
@@ -51,8 +53,9 @@
             android:backgroundTint="#1976D2"
             android:spinnerMode="dropdown" />
 
-        <!-- Vote cho người chơi -->
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Vote for Best Design"
             android:textColor="#0D47A1"
