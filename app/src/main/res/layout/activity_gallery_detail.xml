@@ -1,153 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="16dp"
     tools:context=".admin.GalleryDetailActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gallery ID"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvGalleryId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textSize="18sp"
+        tools:text="gallery-uuid-123" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tên bộ sưu tập"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvGalleryName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textSize="18sp"
+        tools:text="Tranh phong cảnh" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mô tả"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvGalleryDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textSize="18sp"
+        tools:text="Các bức tranh về cảnh đẹp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loại"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvGalleryType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textSize="18sp"
+        tools:text="Public" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal">
 
-        <!-- Card chứa thông tin Gallery -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="379dp"
-            android:layout_marginBottom="16dp"
-            android:padding="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="361dp"
-                android:orientation="vertical">
-
-                <!-- Gallery ID -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20px"
-                    android:layout_marginBottom="2dp"
-                    android:text="Gallery ID"
-                    android:textColor="#333333"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvGalleryId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20px"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="#000000"
-                    android:textSize="22sp"
-                    tools:text="gallery-uuid-123" />
-
-                <!-- Tên bộ sưu tập -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20px"
-                    android:layout_marginBottom="2dp"
-                    android:text="Tên bộ sưu tập"
-                    android:textColor="#333333"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvGalleryName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20px"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="#000000"
-                    android:textSize="22sp"
-                    tools:text="Tranh phong cảnh" />
-
-                <!-- Mô tả -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20px"
-                    android:layout_marginBottom="2dp"
-                    android:text="Mô tả"
-                    android:textColor="#333333"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvGalleryDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20px"
-                    android:layout_marginBottom="12dp"
-                    android:textColor="#000000"
-                    android:textSize="22sp"
-                    tools:text="Các bức tranh về cảnh đẹp" />
-
-                <!-- Loại -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20px"
-                    android:layout_marginBottom="2dp"
-                    android:text="Loại"
-                    android:textColor="#333333"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvGalleryType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20px"
-                    android:layout_marginBottom="0dp"
-                    android:textColor="#000000"
-                    android:textSize="22sp"
-                    tools:text="Public" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Buttons -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnUpdateGallery"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="32dp"
-            android:weightSum="2">
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="Cập nhật" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnUpdateGallery"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_update_gradient"
-                android:paddingVertical="14dp"
-                android:text="Cập nhật"
-                android:textColor="#ffffff"
-                android:textSize="22sp"
-                app:backgroundTint="@null" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDeleteGallery"
-                style="@null"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/btn_delete_gradient"
-                android:paddingVertical="14dp"
-                android:text="Xóa"
-                android:textColor="#ffffff"
-                android:textSize="22sp"
-                app:backgroundTint="@null" />
-        </LinearLayout>
-
+        <Button
+            android:id="@+id/btnDeleteGallery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:text="Xóa" />
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

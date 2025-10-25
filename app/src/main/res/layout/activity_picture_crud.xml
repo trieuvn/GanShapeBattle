@@ -1,42 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="12dp"
     tools:context=".admin.PictureCRUDActivity">
 
-    <!-- Search -->
-    <androidx.appcompat.widget.SearchView
+    <SearchView
         android:id="@+id/searchViewPictures"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="@drawable/searchview_background"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
         android:iconifiedByDefault="false"
-        android:padding="8dp"
         android:queryHint="Tìm kiếm theo tên ảnh..." />
 
-    <!-- ListView chứa danh sách ảnh -->
     <ListView
         android:id="@+id/lvPictures"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnAddPicture"
+        android:layout_below="@id/searchViewPictures" />
 
-    <!-- Button thêm ảnh -->
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btnAddPicture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.Button"
-        android:text="Thêm hình ảnh mới"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"/>
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:text="Thêm hình ảnh mới" />
+
+</RelativeLayout>

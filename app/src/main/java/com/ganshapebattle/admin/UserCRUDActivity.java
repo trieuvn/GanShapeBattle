@@ -1,4 +1,5 @@
-package com.ganshapebattle.admin; // Thay đổi thành package của bạn
+// File: main/java/com/ganshapebattle/admin/UserCRUDActivity.java
+package com.ganshapebattle.admin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,17 +7,17 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SearchView; // Import SearchView
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ganshapebattle.R;
-import com.ganshapebattle.models.User;
-import com.ganshapebattle.services.SupabaseCallback;
-import com.ganshapebattle.services.UserService;
+import com.ganshapebattle.R; //
+import com.ganshapebattle.models.User; //
+import com.ganshapebattle.services.SupabaseCallback; //
+import com.ganshapebattle.services.UserService; //
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,137 +29,122 @@ public class UserCRUDActivity extends AppCompatActivity {
 
     private ListView lvUsers;
     private Button btnAddUser;
-    private SearchView searchView; // <-- Thêm biến cho SearchView
+    private SearchView searchView;
     private UserService userService;
     private ArrayAdapter<String> adapter;
 
-    // Danh sách để hiển thị và danh sách đầy đủ để lọc
-    private List<User> displayedUserList = new ArrayList<>();
-    private List<User> fullUserList = new ArrayList<>(); // <-- Danh sách đầy đủ
+    private final List<User> displayedUserList = new ArrayList<>();
+    private final List<User> fullUserList = new ArrayList<>();
 
     private ActivityResultLauncher<Intent> addEditUserLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_crud);
+        setContentView(R.layout.activity_user_crud); //
 
-        // Ánh xạ các view
-        lvUsers = findViewById(R.id.lvUsers);
-        btnAddUser = findViewById(R.id.btnAddUser);
-        searchView = findViewById(R.id.searchView); // <-- Ánh xạ SearchView
-        userService = new UserService();
+        lvUsers = findViewById(R.id.lvUsers); //
+        btnAddUser = findViewById(R.id.btnAddUser); //
+        searchView = findViewById(R.id.searchView); //
+        userService = new UserService(); //
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         lvUsers.setAdapter(adapter);
 
-        // Tải danh sách user
-        loadUsers();
-        // Cài đặt listener cho thanh tìm kiếm
         setupSearch();
 
-        // Xử lý sự kiện khi nhấn vào một item trong ListView
-        lvUsers.setOnItemClickListener((parent, view, position, id) -> {
-            User selectedUser = displayedUserList.get(position); // Lấy user từ danh sách đang hiển thị
-            Intent intent = new Intent(UserCRUDActivity.this, UserDetailActivity.class);
-            intent.putExtra("USER_USERNAME", selectedUser.getUsername());
-            startActivity(intent);
-        });
-
-        // Mở AddEditUserActivity để thêm người dùng mới
-        btnAddUser.setOnClickListener(v -> {
-            Intent intent = new Intent(UserCRUDActivity.this, AddEditUserActivity.class);
-            addEditUserLauncher.launch(intent);
-        });
-
-        // Khởi tạo ActivityResultLauncher
+        // Khởi tạo Launcher để nhận kết quả từ AddEditUserActivity (khi thêm mới hoặc sửa từ detail)
         addEditUserLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
-                        loadUsers(); // Tải lại danh sách sau khi thêm/sửa thành công
+                        Log.d(TAG, "Nhận được kết quả OK từ AddEditUserActivity.");
+                        // onResume sẽ tự động gọi loadUsers()
+                    } else {
+                        Log.d(TAG, "AddEditUserActivity không trả về RESULT_OK.");
                     }
                 }
         );
-    }
 
-    /**
-     * Cài đặt listener cho SearchView để xử lý việc lọc danh sách
-     */
-    private void setupSearch() {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // Không cần xử lý khi nhấn submit, vì ta lọc real-time
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // Lọc danh sách mỗi khi người dùng thay đổi văn bản tìm kiếm
-                filterUsers(newText);
-                return true;
+        // Mở màn hình CHI TIẾT khi nhấn vào item
+        lvUsers.setOnItemClickListener((parent, view, position, id) -> {
+            if (position >= 0 && position < displayedUserList.size()) {
+                User selectedUser = displayedUserList.get(position);
+                Intent intent = new Intent(UserCRUDActivity.this, UserDetailActivity.class); // <<< Mở UserDetailActivity
+                intent.putExtra("USER_USERNAME", selectedUser.getUsername()); // Truyền username
+                startActivity(intent); // Dùng startActivity thông thường
+                // Lưu ý: UserDetailActivity cần dùng launcher để mở AddEditUserActivity nếu nhấn Cập nhật
+            } else {
+                Log.e(TAG, "Vị trí item không hợp lệ: " + position);
             }
         });
+
+        // Mở màn hình THÊM MỚI khi nhấn nút Add (dùng launcher)
+        btnAddUser.setOnClickListener(v -> {
+            Log.d(TAG, "Nhấn nút Thêm người dùng mới.");
+            Intent intent = new Intent(UserCRUDActivity.this, AddEditUserActivity.class); //
+            addEditUserLauncher.launch(intent);
+        });
+
+    } // Kết thúc onCreate
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume được gọi, tải lại danh sách người dùng.");
+        loadUsers(); // Tải lại dữ liệu khi quay lại màn hình
     }
 
-    /**
-     * Tải danh sách tất cả người dùng từ Supabase
-     */
+    private void setupSearch() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override public boolean onQueryTextSubmit(String query) { return false; }
+            @Override public boolean onQueryTextChange(String newText) { filterUsers(newText); return true; }
+        });
+        searchView.setOnCloseListener(() -> { filterUsers(""); return false; });
+    }
+
     private void loadUsers() {
-        userService.getAllUsers(new SupabaseCallback<List<User>>() {
+        Log.d(TAG, "Bắt đầu tải danh sách người dùng...");
+        userService.getAllUsers(new SupabaseCallback<List<User>>() { //
             @Override
             public void onSuccess(List<User> result) {
+                Log.d(TAG, "Tải danh sách người dùng thành công, số lượng: " + (result != null ? result.size() : 0));
                 runOnUiThread(() -> {
-                    // Lưu vào cả hai danh sách
                     fullUserList.clear();
-                    fullUserList.addAll(result);
-                    updateDisplayedUsers(fullUserList); // Cập nhật danh sách hiển thị
+                    if (result != null) { fullUserList.addAll(result); }
+                    filterUsers(searchView.getQuery().toString()); // Cập nhật hiển thị
                 });
             }
-
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi tải danh sách user: ", e);
-                runOnUiThread(() -> Toast.makeText(UserCRUDActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> Toast.makeText(UserCRUDActivity.this, "Lỗi tải danh sách: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
         });
     }
 
-    /**
-     * Lọc danh sách người dùng dựa trên chuỗi tìm kiếm
-     * @param query Chuỗi ký tự để lọc
-     */
     private void filterUsers(String query) {
+        List<User> filteredList;
         if (query == null || query.isEmpty()) {
-            // Nếu không có gì trong ô tìm kiếm, hiển thị lại danh sách đầy đủ
-            updateDisplayedUsers(fullUserList);
+            filteredList = new ArrayList<>(fullUserList);
         } else {
-            // Lọc danh sách đầy đủ để tìm các user có username chứa chuỗi tìm kiếm
-            // (không phân biệt chữ hoa/thường)
-            List<User> filteredList = fullUserList.stream()
-                    .filter(user -> user.getUsername().toLowerCase().contains(query.toLowerCase()))
+            String lowerCaseQuery = query.toLowerCase();
+            filteredList = fullUserList.stream()
+                    .filter(user -> user.getUsername() != null && user.getUsername().toLowerCase().contains(lowerCaseQuery))
                     .collect(Collectors.toList());
-            updateDisplayedUsers(filteredList);
         }
+        updateDisplayedUsers(filteredList);
     }
 
-    /**
-     * Cập nhật lại ListView với danh sách người dùng mới
-     * @param users Danh sách người dùng cần hiển thị
-     */
     private void updateDisplayedUsers(List<User> users) {
-        // Cập nhật danh sách đang hiển thị
         displayedUserList.clear();
         displayedUserList.addAll(users);
-
-        // Lấy danh sách username để đưa vào adapter
-        List<String> usernames = displayedUserList.stream()
-                .map(User::getUsername)
+        List<String> displayItems = displayedUserList.stream()
+                .map(user -> user.getUsername() + (user.getEmail() != null ? " (" + user.getEmail() + ")" : ""))
                 .collect(Collectors.toList());
-
         adapter.clear();
-        adapter.addAll(usernames);
+        adapter.addAll(displayItems);
         adapter.notifyDataSetChanged();
+        Log.d(TAG, "Adapter đã được cập nhật với " + displayItems.size() + " items.");
     }
 }

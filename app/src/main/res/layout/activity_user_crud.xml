@@ -1,43 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainLayout"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#F5F5F5"
     tools:context=".admin.UserCRUDActivity">
 
-    <!-- Search bar with rounded corners -->
-    <androidx.appcompat.widget.SearchView
+    <SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:layout_marginBottom="12dp"
-        android:background="@drawable/searchview_background"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
         android:iconifiedByDefault="false"
-        android:padding="8dp"
         android:queryHint="Tìm kiếm theo username..." />
 
-    <!-- List of users -->
     <ListView
         android:id="@+id/lvUsers"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btnAddUser"
+        android:layout_below="@id/searchView" />
 
-
-    <!-- Add user button -->
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btnAddUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Thêm người dùng mới"
-        style="@style/Widget.MaterialComponents.Button"
-        android:backgroundTint="@color/colorPrimary"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="12dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:text="Thêm người dùng mới" />
 
-</LinearLayout>
+</RelativeLayout>
