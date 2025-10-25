@@ -4,68 +4,143 @@ package com.ganshapebattle;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log; // <<< Import Log
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton; // <<< Import ImageButton
+import android.widget.TextView;    // <<< Import TextView
+import android.widget.Toast; // <<< Import Toast
+
+import androidx.activity.result.ActivityResultLauncher; // <<< Import ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts; // <<< Import ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ganshapebattle.admin.MenuActivity;
-import com.google.firebase.auth.FirebaseAuth;
+import com.ganshapebattle.admin.GalleryCRUDActivity; //
+import com.ganshapebattle.admin.MenuActivity; //
 
 public class MainActivity extends AppCompatActivity {
 
+    // Khai báo các view components
     private Button btnGoToDrawing, btnGoToGameRoom, btnGoToLeaderboard, btnGoToGallery, btnAdminPanel, btnLogout;
+    private ImageButton btnProfile; // Nút mở Profile
+    private TextView tvCurrentUsername; // TextView hiển thị username
+    private String currentUsername; // Biến lưu username hiện tại
+    private String currentUserEmail; // Biến lưu email (vẫn cần để mở Profile)
+
+    // Launcher để khởi chạy ProfileActivity và nhận kết quả trả về
+    private ActivityResultLauncher<Intent> profileActivityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); //
 
-        // Ánh xạ tất cả các nút
-        btnGoToDrawing = findViewById(R.id.btnGoToDrawing);
-        btnGoToGameRoom = findViewById(R.id.btnGoToGameRoom);
-        btnGoToLeaderboard = findViewById(R.id.btnGoToLeaderboard);
-        btnGoToGallery = findViewById(R.id.btnGoToGallery);
-        btnAdminPanel = findViewById(R.id.btnAdminPanel);
-        btnLogout = findViewById(R.id.btnLogout);
+        // --- Ánh xạ View ---
+        btnGoToDrawing = findViewById(R.id.btnGoToDrawing); //
+        btnGoToGameRoom = findViewById(R.id.btnGoToGameRoom); //
+        btnGoToLeaderboard = findViewById(R.id.btnGoToLeaderboard); //
+        btnGoToGallery = findViewById(R.id.btnGoToGallery); //
+        btnAdminPanel = findViewById(R.id.btnAdminPanel); //
+        btnLogout = findViewById(R.id.btnLogout); //
+        btnProfile = findViewById(R.id.btnProfile); //
+        tvCurrentUsername = findViewById(R.id.tvCurrentUsername); //
+        // --- ---
 
-        // Lấy vai trò người dùng và hiển thị nút Admin nếu cần
+        // Lấy vai trò, username và email người dùng từ Intent được gửi từ LoginActivity
         String userRole = getIntent().getStringExtra("USER_ROLE");
+        currentUsername = getIntent().getStringExtra("USER_USERNAME"); // Lấy username
+        currentUserEmail = getIntent().getStringExtra("USER_EMAIL"); // Lấy email
+
+        // Hiển thị username ban đầu lên TextView
+        updateUsernameDisplay();
+
+        // Ghi log email nhận được để kiểm tra (tùy chọn)
+        Log.d("MainActivity", "Email nhận được: " + currentUserEmail);
+        Log.d("MainActivity", "Username nhận được: " + currentUsername);
+
+
+        // Hiển thị nút "Bảng điều khiển Admin" nếu user có vai trò ADMIN
         if ("ADMIN".equals(userRole)) {
             btnAdminPanel.setVisibility(View.VISIBLE);
         } else {
             btnAdminPanel.setVisibility(View.GONE);
         }
 
-        // --- Gắn sự kiện điều hướng cho các nút ---
+        // --- Gắn sự kiện điều hướng cho các nút chức năng ---
+        btnGoToDrawing.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, DesignActivity.class))); //
+        btnGoToGameRoom.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, GameRoom.class))); //
+        btnGoToLeaderboard.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Leaderboard.class))); //
+        // Chuyển đến màn hình quản lý Gallery của admin
+        btnGoToGallery.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, GalleryCRUDActivity.class))); //
+        btnAdminPanel.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, MenuActivity.class))); //
 
-        btnGoToDrawing.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, DesignActivity.class));
-        });
-
-        btnGoToGameRoom.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, GameRoom.class));
-        });
-
-        btnGoToLeaderboard.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, Leaderboard.class));
-        });
-
-        btnGoToGallery.setOnClickListener(v -> {
-            // Lưu ý: Tên class cho Gallery của bạn là Gallery.java trong package com.ganshapebattle.admin
-            // Nếu bạn có một màn hình Gallery khác cho người dùng, hãy thay đổi tên class ở đây.
-            startActivity(new Intent(MainActivity.this, com.ganshapebattle.admin.Gallery.class));
-        });
-
-        btnAdminPanel.setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, MenuActivity.class));
-        });
-
+        // Sự kiện nút Đăng xuất
         btnLogout.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class); //
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Xóa stack activity cũ
             startActivity(intent);
-            finish();
+            finish(); // Đóng MainActivity
         });
+        // --- ---
+
+        // === KHỞI TẠO ActivityResultLauncher ===
+        // Đăng ký launcher để nhận kết quả trả về từ ProfileActivity
+        profileActivityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    // Kiểm tra xem ProfileActivity có trả về kết quả OK không
+                    if (result.getResultCode() == AppCompatActivity.RESULT_OK) {
+                        Intent data = result.getData();
+                        // Kiểm tra xem Intent trả về có chứa username đã cập nhật không
+                        if (data != null && data.hasExtra("UPDATED_USERNAME")) {
+                            String updatedUsername = data.getStringExtra("UPDATED_USERNAME");
+                            if (updatedUsername != null && !updatedUsername.isEmpty()) {
+                                Log.d("MainActivity", "Nhận được username cập nhật từ ProfileActivity: " + updatedUsername);
+                                currentUsername = updatedUsername; // Cập nhật biến username hiện tại
+                                updateUsernameDisplay(); // Cập nhật lại TextView hiển thị username
+                            }
+                        } else {
+                            Log.d("MainActivity", "ProfileActivity trả về OK nhưng không có dữ liệu username cập nhật.");
+                            // Có thể thêm logic tải lại username từ server nếu cần thiết
+                        }
+                    } else {
+                        // Ghi log nếu ProfileActivity không trả về OK (ví dụ: người dùng nhấn Back)
+                        Log.d("MainActivity", "ProfileActivity không trả về RESULT_OK (Code: " + result.getResultCode() + ")");
+                    }
+                });
+        // =====================================
+
+
+        // <<< Sự kiện cho nút Profile >>>
+        btnProfile.setOnClickListener(v -> {
+            // Kiểm tra xem email có hợp lệ không trước khi mở ProfileActivity
+            if (currentUserEmail != null && !currentUserEmail.isEmpty()) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                intent.putExtra("USER_EMAIL", currentUserEmail); // <<< Vẫn truyền email sang ProfileActivity
+                // <<< Sử dụng launcher đã đăng ký để khởi chạy ProfileActivity >>>
+                profileActivityResultLauncher.launch(intent);
+                // <<< >>>
+            } else {
+                // Xử lý trường hợp email bị thiếu
+                Log.e("MainActivity", "currentUserEmail là null hoặc rỗng, không thể mở ProfileActivity.");
+                Toast.makeText(MainActivity.this, "Lỗi: Không thể mở hồ sơ (thiếu email).", Toast.LENGTH_SHORT).show();
+            }
+        });
+        // <<< >>>
+    }
+
+    /**
+     * Hàm tiện ích để cập nhật TextView hiển thị username.
+     * Sử dụng giá trị mặc định nếu username bị null hoặc rỗng.
+     */
+    private void updateUsernameDisplay() {
+        if (currentUsername != null && !currentUsername.isEmpty()) {
+            tvCurrentUsername.setText(currentUsername); // Hiển thị username
+            tvCurrentUsername.setVisibility(View.VISIBLE);
+        } else {
+            tvCurrentUsername.setText("Người dùng"); // Hiển thị giá trị mặc định
+            tvCurrentUsername.setVisibility(View.VISIBLE);
+            Log.w("MainActivity", "currentUsername là null hoặc rỗng khi cập nhật hiển thị.");
+        }
     }
 }

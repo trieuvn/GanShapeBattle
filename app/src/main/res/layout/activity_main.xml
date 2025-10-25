@@ -1,29 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvWelcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chào mừng đến với GanShapeBattle!"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
+    <ImageButton
+        android:id="@+id/btnProfile"
+        android:layout_width="177dp"
+        android:layout_height="177dp"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="32dp"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="-12dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="User Profile"
+        android:padding="8dp"
+        android:src="@drawable/ic_person"
+        app:tint="?attr/colorControlNormal" />
+
+    <TextView
+    android:id="@+id/tvWelcome"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Chào mừng đến với GanShapeBattle!"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    android:layout_centerHorizontal="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="60dp"  android:layout_marginBottom="32dp"/>
+
+    <TextView
+        android:id="@+id/tvCurrentUsername" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvWelcome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:textSize="16sp"
+        android:textStyle="bold" tools:text="current_username"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@id/tvWelcome"
-        android:layout_above="@id/btnLogout">
+        android:layout_below="@id/tvCurrentUsername" android:layout_above="@id/btnLogout">
 
         <Button
             android:id="@+id/btnGoToDrawing"
@@ -62,8 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Bảng điều khiển Admin"
-            android:backgroundTint="@color/design_default_color_secondary"
-            android:textSize="18sp"
+            android:backgroundTint="@color/design_default_color_secondary" android:textSize="18sp"
             android:visibility="gone"
             tools:visibility="visible"/>
 
