@@ -62,6 +62,18 @@
         android:layout_height="wrap_content"
         android:text="@string/transform" />
 
+    <ProgressBar
+        android:id="@+id/time_progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:max="100"
+        android:progress="100" />
+
     <com.ganshapebattle.view.DrawingView
         android:id="@+id/drawing"
         android:layout_width="fill_parent"
@@ -72,144 +84,183 @@
         android:layout_marginBottom="3dp"
         android:layout_weight="1"
         android:background="#FFFFFFFF" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
-        <!-- Top Row -->
+
         <LinearLayout
             android:id="@+id/paint_colors"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FF660000"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FF660000" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_margin="4dp">
+                <ImageButton
+                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FF0000FF"
+                    android:contentDescription="@string/paint"
+                    android:onClick="paintClicked"
+                    android:src="@drawable/paint"
+                    android:tag="#FF0000FF" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sky"
+                    android:textColor="#FF333333"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FFFF0000"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FFFF0000" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_margin="4dp">
+                <ImageButton
+                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FF787878"
+                    android:contentDescription="@string/paint"
+                    android:onClick="paintClicked"
+                    android:src="@drawable/paint"
+                    android:tag="#FF787878" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="cloud"
+                    android:textColor="#FF333333"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FFFF6600"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FFFF6600" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_margin="4dp">
+                <ImageButton
+                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FF660000"
+                    android:contentDescription="@string/paint"
+                    android:onClick="paintClicked"
+                    android:src="@drawable/paint"
+                    android:tag="#FF660000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="rock"
+                    android:textColor="#FF333333"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FFFFCC00"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FFFFCC00" />
-
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FF009900"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FF009900" />
-
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FF009999"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FF009999" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_margin="4dp">
+                <ImageButton
+                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FFFFFFFF"
+                    android:contentDescription="@string/paint"
+                    android:onClick="paintClicked"
+                    android:src="@drawable/paint"
+                    android:tag="#FFFFFFFF" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="water"
+                    android:textColor="#FF333333"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
-        <!-- Bottom Row -->
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FF0000FF"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FF0000FF" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_margin="4dp">
+                <ImageButton
+                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FF990099"
+                    android:contentDescription="@string/paint"
+                    android:onClick="paintClicked"
+                    android:src="@drawable/paint"
+                    android:tag="#FF990099" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="river"
+                    android:textColor="#FF333333"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FF990099"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FF990099" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_margin="4dp">
+                <ImageButton
+                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FF009900"
+                    android:contentDescription="@string/paint"
+                    android:onClick="paintClicked"
+                    android:src="@drawable/paint"
+                    android:tag="#FF009900" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="grass"
+                    android:textColor="#FF333333"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FFFF6666"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FFFF6666" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_margin="4dp">
+                <ImageButton
+                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FFFF0000"
+                    android:contentDescription="@string/paint"
+                    android:onClick="paintClicked"
+                    android:src="@drawable/paint"
+                    android:tag="#FFFF0000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sun"
+                    android:textColor="#FF333333"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FFFFFFFF"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FFFFFFFF" />
-
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FF787878"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FF787878" />
-
-            <ImageButton
-                android:layout_width="@dimen/large_brush"
-                android:layout_height="@dimen/large_brush"
-                android:layout_margin="2dp"
-                android:background="#FF000000"
-                android:contentDescription="@string/paint"
-                android:onClick="paintClicked"
-                android:src="@drawable/paint"
-                android:tag="#FF000000" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_margin="4dp">
+                <ImageButton
+                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FFFFCC00"
+                    android:contentDescription="@string/paint"
+                    android:onClick="paintClicked"
+                    android:src="@drawable/paint"
+                    android:tag="#FFFFCC00" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sand"
+                    android:textColor="#FF333333"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

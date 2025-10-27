@@ -60,8 +60,8 @@
         <item>- Green = grass</item>
         <item>- Brown = rock</item>
         <item>- Purple = river</item>
-        <item>- Red = animals</item>
-        <item>- Pink = houses</item>
+        <item>- Red = sun</item>
+        <item>- Yellow = sand</item>
         <item></item>
         <item>If a color is NOT in the image, DO NOT render its corresponding object.</item>
         <item>Do not add any other details, objects, or inferred elements. Stick precisely to the mask.</item>
