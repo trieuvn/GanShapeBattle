@@ -5,6 +5,11 @@
     <!-- Internet cho gọi Supabase/OAuth -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" /> <uses-permission
+    android:name="android.permission.READ_EXTERNAL_STORAGE"
+    android:maxSdkVersion="32" />
+
     <!-- Storage: chỉ cho thiết bị cũ; dùng Scoped Storage cho API mới -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -68,6 +73,27 @@
         <activity
             android:name=".GameRoom"
             android:exported="false" />
+        <activity
+            android:name=".admin.CreateCategory"
+            android:exported="false" />
+        <activity
+            android:name=".admin.Gallery"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LobbyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LobbyUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
 
         <!-- Reset password deep-link (giữ nguyên) -->
         <activity
@@ -83,6 +109,41 @@
                     android:pathPrefix="/reset-password" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".VerifyOtpActivity" android:exported="false"/>
+        <activity android:name=".VerifySignupOtpActivity" android:exported="false"/>
+
+        <activity android:name=".CreatePasswordActivity" android:exported="false"/>
+
+        <activity android:name=".ProfileActivity" android:exported="false"/>
+
+        <activity
+            android:name=".admin.Admin"
+            android:exported="false" />
+        <activity
+            android:name=".admin.CreateCategory"
+            android:exported="false" />
+        <activity
+            android:name=".admin.Gallery"
+            android:exported="false" />
+        <activity android:name=".admin.MenuActivity" android:exported="false"/>
+        <activity android:name=".admin.UserCRUDActivity" android:exported="false"/>
+        <activity android:name=".admin.UserDetailActivity" android:exported="false"/>
+        <activity android:name=".admin.AddEditUserActivity" android:exported="false"/>
+        <activity android:name=".admin.PictureCRUDActivity" android:exported="false"/>
+        <activity android:name=".admin.PictureDetailActivity" android:exported="false"/>
+        <activity android:name=".admin.AddEditPictureActivity" android:exported="false"/>
+        <activity android:name=".admin.LobbyCRUDActivity" android:exported="false"/>
+        <activity android:name=".admin.LobbyDetailActivity" android:exported="false"/>
+        <activity android:name=".admin.AddEditLobbyActivity" android:exported="false"/>
+        <activity android:name=".admin.GalleryCRUDActivity" android:exported="false"/>
+        <activity android:name=".admin.GalleryDetailActivity" android:exported="false"/>
+        <activity android:name=".admin.AddEditGalleryActivity" android:exported="false"/>
+        <activity android:name=".admin.PlayerCRUDActivity" android:exported="false"/>
+        <activity android:name=".admin.PlayerDetailActivity" android:exported="false"/>
+        <activity android:name=".admin.AddEditPlayerActivity" android:exported="false"/>
+
+    </application>
 
         <activity android:name=".VerifyOtpActivity" android:exported="false" />
         <activity android:name=".VerifySignupOtpActivity" android:exported="false" />

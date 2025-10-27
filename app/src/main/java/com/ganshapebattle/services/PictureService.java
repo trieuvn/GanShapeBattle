@@ -79,7 +79,8 @@ public class PictureService {
         });
     }
 
-    public void insertPicture(Picture picture, SupabaseCallback<String> callback) {
+    //Tra ve Picture tu` supabase sau khi them
+    public void insertPicture(Picture picture, SupabaseCallback<Picture> callback) {
         String jsonBody = gson.toJson(picture);
         RequestBody body = RequestBody.create(jsonBody, MediaType.get("application/json; charset=utf-8"));
 
@@ -88,6 +89,7 @@ public class PictureService {
                 .addHeader("apikey", supabaseKey)
                 .addHeader("Authorization", "Bearer " + supabaseKey)
                 .addHeader("Content-Type", "application/json")
+                .addHeader("Prefer", "return=representation")
                 .post(body)
                 .build();
 
@@ -100,7 +102,14 @@ public class PictureService {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    callback.onSuccess("Thêm Picture thành công");
+                    String responseData = response.body().string();
+                    Type listType = new TypeToken<List<Picture>>() {}.getType();
+                    List<Picture> pictures = gson.fromJson(responseData, listType);
+                    if (pictures != null && !pictures.isEmpty()) {
+                        callback.onSuccess(pictures.get(0));
+                    } else {
+                        callback.onFailure(new IOException("Không thể lấy Picture sau khi thêm"));
+                    }
                 } else {
                     callback.onFailure(new IOException("Lỗi: " + response.code() + " " + response.body().string()));
                 }
