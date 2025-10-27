@@ -46,11 +46,7 @@ public class MainActivity extends AppCompatActivity {
         tvCurrentUsername = findViewById(R.id.tvCurrentUsername); //
         // --- ---
 
-        Intent intent1 = new Intent(MainActivity.this, LobbyUserActivity.class);
-        intent1.putExtra("username","huy");
-        startActivity(intent1);
-
-        // Lấy vai trò người dùng và hiển thị nút Admin nếu cần
+        // Lấy vai trò, username và email người dùng từ Intent được gửi từ LoginActivity
         String userRole = getIntent().getStringExtra("USER_ROLE");
         currentUsername = getIntent().getStringExtra("USER_USERNAME"); // Lấy username
         currentUserEmail = getIntent().getStringExtra("USER_EMAIL"); // Lấy email
