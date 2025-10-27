@@ -1,6 +1,7 @@
-package com.ganshapebattle.admin;
+package com.ganshapebattle.admin; // Hoặc package com.ganshapebattle tùy thuộc vào vị trí tệp
 
 import android.content.Intent;
+import android.graphics.Bitmap; // Import Bitmap
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -14,22 +15,28 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.ganshapebattle.R;
+// Import ImageUtils
+import com.ganshapebattle.utils.ImageUtils;
 import com.ganshapebattle.models.User;
 import com.ganshapebattle.services.SupabaseCallback;
 import com.ganshapebattle.services.UserService;
+
+// Đảm bảo bạn đã import CircleImageView nếu dùng
+// import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "UserDetailActivity";
 
+    // Thay ImageView bằng CircleImageView nếu layout của bạn dùng nó
     private ImageView ivAvatar;
+    // private CircleImageView ivAvatar;
     private TextView tvUsername, tvEmail, tvPhoneNumber, tvDateOfBirth;
     private Button btnUpdateUser, btnDeleteUser;
 
     private UserService userService;
     private String currentUsername;
 
-    // Launcher để nhận kết quả từ AddEditUserActivity
     private ActivityResultLauncher<Intent> editUserLauncher;
 
     @Override
@@ -37,6 +44,7 @@ public class UserDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
 
+        // Đảm bảo ID ánh xạ đúng với layout của bạn
         ivAvatar = findViewById(R.id.ivAvatar);
         tvUsername = findViewById(R.id.tvUsername);
         tvEmail = findViewById(R.id.tvEmail);
@@ -56,59 +64,67 @@ public class UserDetailActivity extends AppCompatActivity {
             finish();
         }
 
-        // Mở AddEditUserActivity để chỉnh sửa người dùng
         btnUpdateUser.setOnClickListener(v -> {
             Intent intent = new Intent(UserDetailActivity.this, AddEditUserActivity.class);
-            intent.putExtra("USER_USERNAME_EDIT", currentUsername); // Truyền username để báo hiệu chế độ chỉnh sửa
+            intent.putExtra("USER_USERNAME_EDIT", currentUsername);
             editUserLauncher.launch(intent);
         });
 
         btnDeleteUser.setOnClickListener(v -> {
+            // Thêm hộp thoại xác nhận trước khi xóa (nên làm)
             deleteUser(currentUsername);
         });
 
-        // Khởi tạo ActivityResultLauncher
         editUserLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
-                        // Nếu AddEditUserActivity trả về RESULT_OK, tức là có thay đổi
-                        // (sửa thành công), thì tải lại thông tin chi tiết user
-                        fetchUserDetails(currentUsername);
+                        fetchUserDetails(currentUsername); // Tải lại dữ liệu nếu có thay đổi
                     }
                 }
         );
     }
 
-    // Phương thức onResume không còn cần thiết vì đã dùng ActivityResultLauncher
-    // @Override
-    // protected void onResume() {
-    //     super.onResume();
-    //     if (currentUsername != null && !currentUsername.isEmpty()) {
-    //         fetchUserDetails(currentUsername);
-    //     }
-    // }
-
     private void fetchUserDetails(String username) {
-        // ... (Giữ nguyên logic fetchUserDetails như cũ) ...
         userService.getUserByUsername(username, new SupabaseCallback<User>() {
             @Override
             public void onSuccess(User user) {
                 runOnUiThread(() -> {
                     if (user != null) {
                         tvUsername.setText(user.getUsername());
-                        tvEmail.setText(user.getEmail());
-                        tvPhoneNumber.setText(user.getPhoneNumber());
-                        tvDateOfBirth.setText(user.getDateOfBirth());
+                        tvEmail.setText(user.getEmail() != null ? user.getEmail() : "N/A");
+                        tvPhoneNumber.setText(user.getPhoneNumber() != null ? user.getPhoneNumber() : "N/A");
+                        tvDateOfBirth.setText(user.getDateOfBirth() != null ? user.getDateOfBirth() : "N/A");
 
-                        Glide.with(UserDetailActivity.this)
-                                .load(user.getAvatar())
-                                .placeholder(R.drawable.ic_default_avatar)
-                                .error(R.drawable.ic_default_avatar)
-                                .into(ivAvatar);
+                        // --- CẬP NHẬT LOGIC HIỂN THỊ AVATAR ---
+                        String avatarData = user.getAvatar();
+                        if (avatarData != null && !avatarData.isEmpty()) {
+                            if (avatarData.startsWith("http")) {
+                                // Dữ liệu cũ là URL, dùng Glide
+                                Glide.with(UserDetailActivity.this)
+                                        .load(avatarData)
+                                        .placeholder(R.drawable.ic_default_avatar) // Ảnh chờ tải
+                                        .error(R.drawable.ic_default_avatar) // Ảnh khi lỗi
+                                        .into(ivAvatar);
+                            } else {
+                                // Dữ liệu mới là Base64, giải mã
+                                Bitmap avatarBitmap = ImageUtils.base64ToBitmap(avatarData);
+                                if (avatarBitmap != null) {
+                                    ivAvatar.setImageBitmap(avatarBitmap); // Hiển thị Bitmap
+                                } else {
+                                    // Lỗi giải mã Base64
+                                    Log.w(TAG, "Lỗi giải mã Base64 avatar cho user: " + username);
+                                    ivAvatar.setImageResource(R.drawable.ic_default_avatar); // Ảnh mặc định
+                                }
+                            }
+                        } else {
+                            // Không có avatar
+                            ivAvatar.setImageResource(R.drawable.ic_default_avatar); // Ảnh mặc định
+                        }
+                        // --- KẾT THÚC CẬP NHẬT ---
+
                     } else {
                         Toast.makeText(UserDetailActivity.this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_LONG).show();
-                        // Có thể đóng activity hoặc reset UI nếu user không còn tồn tại
                         finish();
                     }
                 });
@@ -123,14 +139,12 @@ public class UserDetailActivity extends AppCompatActivity {
     }
 
     private void deleteUser(String username) {
-        // ... (Giữ nguyên logic deleteUser như cũ) ...
         userService.deleteUser(username, new SupabaseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
                     Toast.makeText(UserDetailActivity.this, result, Toast.LENGTH_SHORT).show();
-                    // Đánh dấu RESULT_OK để UserCRUDActivity biết cần load lại danh sách
-                    setResult(RESULT_OK);
+                    setResult(RESULT_OK); // Báo cho Activity trước đó biết là đã xóa thành công
                     finish();
                 });
             }

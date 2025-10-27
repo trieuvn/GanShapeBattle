@@ -1,3 +1,4 @@
+// File: main/java/com/ganshapebattle/admin/PictureCRUDActivity.java
 package com.ganshapebattle.admin;
 
 import android.content.Intent;
@@ -12,10 +13,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ganshapebattle.R;
-import com.ganshapebattle.models.Picture;
-import com.ganshapebattle.services.PictureService;
-import com.ganshapebattle.services.SupabaseCallback;
+import com.ganshapebattle.R; //
+import com.ganshapebattle.models.Picture; //
+import com.ganshapebattle.services.PictureService; //
+import com.ganshapebattle.services.SupabaseCallback; //
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,102 +32,116 @@ public class PictureCRUDActivity extends AppCompatActivity {
     private PictureService pictureService;
     private ArrayAdapter<String> adapter;
 
-    private List<Picture> displayedPictureList = new ArrayList<>();
-    private List<Picture> fullPictureList = new ArrayList<>();
+    private final List<Picture> displayedPictureList = new ArrayList<>();
+    private final List<Picture> fullPictureList = new ArrayList<>();
 
     private ActivityResultLauncher<Intent> addEditPictureLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_picture_crud);
+        setContentView(R.layout.activity_picture_crud); //
 
-        lvPictures = findViewById(R.id.lvPictures);
-        btnAddPicture = findViewById(R.id.btnAddPicture);
-        searchView = findViewById(R.id.searchViewPictures);
-        pictureService = new PictureService();
+        lvPictures = findViewById(R.id.lvPictures); //
+        btnAddPicture = findViewById(R.id.btnAddPicture); //
+        searchView = findViewById(R.id.searchViewPictures); //
+        pictureService = new PictureService(); //
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         lvPictures.setAdapter(adapter);
 
-        loadPictures();
         setupSearch();
 
-        lvPictures.setOnItemClickListener((parent, view, position, id) -> {
-            Picture selectedPicture = displayedPictureList.get(position);
-            Intent intent = new Intent(PictureCRUDActivity.this, PictureDetailActivity.class);
-            intent.putExtra("PICTURE_ID", selectedPicture.getId());
-            startActivity(intent);
-        });
-
-        btnAddPicture.setOnClickListener(v -> {
-            Intent intent = new Intent(PictureCRUDActivity.this, AddEditPictureActivity.class);
-            addEditPictureLauncher.launch(intent);
-        });
-
+        // Khởi tạo Launcher
         addEditPictureLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
-                        loadPictures();
+                        Log.d(TAG, "Nhận được kết quả OK từ AddEditPictureActivity/PictureDetailActivity.");
+                        // onResume sẽ tự động gọi loadPictures()
+                    } else {
+                        Log.d(TAG, "AddEditPictureActivity/PictureDetailActivity không trả về RESULT_OK.");
                     }
                 }
         );
+
+        // Mở màn hình CHI TIẾT khi nhấn vào item
+        lvPictures.setOnItemClickListener((parent, view, position, id) -> {
+            if (position >= 0 && position < displayedPictureList.size()) {
+                Picture selectedPicture = displayedPictureList.get(position);
+                Intent intent = new Intent(PictureCRUDActivity.this, PictureDetailActivity.class); // <<< Mở PictureDetailActivity
+                intent.putExtra("PICTURE_ID", selectedPicture.getId()); // <<< Truyền ID
+                startActivity(intent); // <<< Dùng startActivity thông thường
+                // Lưu ý: PictureDetailActivity cần dùng launcher để mở AddEditPictureActivity
+            }
+        });
+
+        // Mở màn hình THÊM MỚI khi nhấn nút Add
+        btnAddPicture.setOnClickListener(v -> {
+            Intent intent = new Intent(PictureCRUDActivity.this, AddEditPictureActivity.class); //
+            addEditPictureLauncher.launch(intent); // Dùng launcher
+        });
+
+    } // Kết thúc onCreate
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume được gọi, tải lại danh sách pictures.");
+        loadPictures(); // Tải lại dữ liệu khi quay lại màn hình
     }
 
     private void setupSearch() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) { return false; }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filterPictures(newText);
-                return true;
-            }
+            @Override public boolean onQueryTextSubmit(String query) { return false; }
+            @Override public boolean onQueryTextChange(String newText) { filterPictures(newText); return true; }
         });
+        searchView.setOnCloseListener(() -> { filterPictures(""); return false; });
     }
 
     private void loadPictures() {
-        pictureService.getAllPictures(new SupabaseCallback<List<Picture>>() {
+        Log.d(TAG, "Bắt đầu tải danh sách pictures...");
+        pictureService.getAllPictures(new SupabaseCallback<List<Picture>>() { //
             @Override
             public void onSuccess(List<Picture> result) {
+                Log.d(TAG, "Tải pictures thành công: " + (result != null ? result.size() : 0));
                 runOnUiThread(() -> {
                     fullPictureList.clear();
-                    fullPictureList.addAll(result);
-                    updateDisplayedPictures(fullPictureList);
+                    if (result != null) { fullPictureList.addAll(result); }
+                    filterPictures(searchView.getQuery().toString());
                 });
             }
 
             @Override
             public void onFailure(Exception e) {
-                Log.e(TAG, "Error loading pictures: ", e);
-                runOnUiThread(() -> Toast.makeText(PictureCRUDActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                Log.e(TAG, "Lỗi tải pictures: ", e);
+                runOnUiThread(() -> Toast.makeText(PictureCRUDActivity.this, "Lỗi tải hình ảnh: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
         });
     }
 
     private void filterPictures(String query) {
+        List<Picture> filteredList;
         if (query == null || query.isEmpty()) {
-            updateDisplayedPictures(fullPictureList);
+            filteredList = new ArrayList<>(fullPictureList);
         } else {
-            List<Picture> filteredList = fullPictureList.stream()
-                    .filter(picture -> picture.getName().toLowerCase().contains(query.toLowerCase()))
+            String lowerCaseQuery = query.toLowerCase();
+            filteredList = fullPictureList.stream()
+                    .filter(picture -> picture.getName() != null && picture.getName().toLowerCase().contains(lowerCaseQuery))
                     .collect(Collectors.toList());
-            updateDisplayedPictures(filteredList);
         }
+        updateDisplayedPictures(filteredList);
     }
 
     private void updateDisplayedPictures(List<Picture> pictures) {
         displayedPictureList.clear();
         displayedPictureList.addAll(pictures);
-
         List<String> pictureNames = displayedPictureList.stream()
-                .map(Picture::getName)
+                .map(picture -> picture.getName() != null ? picture.getName() : "N/A")
                 .collect(Collectors.toList());
-
         adapter.clear();
         adapter.addAll(pictureNames);
         adapter.notifyDataSetChanged();
+        Log.d(TAG, "Adapter pictures đã cập nhật.");
     }
 }
