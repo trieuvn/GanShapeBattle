@@ -28,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
         btnAdminPanel = findViewById(R.id.btnAdminPanel);
         btnLogout = findViewById(R.id.btnLogout);
 
+        Intent intent1 = new Intent(MainActivity.this, LobbyUserActivity.class);
+        intent1.putExtra("username","huy");
+        startActivity(intent1);
+
         // Lấy vai trò người dùng và hiển thị nút Admin nếu cần
         String userRole = getIntent().getStringExtra("USER_ROLE");
         if ("ADMIN".equals(userRole)) {

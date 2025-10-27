@@ -296,26 +296,40 @@ public class AddEditPictureActivity extends AppCompatActivity {
     }
 
     private void executeSaveOrUpdate(Picture picture) {
-        SupabaseCallback<String> callback = new SupabaseCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                runOnUiThread(() -> {
-                    Toast.makeText(AddEditPictureActivity.this, result, Toast.LENGTH_LONG).show();
-                    setResult(RESULT_OK);
-                    finish();
-                });
-            }
-            @Override
-            public void onFailure(Exception e) {
-                Log.e(TAG, "Lỗi khi lưu ảnh: ", e);
-                runOnUiThread(() -> Toast.makeText(AddEditPictureActivity.this, "Lưu thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show());
-            }
-        };
-
         if (currentPictureId == null) {
-            pictureService.insertPicture(picture, callback);
+            // Insert new picture - now returns Picture object
+            pictureService.insertPicture(picture, new SupabaseCallback<Picture>() {
+                @Override
+                public void onSuccess(Picture insertedPicture) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(AddEditPictureActivity.this, "Thêm hình ảnh thành công!", Toast.LENGTH_LONG).show();
+                        setResult(RESULT_OK);
+                        finish();
+                    });
+                }
+                @Override
+                public void onFailure(Exception e) {
+                    Log.e(TAG, "Lỗi khi thêm ảnh: ", e);
+                    runOnUiThread(() -> Toast.makeText(AddEditPictureActivity.this, "Thêm thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                }
+            });
         } else {
-            pictureService.updatePicture(currentPictureId, picture, callback);
+            // Update existing picture - still returns String
+            pictureService.updatePicture(currentPictureId, picture, new SupabaseCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(AddEditPictureActivity.this, result, Toast.LENGTH_LONG).show();
+                        setResult(RESULT_OK);
+                        finish();
+                    });
+                }
+                @Override
+                public void onFailure(Exception e) {
+                    Log.e(TAG, "Lỗi khi cập nhật ảnh: ", e);
+                    runOnUiThread(() -> Toast.makeText(AddEditPictureActivity.this, "Cập nhật thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                }
+            });
         }
     }
 

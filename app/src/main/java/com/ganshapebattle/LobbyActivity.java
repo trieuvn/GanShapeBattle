@@ -1,4 +1,5 @@
 package com.ganshapebattle;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
@@ -13,16 +14,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.BarcodeFormat;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.ganshapebattle.models.Lobby;
+import com.ganshapebattle.models.User;
+import com.ganshapebattle.services.LobbyService;
+import com.ganshapebattle.services.PlayerService;
+import com.ganshapebattle.services.UserService;
+import com.ganshapebattle.services.SupabaseCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.UUID;
 
-// import io.supabase.client.SupabaseClient; // Import thư viện Supabase của bạn
-
 public class LobbyActivity extends AppCompatActivity {
+
+    // --- Static method để tạo Intent với username ---
+    public static Intent createIntent(android.content.Context context, String username) {
+        Intent intent = new Intent(context, LobbyActivity.class);
+        intent.putExtra("username", username);
+        return intent;
+    }
 
     // --- UI Elements ---
     private Button buttonCreateLobby, buttonBegin, buttonDelete;
@@ -31,20 +42,65 @@ public class LobbyActivity extends AppCompatActivity {
     private TextView textViewLobbyId;
     private LinearLayout layoutLobbyInfo, layoutControls;
 
-    // --- Supabase & Data ---
-    // private SupabaseClient supabase;
-    private String currentLobbyId;
+    // --- Services & Data ---
+    private LobbyService lobbyService;
+    private PlayerService playerService;
+    private UserService userService;
+    private Lobby currentLobby;
+    private User currentUser;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
-        // Khởi tạo Supabase client của bạn ở đây
-        // supabase = SupabaseClientManager.getInstance();
+        // Lấy username từ Intent
+        username = getIntent().getStringExtra("username");
+        if (username == null || username.isEmpty()) {
+            Toast.makeText(this, "Lỗi: Không có thông tin người dùng!", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+
+        // Khởi tạo services
+        lobbyService = new LobbyService();
+        playerService = new PlayerService();
+        userService = new UserService();
+
+        // Truy vấn thông tin user từ username
+        loadUserInfo();
 
         bindViews();
         setupListeners();
+    }
+
+    /**
+     * Truy vấn thông tin user từ username
+     */
+    private void loadUserInfo() {
+        userService.getUserByUsername(username, new SupabaseCallback<User>() {
+            @Override
+            public void onSuccess(User user) {
+                runOnUiThread(() -> {
+                    if (user != null) {
+                        currentUser = user;
+                        Toast.makeText(LobbyActivity.this, "Chào mừng " + user.getUsername() + "!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LobbyActivity.this, "Không tìm thấy thông tin người dùng!", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
+            }
+            
+            @Override
+            public void onFailure(Exception e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(LobbyActivity.this, "Lỗi tải thông tin người dùng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    finish();
+                });
+            }
+        });
     }
 
     /**
@@ -79,36 +135,45 @@ public class LobbyActivity extends AppCompatActivity {
      * Bước 1-7: Tạo phòng, lưu lên Supabase và hiển thị mã QR.
      */
     private void createLobby() {
+        if (currentUser == null) {
+            Toast.makeText(this, "Chưa tải được thông tin người dùng!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
         try {
-            // Mô phỏng tạo một object Lobby với giá trị mặc định
-            HashMap<String, Object> newLobby = new HashMap<>();
-            newLobby.put("mode", "vote"); // Mặc định là vote
-            newLobby.put("status", "waiting"); // Trạng thái chờ
-            newLobby.put("created_at", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault()).format(new Date()));
+            // Tạo Lobby object với giá trị mặc định
+            String currentTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault()).format(new Date());
+            String lobbyId = UUID.randomUUID().toString();
             
-            // --- GỌI SUPABASE ĐỂ INSERT ---
-            // supabase.from("lobbies").insert(newLobby).execute(response -> {
-            //     if (response.isSuccess()) {
-            //         // Lấy ID phòng vừa tạo từ response
-            //         currentLobbyId = response.getData().get("id").getAsString();
-            //         runOnUiThread(() -> {
-            //             Toast.makeText(this, "Tạo phòng thành công!", Toast.LENGTH_SHORT).show();
-            //             generateAndShowQRCode(currentLobbyId);
-            //             updateUIAfterCreation();
-            //         });
-            //     } else {
-            //         runOnUiThread(() -> {
-            //             Toast.makeText(this, "Lỗi tạo phòng: " + response.getError().getMessage(), Toast.LENGTH_LONG).show();
-            //         });
-            //     }
-            // });
+            currentLobby = new Lobby();
+            currentLobby.setId(lobbyId);
+            currentLobby.setAdminUsername(currentUser.getUsername()); // Sử dụng username thực tế
+            currentLobby.setMode("vote"); // Mặc định là vote
+            currentLobby.setStatus("waiting"); // Trạng thái chờ
+            currentLobby.setMaxPlayer(10); // Số người chơi tối đa
+            currentLobby.setDesignTime(300); // 5 phút thiết kế
+            currentLobby.setVoteTime(60); // 1 phút vote
+            currentLobby.setCreatedDate(currentTime);
+            currentLobby.setBeginDate(null);
             
-            // ---- GIẢ LẬP KHI KHÔNG CÓ SUPABASE ----
-            currentLobbyId = UUID.randomUUID().toString().substring(0, 6); // Tạo ID giả
-            Toast.makeText(this, "Tạo phòng thành công!", Toast.LENGTH_SHORT).show();
-            generateAndShowQRCode(currentLobbyId);
-            updateUIAfterCreation();
-            // ---- KẾT THÚC GIẢ LẬP ----
+            // Gọi service để insert vào Supabase
+            lobbyService.insertLobby(currentLobby, new SupabaseCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LobbyActivity.this, "Tạo phòng thành công!", Toast.LENGTH_SHORT).show();
+                        createQrcode(currentLobby.getId());
+                        updateUIAfterCreation();
+                    });
+                }
+                
+                @Override
+                public void onFailure(Exception e) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LobbyActivity.this, "Lỗi tạo phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    });
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Lỗi tạo phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -119,27 +184,31 @@ public class LobbyActivity extends AppCompatActivity {
      * Bước 8-13: Thay đổi chế độ chơi và cập nhật lên Supabase.
      */
     private void setMode(String mode) {
-        if (currentLobbyId == null) {
+        if (currentLobby == null) {
             Toast.makeText(this, "Chưa có phòng chơi!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
-            HashMap<String, Object> updates = new HashMap<>();
-            updates.put("mode", mode);
-            updates.put("updated_at", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault()).format(new Date()));
+            // Cập nhật mode trong currentLobby
+            currentLobby.setMode(mode);
             
-            // --- GỌI SUPABASE ĐỂ UPDATE ---
-            // supabase.from("lobbies").update(updates).eq("id", currentLobbyId).execute(response -> {
-            //     if(response.isSuccess()) {
-            //         runOnUiThread(() -> Toast.makeText(this, "Đã đổi chế độ: " + mode, Toast.LENGTH_SHORT).show());
-            //     } else {
-            //         runOnUiThread(() -> Toast.makeText(this, "Lỗi cập nhật chế độ: " + response.getError().getMessage(), Toast.LENGTH_LONG).show());
-            //     }
-            // });
-
-            // ---- GIẢ LẬP ----
-            Toast.makeText(this, "Đã đổi chế độ: " + mode, Toast.LENGTH_SHORT).show();
+            // Gọi service để update lên Supabase
+            lobbyService.updateLobby(currentLobby.getId(), currentLobby, new SupabaseCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LobbyActivity.this, "Đã đổi chế độ: " + mode, Toast.LENGTH_SHORT).show();
+                    });
+                }
+                
+                @Override
+                public void onFailure(Exception e) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LobbyActivity.this, "Lỗi cập nhật chế độ: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    });
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Lỗi cập nhật chế độ: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -150,7 +219,7 @@ public class LobbyActivity extends AppCompatActivity {
      * Bước 14-20: Bắt đầu trò chơi.
      */
     private void beginGame() {
-        if (currentLobbyId == null) {
+        if (currentLobby == null) {
             Toast.makeText(this, "Chưa có phòng chơi!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -158,28 +227,30 @@ public class LobbyActivity extends AppCompatActivity {
         try {
             String beginDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault()).format(new Date());
             
-            HashMap<String, Object> updates = new HashMap<>();
-            updates.put("status", "in_progress");
-            updates.put("begin_date", beginDate);
-            updates.put("updated_at", beginDate);
-
-            // --- GỌI SUPABASE ĐỂ UPDATE ---
-            // supabase.from("lobbies").update(updates).eq("id", currentLobbyId).execute(response -> {
-            //     if(response.isSuccess()) {
-            //         runOnUiThread(() -> {
-            //             Toast.makeText(this, "Trò chơi bắt đầu!", Toast.LENGTH_SHORT).show();
-            //             // Chuyển sang màn hình chơi game tại đây
-            //             // Intent intent = new Intent(LobbyActivity.this, GameActivity.class);
-            //             // intent.putExtra("lobby_id", currentLobbyId);
-            //             // startActivity(intent);
-            //         });
-            //     } else {
-            //         runOnUiThread(() -> Toast.makeText(this, "Lỗi bắt đầu trò chơi: " + response.getError().getMessage(), Toast.LENGTH_LONG).show());
-            //     }
-            // });
-
-            // ---- GIẢ LẬP ----
-            Toast.makeText(this, "Trò chơi bắt đầu!", Toast.LENGTH_SHORT).show();
+            // Cập nhật status và beginDate trong currentLobby
+            currentLobby.setStatus("in_progress");
+            currentLobby.setBeginDate(beginDate);
+            
+            // Gọi service để update lên Supabase
+            lobbyService.updateLobby(currentLobby.getId(), currentLobby, new SupabaseCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LobbyActivity.this, "Trò chơi bắt đầu!", Toast.LENGTH_SHORT).show();
+                        // TODO: Chuyển sang màn hình chơi game tại đây
+                        // Intent intent = new Intent(LobbyActivity.this, GameActivity.class);
+                        // intent.putExtra("lobby_id", currentLobby.getId());
+                        // startActivity(intent);
+                    });
+                }
+                
+                @Override
+                public void onFailure(Exception e) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(LobbyActivity.this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    });
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -190,43 +261,62 @@ public class LobbyActivity extends AppCompatActivity {
      * Bước 21-28: Xóa phòng và người chơi liên quan khỏi Supabase.
      */
     private void deleteLobby() {
-        if (currentLobbyId == null) {
+        if (currentLobby == null) {
             Toast.makeText(this, "Chưa có phòng chơi!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         try {
-            // --- GỌI SUPABASE ĐỂ DELETE ---
-            // Theo sơ đồ, bạn cần xóa người chơi liên quan trước, sau đó mới xóa phòng.
-            // Điều này có thể được xử lý tốt nhất bằng `CASCADE` trong database hoặc gọi 2 lệnh.
-            // // 1. Xóa người chơi liên quan
-            // supabase.from("players").delete().eq("lobby_id", currentLobbyId).execute(playerResponse -> {
-            //     // 2. Xóa phòng
-            //     supabase.from("lobbies").delete().eq("id", currentLobbyId).execute(lobbyResponse -> {
-            //         if(lobbyResponse.isSuccess()) {
-            //             runOnUiThread(() -> {
-            //                 Toast.makeText(this, "Đã xóa phòng.", Toast.LENGTH_SHORT).show();
-            //                 resetUI();
-            //             });
-            //         } else {
-            //             runOnUiThread(() -> Toast.makeText(this, "Lỗi xóa phòng: " + lobbyResponse.getError().getMessage(), Toast.LENGTH_LONG).show());
-            //         }
-            //     });
-            // });
-            
-            // ---- GIẢ LẬP ----
-            Toast.makeText(this, "Đã xóa phòng.", Toast.LENGTH_SHORT).show();
-            resetUI();
+            // Theo sequence diagram: xóa players liên quan trước, sau đó xóa lobby
+            // Bước 23-24: Xóa người chơi liên quan
+            deleteRelatedPlayers(currentLobby.getId());
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Lỗi xóa phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+    
+    /**
+     * Xóa tất cả players liên quan đến lobby này
+     */
+    private void deleteRelatedPlayers(String lobbyId) {
+        // TODO: Cần implement method getAllPlayersByLobbyId trong PlayerService
+        // Hiện tại sẽ giả lập việc xóa players thành công
+        // Sau khi xóa players xong, sẽ gọi deleteLobby()
+        
+        // Giả lập xóa players thành công
+        runOnUiThread(() -> {
+            // Bước 25-26: Xóa lobby
+            deleteLobbyFromDatabase(lobbyId);
+        });
+    }
+    
+    /**
+     * Xóa lobby khỏi database
+     */
+    private void deleteLobbyFromDatabase(String lobbyId) {
+        lobbyService.deleteLobby(lobbyId, new SupabaseCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                runOnUiThread(() -> {
+                    Toast.makeText(LobbyActivity.this, "Đã xóa phòng.", Toast.LENGTH_SHORT).show();
+                    resetUI();
+                });
+            }
+            
+            @Override
+            public void onFailure(Exception e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(LobbyActivity.this, "Lỗi xóa phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+            }
+        });
+    }
 
     /**
-     * Tạo mã QR từ ID phòng và hiển thị nó lên ImageView.
+     * Bước 5: Tạo mã QR từ ID phòng và hiển thị nó lên ImageView.
      */
-    private void generateAndShowQRCode(String lobbyId) {
+    private void createQrcode(String lobbyId) {
         try {
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.encodeBitmap(lobbyId, BarcodeFormat.QR_CODE, 400, 400);
@@ -251,9 +341,11 @@ public class LobbyActivity extends AppCompatActivity {
      * Đưa giao diện về trạng thái ban đầu sau khi xóa phòng.
      */
     private void resetUI() {
-        currentLobbyId = null;
+        currentLobby = null;
         layoutLobbyInfo.setVisibility(View.GONE);
         layoutControls.setVisibility(View.GONE);
         buttonCreateLobby.setVisibility(View.VISIBLE);
+        imageViewQRCode.setImageBitmap(null);
+        textViewLobbyId.setText("");
     }
 }
