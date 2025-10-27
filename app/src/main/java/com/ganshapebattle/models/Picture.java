@@ -1,6 +1,10 @@
 package com.ganshapebattle.models;
 
+import android.graphics.Bitmap;
 import com.google.gson.annotations.SerializedName;
+import com.ganshapebattle.utils.ImageUtils;
+import com.ganshapebattle.services.*;
+import com.ganshapebattle.services.SupabaseCallback;
 
 public class Picture {
 
@@ -66,4 +70,55 @@ public class Picture {
     public void setGalleryId(String galleryId) { this.galleryId = galleryId; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
+
+    // --- Additional Methods ---
+
+    /**
+     * Lấy thông tin user của picture này
+     * @param callback Callback để xử lý kết quả
+     */
+    public void getUser(SupabaseCallback<User> callback) {
+        if (username == null || username.isEmpty()) {
+            callback.onSuccess(null);
+            return;
+        }
+        
+        UserService userService = new UserService();
+        // Lấy user có username = this.username
+        userService.getUserByUsername(username, callback);
+    }
+
+    /**
+     * Lấy thông tin gallery của picture này
+     * @param callback Callback để xử lý kết quả
+     */
+    public void getGallery(SupabaseCallback<Gallery> callback) {
+        if (galleryId == null || galleryId.isEmpty()) {
+            callback.onSuccess(null);
+            return;
+        }
+        
+        GalleryService galleryService = new GalleryService();
+        // Lấy gallery có id = this.galleryId
+        galleryService.getGalleryById(galleryId, callback);
+    }
+
+    /**
+     * Chuyển đổi image từ chuỗi Base64 thành Bitmap
+     * @return Bitmap của image, hoặc null nếu có lỗi
+     */
+    public Bitmap getBitMapImage() {
+        if (image == null || image.isEmpty()) {
+            return null;
+        }
+        return ImageUtils.base64ToBitmap(image);
+    }
+
+    /**
+     * Trả về chuỗi Base64 của image
+     * @return Chuỗi Base64 của image
+     */
+    public String getStringBase64Image() {
+        return image;
+    }
 }

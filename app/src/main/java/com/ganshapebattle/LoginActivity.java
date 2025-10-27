@@ -16,6 +16,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ganshapebattle.services.SupabaseCallback;
+import com.ganshapebattle.services.UserService;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -26,10 +28,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import com.ganshapebattle.services.SupabaseCallback;
-import com.ganshapebattle.services.UserService;
-import com.ganshapebattle.admin.MenuActivity; // Thêm import này
 
 public class LoginActivity extends AppCompatActivity {
 

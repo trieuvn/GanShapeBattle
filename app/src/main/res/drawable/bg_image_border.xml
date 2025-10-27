@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Màu nền nhẹ để ảnh tách khỏi nền -->
+    <solid android:color="#F8F8F8" />
+
+    <!-- Bo góc mềm mại -->
+    <corners android:radius="12dp" />
+
+    <!-- Viền mảnh, màu xám nhạt -->
+    <stroke
+        android:width="2dp"
+        android:color="#CCCCCC" />
+
+</shape>
