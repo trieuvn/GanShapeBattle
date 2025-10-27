@@ -18,6 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ganshapebattle.admin.GalleryCRUDActivity; //
 import com.ganshapebattle.admin.MenuActivity; //
 
+// <<< Thêm import SessionManager >>>
+import java.util.HashMap;
+// <<< >>>
+
 public class MainActivity extends AppCompatActivity {
 
     // Khai báo các view components
@@ -26,14 +30,23 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvCurrentUsername; // TextView hiển thị username
     private String currentUsername; // Biến lưu username hiện tại
     private String currentUserEmail; // Biến lưu email (vẫn cần để mở Profile)
+    private String userRole; // Lưu vai trò người dùng
 
     // Launcher để khởi chạy ProfileActivity và nhận kết quả trả về
     private ActivityResultLauncher<Intent> profileActivityResultLauncher;
+
+    // <<< Thêm SessionManager >>>
+    private SessionManager sessionManager;
+    // <<< >>>
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); //
+
+        // <<< Khởi tạo SessionManager >>>
+        sessionManager = new SessionManager(getApplicationContext());
+        // <<< >>>
 
         // --- Ánh xạ View ---
         btnGoToDrawing = findViewById(R.id.btnGoToDrawing); //
@@ -46,18 +59,24 @@ public class MainActivity extends AppCompatActivity {
         tvCurrentUsername = findViewById(R.id.tvCurrentUsername); //
         // --- ---
 
-        // Lấy vai trò, username và email người dùng từ Intent được gửi từ LoginActivity
-        String userRole = getIntent().getStringExtra("USER_ROLE");
-        currentUsername = getIntent().getStringExtra("USER_USERNAME"); // Lấy username
-        currentUserEmail = getIntent().getStringExtra("USER_EMAIL"); // Lấy email
+        // <<< Lấy thông tin người dùng từ Session thay vì Intent >>>
+        if (sessionManager.isLoggedIn()) {
+            HashMap<String, String> userDetails = sessionManager.getUserDetails();
+            userRole = userDetails.get(SessionManager.KEY_ROLE);
+            currentUsername = userDetails.get(SessionManager.KEY_USERNAME);
+            currentUserEmail = userDetails.get(SessionManager.KEY_EMAIL);
+            Log.d("MainActivity", "User details loaded from session: Email=" + currentUserEmail + ", Username=" + currentUsername + ", Role=" + userRole);
+        } else {
+            // Trường hợp không có session (nên chuyển về Login, nhưng phòng ngừa)
+            Log.e("MainActivity", "User is not logged in! Redirecting to LoginActivity.");
+            sessionManager.logoutUser(); // Gọi logout để đảm bảo chuyển về Login
+            finish(); // Đóng MainActivity
+            return;
+        }
+        // <<< >>>
 
         // Hiển thị username ban đầu lên TextView
         updateUsernameDisplay();
-
-        // Ghi log email nhận được để kiểm tra (tùy chọn)
-        Log.d("MainActivity", "Email nhận được: " + currentUserEmail);
-        Log.d("MainActivity", "Username nhận được: " + currentUsername);
-
 
         // Hiển thị nút "Bảng điều khiển Admin" nếu user có vai trò ADMIN
         if ("ADMIN".equals(userRole)) {
@@ -74,13 +93,13 @@ public class MainActivity extends AppCompatActivity {
         btnGoToGallery.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, GalleryCRUDActivity.class))); //
         btnAdminPanel.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, MenuActivity.class))); //
 
-        // Sự kiện nút Đăng xuất
+        // <<< Sự kiện nút Đăng xuất: Gọi SessionManager >>>
         btnLogout.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class); //
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Xóa stack activity cũ
-            startActivity(intent);
-            finish(); // Đóng MainActivity
+            Log.d("MainActivity", "Logout button clicked.");
+            sessionManager.logoutUser(); // Xóa session và chuyển về LoginActivity
+            finish(); // Đóng MainActivity hiện tại
         });
+        // <<< >>>
         // --- ---
 
         // === KHỞI TẠO ActivityResultLauncher ===
@@ -94,14 +113,22 @@ public class MainActivity extends AppCompatActivity {
                         // Kiểm tra xem Intent trả về có chứa username đã cập nhật không
                         if (data != null && data.hasExtra("UPDATED_USERNAME")) {
                             String updatedUsername = data.getStringExtra("UPDATED_USERNAME");
-                            if (updatedUsername != null && !updatedUsername.isEmpty()) {
+                            if (updatedUsername != null && !updatedUsername.isEmpty() && !updatedUsername.equals(currentUsername)) {
                                 Log.d("MainActivity", "Nhận được username cập nhật từ ProfileActivity: " + updatedUsername);
                                 currentUsername = updatedUsername; // Cập nhật biến username hiện tại
+
+                                // <<< Cập nhật lại session với username mới >>>
+                                sessionManager.createLoginSession(currentUserEmail, currentUsername, userRole);
+                                Log.d("MainActivity", "Session updated with new username.");
+                                // <<< >>>
+
                                 updateUsernameDisplay(); // Cập nhật lại TextView hiển thị username
+                            } else {
+                                Log.d("MainActivity", "ProfileActivity trả về OK nhưng username không thay đổi hoặc bị thiếu.");
                             }
                         } else {
                             Log.d("MainActivity", "ProfileActivity trả về OK nhưng không có dữ liệu username cập nhật.");
-                            // Có thể thêm logic tải lại username từ server nếu cần thiết
+                            // Có thể thêm logic tải lại username từ server nếu cần thiết, nhưng nên dựa vào session đã cập nhật
                         }
                     } else {
                         // Ghi log nếu ProfileActivity không trả về OK (ví dụ: người dùng nhấn Back)
@@ -121,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 profileActivityResultLauncher.launch(intent);
                 // <<< >>>
             } else {
-                // Xử lý trường hợp email bị thiếu
+                // Xử lý trường hợp email bị thiếu (ít xảy ra nếu đã đăng nhập)
                 Log.e("MainActivity", "currentUserEmail là null hoặc rỗng, không thể mở ProfileActivity.");
                 Toast.makeText(MainActivity.this, "Lỗi: Không thể mở hồ sơ (thiếu email).", Toast.LENGTH_SHORT).show();
             }

@@ -51,9 +51,32 @@ public class LoginActivity extends AppCompatActivity {
     private UserService userService;
     private final OkHttpClient http = new OkHttpClient();
 
+    // <<< Thêm SessionManager >>>
+    private SessionManager sessionManager;
+    // <<< >>>
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // <<< Khởi tạo SessionManager >>>
+        sessionManager = new SessionManager(getApplicationContext());
+        // <<< >>>
+
+        // <<< Kiểm tra Session trước khi setContentView >>>
+        if (sessionManager.isLoggedIn()) {
+            Log.d(TAG, "User already logged in. Redirecting to MainActivity.");
+            // Lấy thông tin từ session để chuyển sang MainActivity
+            HashMap<String, String> userDetails = sessionManager.getUserDetails();
+            String email = userDetails.get(SessionManager.KEY_EMAIL);
+            String username = userDetails.get(SessionManager.KEY_USERNAME);
+            String role = userDetails.get(SessionManager.KEY_ROLE);
+            navigateToMain(role, username, email); // Gọi hàm điều hướng
+            finish(); // Đóng LoginActivity
+            return; // Ngăn không chạy tiếp phần còn lại của onCreate
+        }
+        // <<< >>>
+
         setContentView(R.layout.activity_login);
 
         userService = new UserService();
@@ -88,7 +111,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override public void onSuccess(String result) {
                 runOnUiThread(() -> {
                     Toast.makeText(LoginActivity.this, result, Toast.LENGTH_SHORT).show();
-                    fetchUsernameAndNavigate(email);
+                    // <<< Sửa: Lấy thông tin user và lưu session TRƯỚC KHI điều hướng >>>
+                    fetchAndSaveSession(email);
+                    // fetchUsernameAndNavigate(email); // Không gọi hàm cũ nữa
+                    // <<< >>>
                 });
             }
             @Override public void onFailure(Exception e) {
@@ -147,9 +173,11 @@ public class LoginActivity extends AppCompatActivity {
                         Map<String, Object> meta = (Map<String, Object>) userMap.get("user_metadata");
                         String avatarUrl = meta != null ? (String) meta.get("avatar_url") : null;
                         String displayName = meta != null ? (String) meta.get("full_name") : null;
+                        // <<< Sửa: Sử dụng displayName nếu có, nếu không thì dùng phần trước @ email >>>
                         String usernameForCheck = (displayName != null && !displayName.isEmpty())
                                 ? displayName
                                 : (email != null && email.contains("@") ? email.split("@")[0] : "User");
+                        // <<< >>>
 
                         if (email == null) {
                             Toast.makeText(LoginActivity.this, "Không lấy được email từ Supabase", Toast.LENGTH_SHORT).show();
@@ -158,8 +186,10 @@ public class LoginActivity extends AppCompatActivity {
 
                         Toast.makeText(LoginActivity.this,
                                 "Đăng nhập Google thành công với " + email, Toast.LENGTH_SHORT).show();
-                        String role = determineRole(email);
-                        checkIfPasswordExists(email, accessToken, role, avatarUrl, usernameForCheck);
+
+                        // <<< Sửa: Kiểm tra mật khẩu và xử lý session/điều hướng >>>
+                        checkPasswordAndHandleSession(email, accessToken, avatarUrl, usernameForCheck);
+                        // <<< >>>
                     } catch (Exception e) {
                         Log.e(TAG, "Parse user after OAuth error", e);
                         Toast.makeText(LoginActivity.this,
@@ -218,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                     Map<String, Object> userMeta = new HashMap<>();
                     if (meta != null) {
                         userMeta.put("avatar_url", meta.optString("avatar_url", null));
-                        userMeta.put("full_name", meta.optString("full_name", null));
+                        userMeta.put("full_name", meta.optString("full_name", null)); // Lấy full_name
                     }
                     map.put("user_metadata", userMeta);
                     cb.onSuccess(map);
@@ -229,66 +259,90 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    // ================= các hàm giữ nguyên logic của bạn =================
-    private void checkIfPasswordExists(final String email,
-                                       String accessToken,
-                                       String role,
-                                       String avatarUrl,
-                                       String username) {
+    // ================= Các hàm xử lý Session và Điều hướng =================
+
+    /**
+     * Lấy thông tin user từ DB, lưu vào session và điều hướng đến MainActivity.
+     * Dùng cho đăng nhập Email/Password thành công.
+     */
+    private void fetchAndSaveSession(final String email) {
+        userService.getUserByEmail(email, new SupabaseCallback<User>() {
+            @Override public void onSuccess(User user) {
+                runOnUiThread(() -> {
+                    String usernameToSave = "Unknown";
+                    if (user != null && user.getUsername() != null && !user.getUsername().isEmpty()) {
+                        usernameToSave = user.getUsername();
+                    } else if (email.contains("@")) {
+                        usernameToSave = email.split("@")[0];
+                        Log.w(TAG, "Không tìm thấy username cho " + email + ", dùng tạm phần trước @.");
+                    }
+                    String role = determineRole(email);
+
+                    // <<< Lưu session >>>
+                    sessionManager.createLoginSession(email, usernameToSave, role);
+                    Log.d(TAG, "Session created for: " + email);
+                    // <<< >>>
+
+                    navigateToMain(role, usernameToSave, email);
+                });
+            }
+            @Override public void onFailure(Exception e) {
+                Log.e(TAG, "Lỗi khi lấy username cho " + email + " để lưu session: " + e.getMessage());
+                runOnUiThread(() -> {
+                    Toast.makeText(LoginActivity.this, "Lỗi lấy thông tin user. Đăng nhập thất bại.", Toast.LENGTH_SHORT).show();
+                    // Không lưu session, không điều hướng
+                });
+            }
+        });
+    }
+
+    /**
+     * Kiểm tra xem user Google đã tạo mật khẩu chưa.
+     * Nếu có -> Lưu session và vào MainActivity.
+     * Nếu chưa -> Chuyển đến CreatePasswordActivity.
+     */
+    private void checkPasswordAndHandleSession(final String email,
+                                               String accessToken,
+                                               String avatarUrl,
+                                               String username) {
         userService.getUserByEmail(email, new SupabaseCallback<User>() {
             @Override public void onSuccess(User user) {
                 runOnUiThread(() -> {
                     String finalUsername = (user != null && user.getUsername() != null && !user.getUsername().isEmpty())
                             ? user.getUsername() : username;
+                    String role = determineRole(email);
+
                     if (user != null && user.getPassword() != null && !user.getPassword().isEmpty()) {
-                        Log.d(TAG, "User " + email + " đã có mật khẩu. Chuyển đến MainActivity.");
+                        Log.d(TAG, "User Google " + email + " đã có mật khẩu. Creating session and navigating to MainActivity.");
+                        // <<< Lưu session >>>
+                        sessionManager.createLoginSession(email, finalUsername, role);
+                        Log.d(TAG, "Session created for Google user: " + email);
+                        // <<< >>>
                         navigateToMain(role, finalUsername, email);
                     } else {
-                        Log.d(TAG, "User " + email + " chưa có mật khẩu/chưa tạo. Chuyển đến CreatePasswordActivity.");
+                        Log.d(TAG, "User Google " + email + " chưa có mật khẩu/chưa tạo. Navigating to CreatePasswordActivity.");
+                        // Không lưu session ở đây, sẽ lưu sau khi tạo mật khẩu thành công
                         navigateToCreatePassword(email, accessToken, role, avatarUrl, finalUsername);
                     }
                 });
             }
             @Override public void onFailure(Exception e) {
-                Log.e(TAG, "Lỗi khi kiểm tra mật khẩu user public: " + e.getMessage()
-                        + ". Chuyển đến CreatePasswordActivity.");
+                Log.e(TAG, "Lỗi khi kiểm tra mật khẩu user public (Google): " + e.getMessage()
+                        + ". Navigating to CreatePasswordActivity.");
                 runOnUiThread(() -> {
                     Toast.makeText(LoginActivity.this,
-                            "Lỗi kiểm tra thông tin user. Vui lòng tạo mật khẩu.", Toast.LENGTH_SHORT).show();
+                            "Lỗi kiểm tra thông tin. Vui lòng tạo mật khẩu.", Toast.LENGTH_SHORT).show();
+                    // Chuyển đến tạo mật khẩu như trường hợp user chưa tồn tại
+                    String role = determineRole(email);
                     navigateToCreatePassword(email, accessToken, role, avatarUrl, username);
                 });
             }
         });
     }
 
-    private void fetchUsernameAndNavigate(final String email) {
-        userService.getUserByEmail(email, new SupabaseCallback<User>() {
-            @Override public void onSuccess(User user) {
-                runOnUiThread(() -> {
-                    String usernameToNavigate = "Unknown";
-                    if (user != null && user.getUsername() != null && !user.getUsername().isEmpty()) {
-                        usernameToNavigate = user.getUsername();
-                    } else if (email.contains("@")) {
-                        usernameToNavigate = email.split("@")[0];
-                        Log.w(TAG, "Không tìm thấy username cho " + email + ", dùng tạm phần trước @.");
-                    }
-                    String role = determineRole(email);
-                    navigateToMain(role, usernameToNavigate, email);
-                });
-            }
-            @Override public void onFailure(Exception e) {
-                Log.e(TAG, "Lỗi khi lấy username cho " + email + ": " + e.getMessage()
-                        + ". Dùng tạm phần trước @.");
-                runOnUiThread(() -> {
-                    String usernameToNavigate = email.contains("@") ? email.split("@")[0] : "Unknown";
-                    String role = determineRole(email);
-                    navigateToMain(role, usernameToNavigate, email);
-                });
-            }
-        });
-    }
 
     private String determineRole(String email) {
+        // Bạn có thể thêm logic phức tạp hơn nếu cần
         return (email != null && email.endsWith("@uef.edu.vn")) ? "ADMIN" : "USER";
     }
 
@@ -299,7 +353,7 @@ public class LoginActivity extends AppCompatActivity {
         intent.putExtra("USER_EMAIL", email);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish();
+        finish(); // Đóng LoginActivity sau khi chuyển đi
     }
 
     private void navigateToCreatePassword(String email,
@@ -309,10 +363,11 @@ public class LoginActivity extends AppCompatActivity {
                                           String username) {
         Intent intent = new Intent(LoginActivity.this, CreatePasswordActivity.class);
         intent.putExtra("USER_EMAIL", email);
-        intent.putExtra("ACCESS_TOKEN", accessToken);
+        intent.putExtra("ACCESS_TOKEN", accessToken); // Cần access token để đổi pass Auth
         intent.putExtra("USER_ROLE", role);
         intent.putExtra("AVATAR_URL", avatarUrl);
-        intent.putExtra("USER_USERNAME", username);
+        intent.putExtra("DISPLAY_NAME", username); // Truyền username (có thể là display name)
         startActivity(intent);
+        // Không finish() LoginActivity ở đây, để người dùng có thể quay lại nếu muốn
     }
 }
