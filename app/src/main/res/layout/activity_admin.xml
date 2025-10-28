@@ -312,8 +312,7 @@
                             android:id="@+id/taskImage"
                             android:layout_width="64dp"
                             android:layout_height="64dp"
-                            android:src="@drawable/ic_task"
-                            app:tint="" />
+                            android:src="@drawable/ic_task"/>
 
                         <TextView
                             android:id="@+id/taskName"

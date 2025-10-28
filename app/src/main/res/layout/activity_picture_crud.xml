@@ -22,7 +22,7 @@
         app:strokeWidth="1.5dp"
         app:cornerRadius="24dp"
         android:backgroundTint="#FFFFFF"
-        style="@style/Widget.Material3.SearchBar.Outlined"/>
+        app:style="@style/Widget.Material3.SearchBar.Outlined"/>
 
     <!-- ListView (giữ nguyên) -->
     <ListView
