@@ -162,6 +162,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="#33FFFFFF"
-        app:stateListAnimator="@animator/button_elevation" />
+        android:stateListAnimator="@drawable/button_elevation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

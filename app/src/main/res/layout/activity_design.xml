@@ -5,255 +5,252 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFCCCCCC"
+    android:background="#F5F7FA"
     android:orientation="vertical"
     tools:context=".DesignActivity">
 
+    <!-- Toolbar với gradient xanh -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/btn_gradient_blue"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp">
 
+        <!-- Avatar -->
         <ImageView
             android:id="@+id/avatar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/avatar_background"
+            android:contentDescription="@string/avatar"
+            android:scaleType="centerCrop"
+            app:srcCompat="@tools:sample/avatars" />
 
+        <!-- Action Buttons -->
         <ImageButton
             android:id="@+id/new_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/start_new"
-            android:src="@drawable/new_pic" />
+            android:src="@drawable/new_pic"
+            app:tint="#FFFFFF" />
 
         <ImageButton
             android:id="@+id/draw_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/brush"
-            android:src="@drawable/brush" />
+            android:src="@drawable/brush"
+            app:tint="#FFFFFF" />
 
         <ImageButton
             android:id="@+id/erase_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/erase"
-            android:src="@drawable/eraser" />
+            android:src="@drawable/eraser"
+            app:tint="#FFFFFF" />
 
         <ImageButton
             android:id="@+id/save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/save"
-            android:src="@drawable/save" />
+            android:src="@drawable/save"
+            app:tint="#FFFFFF" />
 
+        <!-- GAN Image Preview -->
         <ImageView
             android:id="@+id/ganimage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:srcCompat="@drawable/default_ganimage" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bg_image_border"
+            android:contentDescription="@string/gan_preview"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/default_ganimage" />
 
     </LinearLayout>
 
+    <!-- Transform Button -->
     <Button
         android:id="@+id/transform_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/transform" />
+        android:layout_margin="16dp"
+        android:background="@drawable/btn_blue_rounded"
+        android:padding="12dp"
+        android:text="@string/transform"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:backgroundTint="@null" />
 
-    <ProgressBar
-        android:id="@+id/time_progress_bar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_match"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:max="100"
-        android:progress="100" />
-
-    <com.ganshapebattle.view.DrawingView
-        android:id="@+id/drawing"
-        android:layout_width="fill_parent"
+    <!-- Drawing Canvas -->
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="3dp"
         android:layout_weight="1"
-        android:background="#FFFFFFFF" />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/edittext_rounded_bg"
+        android:clipToPadding="false"
+        android:elevation="4dp">
 
+        <com.ganshapebattle.view.DrawingView
+            android:id="@+id/drawing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:background="#FFFFFF" />
+
+        <!-- Optional: Progress indicator khi GAN đang xử lý -->
+        <ProgressBar
+            android:id="@+id/progress"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="#007BFF"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <!-- Color Palette -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/edittext_border"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Top Row -->
         <LinearLayout
             android:id="@+id/paint_colors"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_margin="4dp">
-                <ImageButton
-                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FF0000FF"
-                    android:contentDescription="@string/paint"
-                    android:onClick="paintClicked"
-                    android:src="@drawable/paint"
-                    android:tag="#FF0000FF" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/color_sky" android:textColor="#FF333333"
-                    android:textSize="12sp" />
-            </LinearLayout>
+            <ImageButton
+                android:layout_width="@dimen/large_brush"
+                android:layout_height="@dimen/large_brush"
+                android:layout_margin="4dp"
+                android:background="@drawable/btn_red"
+                android:contentDescription="@string/paint"
+                android:onClick="paintClicked"
+                android:src="@drawable/paint"
+                android:tag="#FF660000"
+                app:tint="#FFFFFF" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_margin="4dp">
-                <ImageButton
-                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FF787878"
-                    android:contentDescription="@string/paint"
-                    android:onClick="paintClicked"
-                    android:src="@drawable/paint"
-                    android:tag="#FF787878" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/color_cloud" android:textColor="#FF333333"
-                    android:textSize="12sp" />
-            </LinearLayout>
+            <ImageButton
+                android:layout_width="@dimen/large_brush"
+                android:layout_height="@dimen/large_brush"
+                android:layout_margin="4dp"
+                android:background="@drawable/btn_gradient_red"
+                android:contentDescription="@string/paint"
+                android:onClick="paintClicked"
+                android:src="@drawable/paint"
+                android:tag="#FFFF0000"
+                app:tint="#FFFFFF" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_margin="4dp">
-                <ImageButton
-                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FF660000"
-                    android:contentDescription="@string/paint"
-                    android:onClick="paintClicked"
-                    android:src="@drawable/paint"
-                    android:tag="#FF660000" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/color_rock" android:textColor="#FF333333"
-                    android:textSize="12sp" />
-            </LinearLayout>
+            <ImageButton
+                android:layout_width="@dimen/large_brush"
+                android:layout_height="@dimen/large_brush"
+                android:layout_margin="4dp"
+                android:background="@drawable/btn_gradient_blue"
+                android:contentDescription="@string/paint"
+                android:onClick="paintClicked"
+                android:src="@drawable/paint"
+                android:tag="#FF007BFF"
+                app:tint="#FFFFFF" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_margin="4dp">
-                <ImageButton
-                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FFFFFFFF"
-                    android:contentDescription="@string/paint"
-                    android:onClick="paintClicked"
-                    android:src="@drawable/paint"
-                    android:tag="#FFFFFFFF" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/color_water" android:textColor="#FF333333"
-                    android:textSize="12sp" />
-            </LinearLayout>
+            <ImageButton
+                android:layout_width="@dimen/large_brush"
+                android:layout_height="@dimen/large_brush"
+                android:layout_margin="4dp"
+                android:background="@drawable/btn_green"
+                android:contentDescription="@string/paint"
+                android:onClick="paintClicked"
+                android:src="@drawable/paint"
+                android:tag="#FF009900"
+                app:tint="#FFFFFF" />
+
+            <ImageButton
+                android:layout_width="@dimen/large_brush"
+                android:layout_height="@dimen/large_brush"
+                android:layout_margin="4dp"
+                android:background="@drawable/btn_purple_gradient"
+                android:contentDescription="@string/paint"
+                android:onClick="paintClicked"
+                android:src="@drawable/paint"
+                android:tag="#FF990099"
+                app:tint="#FFFFFF" />
         </LinearLayout>
 
+        <!-- Bottom Row -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_margin="4dp">
-                <ImageButton
-                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FF990099"
-                    android:contentDescription="@string/paint"
-                    android:onClick="paintClicked"
-                    android:src="@drawable/paint"
-                    android:tag="#FF990099" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/color_river" android:textColor="#FF333333"
-                    android:textSize="12sp" />
-            </LinearLayout>
+            <ImageButton
+                android:layout_width="@dimen/large_brush"
+                android:layout_height="@dimen/large_brush"
+                android:layout_margin="4dp"
+                android:background="@android:color/white"
+                android:contentDescription="@string/paint"
+                android:elevation="2dp"
+                android:onClick="paintClicked"
+                android:src="@drawable/paint"
+                android:tag="#FFFFFFFF"
+                app:tint="#FF000000" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_margin="4dp">
-                <ImageButton
-                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FF009900"
-                    android:contentDescription="@string/paint"
-                    android:onClick="paintClicked"
-                    android:src="@drawable/paint"
-                    android:tag="#FF009900" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/color_grass" android:textColor="#FF333333"
-                    android:textSize="12sp" />
-            </LinearLayout>
+            <ImageButton
+                android:layout_width="@dimen/large_brush"
+                android:layout_height="@dimen/large_brush"
+                android:layout_margin="4dp"
+                android:background="#FF787878"
+                android:contentDescription="@string/paint"
+                android:onClick="paintClicked"
+                android:src="@drawable/paint"
+                android:tag="#FF787878"
+                app:tint="#FFFFFF" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_margin="4dp">
-                <ImageButton
-                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FFFF0000"
-                    android:contentDescription="@string/paint"
-                    android:onClick="paintClicked"
-                    android:src="@drawable/paint"
-                    android:tag="#FFFF0000" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/color_sun" android:textColor="#FF333333"
-                    android:textSize="12sp" />
-            </LinearLayout>
+            <ImageButton
+                android:layout_width="@dimen/large_brush"
+                android:layout_height="@dimen/large_brush"
+                android:layout_margin="4dp"
+                android:background="#FF000000"
+                android:contentDescription="@string/paint"
+                android:onClick="paintClicked"
+                android:src="@drawable/paint"
+                android:tag="#FF000000"
+                app:tint="#FFFFFF" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center_horizontal"
-                android:layout_margin="4dp">
-                <ImageButton
-                    android:layout_width="40dp" android:layout_height="40dp" android:background="#FFFFCC00"
-                    android:contentDescription="@string/paint"
-                    android:onClick="paintClicked"
-                    android:src="@drawable/paint"
-                    android:tag="#FFFFCC00" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/color_sand" android:textColor="#FF333333"
-                    android:textSize="12sp" />
-            </LinearLayout>
+            <ImageButton
+                android:layout_width="@dimen/large_brush"
+                android:layout_height="@dimen/large_brush"
+                android:layout_margin="4dp"
+                android:background="@drawable/btn_update_gradient"
+                android:contentDescription="@string/paint"
+                android:onClick="paintClicked"
+                android:src="@drawable/paint"
+                android:tag="#FF007BFF"
+                app:tint="#FFFFFF" />
         </LinearLayout>
     </LinearLayout>
 

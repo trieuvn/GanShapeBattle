@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
-            app:hint="Tìm kiếm ảnh..."
+            android:hint="Tìm kiếm ảnh..."
             app:icon="@drawable/ic_search"
             app:iconTint="#1976D2"
             app:strokeColor="#1976D2"

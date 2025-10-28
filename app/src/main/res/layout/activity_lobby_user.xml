@@ -80,7 +80,7 @@
             app:rippleColor="#33FFFFFF"
             app:cornerRadius="28dp"
             android:elevation="8dp"
-            app:stateListAnimator="@animator/button_elevation" />
+            android:stateListAnimator="@drawable/button_elevation" />
 
     </LinearLayout>
 
@@ -161,7 +161,7 @@
             app:rippleColor="#33FFFFFF"
             app:cornerRadius="28dp"
             android:elevation="8dp"
-            app:stateListAnimator="@animator/button_elevation" />
+            android:stateListAnimator="@drawable/button_elevation" />
 
     </LinearLayout>
 
