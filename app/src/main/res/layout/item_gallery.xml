@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:strokeColor="#0A6AED"
+    app:strokeWidth="1dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Tên + Copy ID -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/tvGalleryName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tranh phong cảnh"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"/>
+            <ImageButton
+                android:id="@+id/btnCopyId"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                app:srcCompat="@drawable/ic_copy"
+                app:tint="#0A6AED"
+                android:contentDescription="Sao chép ID"/>
+        </LinearLayout>
+
+        <!-- Mô tả -->
+        <TextView
+            android:id="@+id/tvGalleryDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Các bức tranh về cảnh đẹp"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginTop="4dp"/>
+
+        <!-- Loại + Số ảnh -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Public"
+                app:chipBackgroundColor="#E3F2FD"
+                app:chipStrokeColor="#0A6AED"
+                app:chipStrokeWidth="1dp"
+                android:textColor="#0A6AED"
+                android:textSize="12sp"
+                app:chipCornerRadius="12dp"/>
+            <TextView
+                android:id="@+id/tvImageCount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:text="12 ảnh"
+                android:textSize="14sp"
+                android:textColor="#999999"/>
+        </LinearLayout>
+
+        <!-- Nút xem chi tiết -->
+        <ImageButton
+            android:id="@+id/btnViewDetail"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            app:srcCompat="@drawable/ic_arrow_right"
+            app:tint="#0A6AED"
+            android:contentDescription="Xem chi tiết"/>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

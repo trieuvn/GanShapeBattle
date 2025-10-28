@@ -1,53 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="24dp"
+    android:background="#F5F9FF"
     tools:context=".admin.MenuActivity">
 
-    <TextView
+    <!-- Nội dung chính -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Avatar + Tên Admin -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="32dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivAdminAvatar"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/AvatarCircle"
+                    app:strokeColor="#0A6AED"
+                    app:strokeWidth="3dp"
+                    android:src="@drawable/ic_admin_avatar"
+                    android:contentDescription="Admin avatar" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Admin"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#0A6AED"
+                    android:fontFamily="sans-serif-medium"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bảng điều khiển"
+                    android:textSize="16sp"
+                    android:textColor="#666666"/>
+            </LinearLayout>
+
+            <!-- Các nút quản lý -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
+                app:strokeColor="#0A6AED"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Quản lý Người dùng -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnManageUsers"
+                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:text="Quản lý Người dùng (User)"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#0A6AED"
+                        app:icon="@drawable/ic_users"
+                        app:iconTint="#0A6AED"
+                        app:strokeColor="#0A6AED"
+                        app:strokeWidth="1.5dp"
+                        app:cornerRadius="0dp"
+                        app:iconGravity="start"
+                        app:iconPadding="16dp"
+                        android:layout_marginBottom="1dp"/>
+
+                    <!-- Quản lý Phòng chơi -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnManageLobbies"
+                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:text="Quản lý Phòng chơi (Lobby)"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#0A6AED"
+                        app:icon="@drawable/ic_lobby"
+                        app:iconTint="#0A6AED"
+                        app:strokeColor="#0A6AED"
+                        app:strokeWidth="1.5dp"
+                        app:cornerRadius="0dp"
+                        app:iconGravity="start"
+                        app:iconPadding="16dp"
+                        android:layout_marginBottom="1dp"/>
+
+                    <!-- Quản lý Bộ sưu tập -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnManageGalleries"
+                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:text="Quản lý Bộ sưu tập (Gallery)"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#0A6AED"
+                        app:icon="@drawable/ic_gallery"
+                        app:iconTint="#0A6AED"
+                        app:strokeColor="#0A6AED"
+                        app:strokeWidth="1.5dp"
+                        app:cornerRadius="0dp"
+                        app:iconGravity="start"
+                        app:iconPadding="16dp"
+                        android:layout_marginBottom="1dp"/>
+
+                    <!-- Quản lý Hình ảnh -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnManagePictures"
+                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:text="Quản lý Hình ảnh (Picture)"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#0A6AED"
+                        app:icon="@drawable/ic_image"
+                        app:iconTint="#0A6AED"
+                        app:strokeColor="#0A6AED"
+                        app:strokeWidth="1.5dp"
+                        app:cornerRadius="0dp"
+                        app:iconGravity="start"
+                        app:iconPadding="16dp"
+                        android:layout_marginBottom="1dp"/>
+
+                    <!-- Quản lý Người chơi -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnManagePlayers"
+                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:text="Quản lý Người chơi (Player)"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#0A6AED"
+                        app:icon="@drawable/ic_player"
+                        app:iconTint="#0A6AED"
+                        app:strokeColor="#0A6AED"
+                        app:strokeWidth="1.5dp"
+                        app:cornerRadius="0dp"
+                        app:iconGravity="start"
+                        app:iconPadding="16dp"/>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- FAB Đăng xuất -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:text="@string/admin_panel_title" android:textSize="28sp"
-        android:textStyle="bold" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
+        app:srcCompat="@drawable/ic_logout"
+        app:tint="#FFFFFF"
+        app:backgroundTint="#E53935"
+        app:rippleColor="#33FFFFFF"
+        android:contentDescription="Đăng xuất"/>
 
-    <Button
-        android:id="@+id/btnManageUsers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/manage_users_button" />
-
-    <Button
-        android:id="@+id/btnManageLobbies"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/manage_lobbies_button" />
-
-    <Button
-        android:id="@+id/btnManageGalleries"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/manage_galleries_button" />
-
-    <Button
-        android:id="@+id/btnManagePictures"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/manage_pictures_button" />
-
-    <Button
-        android:id="@+id/btnManagePlayers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/manage_players_button" />
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

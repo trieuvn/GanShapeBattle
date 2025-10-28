@@ -54,7 +54,7 @@ public class PlayerCRUDActivity extends AppCompatActivity {
 
         lvPlayers = findViewById(R.id.lvPlayers); //
         btnAddPlayer = findViewById(R.id.btnAddPlayer); //
-        searchView = findViewById(R.id.searchViewPlayers); //
+        searchView = findViewById(R.id.searchViewPictures); //
 
         playerService = new PlayerService(); //
         lobbyService = new LobbyService(); //

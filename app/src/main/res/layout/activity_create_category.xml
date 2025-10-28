@@ -1,40 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F9FAFB"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="24dp">
+    tools:context=".admin.CreateCategory">
 
-    <TextView
+    <!-- Nội dung chính -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:text="@string/create_category_title" android:textColor="#0D47A1"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <EditText
-        android:id="@+id/edtCategoryName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/category_name_hint" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="32dp">
 
-    <EditText
-        android:id="@+id/edtCategoryDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:hint="@string/description_hint" />
+            <!-- Tiêu đề -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tạo danh mục mới"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="#0D47A1"
+                android:gravity="center"
+                android:layout_marginBottom="32dp"
+                android:fontFamily="sans-serif-medium"/>
 
-    <Button
-        android:id="@+id/btnCreateCategory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#64B5F6"
-        android:text="@string/create_button" android:textColor="#fff" />
-</LinearLayout>
+            <!-- Form Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                app:strokeColor="#0D47A1"
+                app:strokeWidth="1.5dp"
+                android:layout_marginBottom="32dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- Tên danh mục -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCategoryName"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_label"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtCategoryName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Tên danh mục"
+                            android:inputType="textCapWords"
+                            android:maxLines="1"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Mô tả -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCategoryDescription"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:startIconDrawable="@drawable/ic_description"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtCategoryDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Mô tả (tùy chọn)"
+                            android:inputType="textCapSentences"
+                            android:maxLines="3"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Nút Tạo -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCreateCategory"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Tạo danh mục"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                app:icon="@drawable/ic_add"
+                app:iconTint="#FFFFFF"
+                app:iconGravity="start"
+                app:iconPadding="12dp"
+                app:backgroundTint="@null"
+                android:background="@drawable/btn_gradient_blue"
+                app:rippleColor="#33FFFFFF"
+                app:cornerRadius="16dp"
+                android:elevation="8dp"
+                app:stateListAnimator="@animator/button_elevation"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- FAB Tạo nhanh -->
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

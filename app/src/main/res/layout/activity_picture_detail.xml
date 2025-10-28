@@ -1,100 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F9FF"
     tools:context=".admin.PictureDetailActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="24dp">
 
-        <ImageView
-            android:id="@+id/ivPictureImage"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_gravity="center_horizontal"
+        <!-- Tiêu đề -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chi tiết ảnh"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#0A6AED"
             android:layout_marginBottom="24dp"
-            android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            android:fontFamily="sans-serif-medium"
+            android:layout_gravity="center_horizontal"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/picture_name_label" android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvPictureName"
+        <!-- Ảnh -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="Tên ảnh mẫu" />
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp"
+            app:strokeColor="#0A6AED"
+            app:strokeWidth="1.5dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/picture_description_label" android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/ivPictureImage"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:background="#F0F0F0"
+                tools:srcCompat="@tools:sample/backgrounds/scenic"
+                android:contentDescription="Ảnh chi tiết" />
 
-        <TextView
-            android:id="@+id/tvPictureDescription"
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Thông tin chi tiết -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="Mô tả ảnh mẫu" />
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:strokeColor="#0A6AED"
+            app:strokeWidth="1dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/picture_created_date_label" android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvPictureCreatedDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="2025-10-18" />
+                <!-- Tên ảnh -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Tên ảnh"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#0A6AED"/>
+                    <TextView
+                        android:id="@+id/tvPictureName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:textSize="16sp"
+                        android:textColor="#1A1A1A"
+                        tools:text="Tên ảnh mẫu"/>
+                </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/picture_type_label" android:textStyle="bold" />
+                <!-- Mô tả -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Mô tả"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#0A6AED"/>
+                    <TextView
+                        android:id="@+id/tvPictureDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:textSize="16sp"
+                        android:textColor="#1A1A1A"
+                        tools:text="Mô tả ảnh mẫu"/>
+                </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvPictureType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="Loại ảnh" />
+                <!-- Ngày tạo -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Ngày tạo"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#0A6AED"/>
+                    <TextView
+                        android:id="@+id/tvPictureCreatedDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:textSize="16sp"
+                        android:textColor="#1A1A1A"
+                        tools:text="2025-10-18"/>
+                </LinearLayout>
 
+                <!-- Loại -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Loại"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#0A6AED"/>
+                    <TextView
+                        android:id="@+id/tvPictureType"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:textSize="16sp"
+                        android:textColor="#1A1A1A"
+                        tools:text="Loại ảnh"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Nút hành động -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
 
-            <Button
+            <!-- Cập nhật -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnUpdatePicture"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:text="@string/update_button" />
+                android:layout_marginEnd="8dp"
+                android:text="Cập nhật"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                app:backgroundTint="@null"
+                android:background="@drawable/btn_gradient_blue"
+                app:rippleColor="#33FFFFFF"
+                app:cornerRadius="16dp"
+                android:elevation="8dp"
+                app:stateListAnimator="@animator/button_elevation"/>
 
-            <Button
+            <!-- Xóa -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDeletePicture"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:backgroundTint="@android:color/holo_red_light"
-                android:text="@string/delete_button" />
+                android:layout_marginStart="8dp"
+                android:text="Xóa"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                app:backgroundTint="@null"
+                android:background="@drawable/btn_red"
+                app:rippleColor="#33FFFFFF"
+                app:cornerRadius="16dp"
+                android:elevation="8dp"
+                app:stateListAnimator="@animator/button_elevation"/>
+
         </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
