@@ -5,107 +5,180 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="#F5F9FF"
+    android:padding="24dp"
     tools:context=".LobbyUserActivity">
 
+    <!-- Layout: Tham gia phòng -->
     <LinearLayout
         android:id="@+id/joinLobbyLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="vertical"
+        android:gravity="center"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible">
 
+        <!-- Tiêu đề -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tham gia phòng chơi"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#0A6AED"
+            android:layout_marginBottom="32dp"
+            android:fontFamily="sans-serif-medium" />
 
-        <EditText
-            android:id="@+id/editTextLobbyId"
+        <!-- Input mã phòng -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/edittext_rounded_bg"
-            android:hint="Nhập mã phòng"
-            android:inputType="text"
-            android:maxLines="1"
-            android:padding="12dp"
-            android:textSize="16sp" />
+            android:layout_marginBottom="24dp"
+            app:hintTextColor="#0A6AED"
+            app:boxStrokeColor="#0A6AED"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxCornerRadiusTopEnd="20dp"
+            app:boxCornerRadiusBottomStart="20dp"
+            app:boxCornerRadiusBottomEnd="20dp"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="#0A6AED"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
-        <Button
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextLobbyId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nhập mã phòng"
+                android:inputType="textCapCharacters"
+                android:maxLines="1"
+                android:padding="16dp"
+                android:paddingStart="50dp"
+                android:textSize="18sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Nút Tham gia -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonJoin"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/btn_gradient_blue"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
+            android:layout_height="56dp"
             android:text="Tham gia"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconTint="#FFFFFF"
+            app:iconGravity="end"
+            app:iconPadding="12dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/btn_gradient_blue"
+            app:rippleColor="#33FFFFFF"
+            app:cornerRadius="28dp"
+            android:elevation="8dp"
+            app:stateListAnimator="@animator/button_elevation" />
 
     </LinearLayout>
 
+    <!-- Layout: Đã trong phòng -->
     <LinearLayout
         android:id="@+id/inLobbyLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="vertical"
+        android:gravity="center"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="gone">
 
+        <!-- Icon thành công -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/ic_check_circle"
+            app:shapeAppearanceOverlay="@style/Circle"
+            app:strokeColor="#0A6AED"
+            app:strokeWidth="4dp"
+            android:layout_marginBottom="24dp"
+            app:tint="#0A6AED" />
+
+        <!-- Tiêu đề -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đã tham gia phòng!"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#0A6AED"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-medium" />
 
+        <!-- Mã phòng -->
         <TextView
             android:id="@+id/textViewLobbyInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textSize="18sp"
-            tools:text="Mã phòng: 1a2b3c" />
+            android:text="Mã phòng: 1A2B3C"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A"
+            android:background="@drawable/badge_lobby"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="8dp"
+            android:layout_marginBottom="16dp" />
 
+        <!-- Thông báo chờ -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Đang chờ chủ phòng bắt đầu..." />
+            android:text="Đang chờ chủ phòng bắt đầu..."
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="32dp" />
 
-        <Button
+        <!-- Nút Rời phòng -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonLeave"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/btn_delete_gradient"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
+            android:layout_height="56dp"
             android:text="Rời phòng"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:icon="@drawable/ic_exit"
+            app:iconTint="#FFFFFF"
+            app:iconGravity="start"
+            app:iconPadding="12dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/btn_red"
+            app:rippleColor="#33FFFFFF"
+            app:cornerRadius="28dp"
+            android:elevation="8dp"
+            app:stateListAnimator="@animator/button_elevation" />
 
     </LinearLayout>
 
-    <ProgressBar
+    <!-- Loading -->
+    <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:indeterminate="true"
+        app:indicatorColor="#0A6AED"
+        app:trackColor="#330A6AED"
+        app:indicatorSize="64dp"
+        app:trackThickness="6dp"
         android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -96,7 +96,7 @@
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginBottom="4dp"
-                    android:src="@drawable/ic_star" />
+                    android:src="@drawable/ic_users" />
 
                 <TextView
                     android:id="@+id/tvName1"

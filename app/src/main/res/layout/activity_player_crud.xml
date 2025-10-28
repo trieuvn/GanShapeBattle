@@ -1,32 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F9FF"
     tools:context=".admin.PlayerCRUDActivity">
 
-    <SearchView
-        android:id="@+id/searchViewPlayers"
+    <!-- SearchBar (Material 3) -->
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/searchViewPictures"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="Tìm kiếm theo username..." />
+        android:layout_margin="12dp"
+        app:hint="Tìm kiếm theo username..."
+        app:icon="@drawable/ic_search"
+        app:iconTint="#0A6AED"
+        app:strokeColor="#0A6AED"
+        app:strokeWidth="1.5dp"
+        app:cornerRadius="24dp"
+        android:backgroundTint="#FFFFFF"
+        style="@style/Widget.Material3.SearchBar.Outlined"/>
 
+    <!-- ListView (giữ nguyên) -->
     <ListView
         android:id="@+id/lvPlayers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/searchViewPictures"
         android:layout_above="@+id/btnAddPlayer"
-        android:layout_below="@id/searchViewPlayers" />
+        android:divider="#EEEEEE"
+        android:dividerHeight="8dp"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay"/>
 
-    <Button
+    <!-- FAB Chấm điểm -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/btnAddPlayer"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:text="Chấm điểm người chơi" />
+        android:layout_alignParentEnd="true"
+        android:layout_margin="24dp"
+        android:text="Chấm điểm"
+        android:textColor="#FFFFFF"
+        app:icon="@drawable/ic_add"
+        app:iconTint="#FFFFFF"
+        app:backgroundTint="@null"
+        android:background="@drawable/btn_gradient_blue"
+        app:rippleColor="#33FFFFFF"
+        app:cornerRadius="20dp"
+        android:elevation="8dp"
+        app:pressedTranslationZ="12dp"
+        android:contentDescription="Chấm điểm người chơi"/>
 
 </RelativeLayout>
