@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="12dp"
-        app:hint="Tìm kiếm theo Lobby ID..."
+        android:hint="Tìm kiếm theo Lobby ID..."
         app:icon="@drawable/ic_search"
         app:iconTint="#0A6AED"
         app:strokeColor="#0A6AED"

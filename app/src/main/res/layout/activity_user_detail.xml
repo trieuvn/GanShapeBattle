@@ -161,7 +161,7 @@
                 app:rippleColor="#33FFFFFF"
                 app:cornerRadius="12dp"
                 android:elevation="6dp"
-                app:stateListAnimator="@animator/button_elevation" />
+                android:stateListAnimator="@drawable/button_elevation" />
 
             <!-- Nút Xóa -->
             <com.google.android.material.button.MaterialButton
@@ -179,7 +179,7 @@
                 app:rippleColor="#33FFFFFF"
                 app:cornerRadius="12dp"
                 android:elevation="6dp"
-                app:stateListAnimator="@animator/button_elevation" />
+                android:stateListAnimator="@drawable/button_elevation" />
 
         </LinearLayout>
 

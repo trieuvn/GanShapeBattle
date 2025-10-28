@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        app:hint="Tìm kiếm theo tên bộ sưu tập..."
+        android:hint="Tìm kiếm theo tên bộ sưu tập..."
         app:icon="@drawable/ic_search"
         app:iconTint="#0A6AED"
         app:strokeColor="#0A6AED"
