@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F9FF"
+    android:background="@drawable/bg_outer_border"
     tools:context=".admin.GalleryDetailActivity">
 
     <!-- Nội dung chính -->
@@ -214,22 +214,5 @@
     </ScrollView>
 
     <!-- FAB Cập nhật (nổi bật) -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fabUpdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
-        android:text="Cập nhật nhanh"
-        android:textColor="#FFFFFF"
-        app:icon="@drawable/ic_edit"
-        app:iconTint="#FFFFFF"
-        app:backgroundTint="@null"
-        android:background="@drawable/btn_gradient_blue"
-        app:rippleColor="#33FFFFFF"
-        app:cornerRadius="20dp"
-        android:elevation="8dp"
-        app:pressedTranslationZ="12dp"
-        android:contentDescription="Cập nhật bộ sưu tập"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

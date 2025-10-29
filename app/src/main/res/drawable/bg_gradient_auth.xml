@@ -1,0 +1,7 @@
+<!-- res/drawable/bg_gradient_auth.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#E6F0FF"
+        android:endColor="#F8FAFF"
+        android:angle="135"/>
+</shape>

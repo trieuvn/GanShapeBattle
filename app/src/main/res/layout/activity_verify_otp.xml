@@ -1,190 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="32dp"
-    android:background="#F5F9FF">
+    android:background="@drawable/bg_gradient_auth">
 
-    <!-- Tiêu đề -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Xác thực tài khoản"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:textColor="#0A6AED"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif-medium"/>
-
-    <!-- Hướng dẫn -->
-    <TextView
-        android:id="@+id/tvInstruction"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Vui lòng nhập mã OTP 6 chữ số đã được gửi đến email của bạn để đổi mật khẩu mới."
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:textColor="#555555"
-        android:lineSpacingExtra="4dp"
-        android:layout_marginBottom="32dp"
-        android:paddingHorizontal="8dp"/>
-
-    <!-- === OTP Field === -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxStrokeColor="#0A6AED"
-        app:hintTextColor="#0A6AED"
-        app:startIconDrawable="@drawable/ic_lock"
-        app:startIconTint="#0A6AED"
-        app:startIconContentDescription="Mã OTP">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputOtp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nhập mã OTP"
-            android:inputType="number"
-            android:maxLength="6"
-            android:textSize="18sp"
-            android:fontFamily="sans-serif-medium"
-            android:imeOptions="actionNext"
-            android:paddingStart="48dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingEnd="16dp"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- === Mật khẩu mới === -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxStrokeColor="#0A6AED"
-        app:hintTextColor="#0A6AED"
-        app:startIconDrawable="@drawable/ic_key"
-        app:startIconTint="#0A6AED"
-        app:endIconMode="password_toggle"
-        app:endIconTint="#0A6AED"
-        app:passwordToggleTint="#0A6AED">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputNewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nhập mật khẩu mới"
-            android:inputType="textPassword"
-            android:textSize="18sp"
-            android:fontFamily="sans-serif-medium"
-            android:imeOptions="actionNext"
-            android:paddingStart="48dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingEnd="56dp"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- === Xác nhận mật khẩu === -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxStrokeColor="#0A6AED"
-        app:hintTextColor="#0A6AED"
-        app:startIconDrawable="@drawable/ic_key"
-        app:startIconTint="#0A6AED"
-        app:endIconMode="password_toggle"
-        app:endIconTint="#0A6AED"
-        app:passwordToggleTint="#0A6AED">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputConfirmNewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Xác nhận mật khẩu mới"
-            android:inputType="textPassword"
-            android:textSize="18sp"
-            android:fontFamily="sans-serif-medium"
-            android:imeOptions="actionDone"
-            android:paddingStart="48dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingEnd="56dp"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Nút xác nhận -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnVerifyAndReset"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="Xác nhận và Đổi mật khẩu"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:fontFamily="sans-serif-medium"
-        app:backgroundTint="@null"
-        android:background="@drawable/btn_gradient_blue"
-        app:rippleColor="#33FFFFFF"
-        app:cornerRadius="12dp"
-        android:elevation="6dp"
-        android:stateListAnimator="@drawable/button_elevation"/>
-
-    <!-- Gửi lại mã + đếm ngược -->
+    <!-- Lớp viền xanh nhạt ngoài cùng -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="24dp"
-        android:gravity="center">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp"
+        android:background="@drawable/bg_outer_border">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- Card chứa toàn bộ form -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Không nhận được mã? "
-            android:textSize="14sp"
-            android:textColor="#666666"/>
+            app:cardCornerRadius="24dp"
+            app:cardElevation="12dp"
+            android:layout_marginHorizontal="16dp"
+            android:backgroundTint="#FFFFFF"
+            app:cardBackgroundColor="#FFFFFF">
 
-        <TextView
-            android:id="@+id/tvResendOtp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gửi lại"
-            android:textSize="14sp"
-            android:textColor="#0A6AED"
-            android:textStyle="bold"
-            android:padding="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="32dp">
 
-        <TextView
-            android:id="@+id/tvCountdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="(60s)"
-            android:textSize="14sp"
-            android:textColor="#888888"
-            android:layout_marginStart="4dp"
-            android:visibility="gone"/>
+                <!-- Tiêu đề -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xác thực tài khoản"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="#0A6AED"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="sans-serif-medium"/>
 
+                <!-- Hướng dẫn -->
+                <TextView
+                    android:id="@+id/tvInstruction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Vui lòng nhập mã OTP 6 chữ số đã được gửi đến email của bạn để đổi mật khẩu mới."
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:textColor="#666666"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_marginBottom="28dp"
+                    android:fontFamily="sans-serif"/>
+
+                <!-- Ô nhập OTP -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="#0A6AED"
+                    app:hintTextColor="#0A6AED"
+                    app:startIconDrawable="@drawable/ic_lock"
+                    app:startIconTint="#0A6AED">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputOtp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nhập mã OTP"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:imeOptions="actionNext"
+                        android:paddingStart="48dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:paddingEnd="16dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Mật khẩu mới -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="#0A6AED"
+                    app:hintTextColor="#0A6AED"
+                    app:startIconDrawable="@drawable/ic_key"
+                    app:startIconTint="#0A6AED"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="#0A6AED">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputNewPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nhập mật khẩu mới"
+                        android:inputType="textPassword"
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:imeOptions="actionNext"
+                        android:paddingStart="48dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:paddingEnd="56dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Xác nhận mật khẩu -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="#0A6AED"
+                    app:hintTextColor="#0A6AED"
+                    app:startIconDrawable="@drawable/ic_key"
+                    app:startIconTint="#0A6AED"
+                    app:endIconMode="password_toggle"
+                    app:endIconTint="#0A6AED">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputConfirmNewPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Xác nhận mật khẩu mới"
+                        android:inputType="textPassword"
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:imeOptions="actionDone"
+                        android:paddingStart="48dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:paddingEnd="56dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Nút xác nhận -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnVerifyAndReset"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:text="Xác nhận và Đổi mật khẩu"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="sans-serif-medium"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/btn_gradient_blue"
+                    app:rippleColor="#33FFFFFF"
+                    app:cornerRadius="16dp"
+                    android:elevation="8dp"
+                    android:stateListAnimator="@drawable/button_elevation"/>
+
+                <!-- Gửi lại mã -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Không nhận được mã? "
+                        android:textColor="#666666"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvResendOtp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="8dp"
+                        android:text="Gửi lại"
+                        android:textColor="#0A6AED"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvCountdown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="(60s)"
+                        android:textColor="#888888"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
