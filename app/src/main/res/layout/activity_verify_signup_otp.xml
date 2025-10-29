@@ -1,97 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="32dp"
-    android:background="#F5F9FF">
+    android:background="@drawable/bg_gradient_auth">
 
-    <!-- Tiêu đề -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Kích hoạt tài khoản"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:textColor="#0A6AED"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif-medium"/>
-
-    <!-- Mô tả -->
-    <TextView
+    <!-- Nền gradient toàn màn hình -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Vui lòng nhập mã OTP 6 chữ số đã được gửi đến email của bạn để hoàn tất kích hoạt."
-        android:textAlignment="center"
-        android:textSize="15sp"
-        android:textColor="#555555"
-        android:lineSpacingExtra="4dp"
-        android:layout_marginBottom="32dp"
-        android:paddingHorizontal="16dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp"
+        android:background="@drawable/bg_outer_border"  >
 
-    <!-- Ô nhập OTP -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxStrokeColor="#0A6AED"
-        app:hintTextColor="#0A6AED"
-        app:startIconDrawable="@drawable/ic_lock"
-        app:startIconTint="#0A6AED">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputSignupOtp"
+        <!-- Card chứa nội dung với bóng đổ -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:fontFamily="sans-serif-medium"
-            android:hint="Nhập mã OTP"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:maxLength="6"
-            android:paddingStart="48dp"
-            android:textColor="#1A1A1A"
-            android:textSize="18sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            app:cardCornerRadius="24dp"
+            app:cardElevation="12dp"
+            android:layout_marginHorizontal="16dp"
+            android:backgroundTint="#FFFFFF"
+            app:cardBackgroundColor="#FFFFFF">
 
-    <!-- Nút kích hoạt – MaterialButton -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnVerifySignup"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="8dp"
-        android:text="Kích hoạt tài khoản"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:fontFamily="sans-serif-medium"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="32dp">
 
-        app:backgroundTint="@null"
-        android:background="@drawable/btn_gradient_blue"
-        app:rippleColor="#33FFFFFF"
-        app:cornerRadius="12dp"
-        android:elevation="6dp"
-        android:stateListAnimator="@drawable/button_elevation"/>
+                <!-- Tiêu đề -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kích hoạt tài khoản"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:textColor="#0A6AED"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="sans-serif-medium"/>
 
-    <!-- Gửi lại mã -->
-    <TextView
-        android:id="@+id/tvResendOtp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Không nhận được mã? Gửi lại"
-        android:textSize="14sp"
-        android:textColor="#0A6AED"
-        android:layout_marginTop="24dp"
-        android:padding="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"/>
+                <!-- Mô tả -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Vui lòng nhập mã OTP 6 chữ số đã được gửi đến email của bạn để hoàn tất kích hoạt."
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:textColor="#666666"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_marginBottom="32dp"
+                    android:fontFamily="sans-serif"/>
 
-</LinearLayout>
+                <!-- Ô nhập OTP -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="#0A6AED"
+                    app:boxStrokeWidth="2dp"
+                    app:boxStrokeWidthFocused="2.5dp"
+                    app:hintTextColor="#0A6AED"
+                    app:startIconDrawable="@drawable/ic_lock"
+                    app:startIconTint="#0A6AED"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="#999999">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputSignupOtp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="sans-serif-medium"
+                        android:hint="Nhập mã OTP"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:paddingStart="48dp"
+                        android:textColor="#1A1A1A"
+                        android:textSize="18sp"
+                        android:letterSpacing="0.1"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Nút kích hoạt -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnVerifySignup"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Kích hoạt tài khoản"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="sans-serif-medium"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/btn_gradient_blue"
+                    app:rippleColor="#33FFFFFF"
+                    app:cornerRadius="16dp"
+                    android:elevation="8dp"
+                    app:iconGravity="textStart"
+                    android:stateListAnimator="@drawable/button_elevation"/>
+
+                <!-- Gửi lại mã -->
+                <TextView
+                    android:id="@+id/tvResendOtp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Không nhận được mã? Gửi lại"
+                    android:textSize="14sp"
+                    android:textColor="#0A6AED"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="28dp"
+                    android:padding="12dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="sans-serif-medium"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

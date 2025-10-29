@@ -1,0 +1,23 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Gradient nền xanh nhạt mượt -->
+    <gradient
+        android:startColor="#EAF3FF"
+        android:centerColor="#DCEBFF"
+        android:endColor="#F7FAFF"
+        android:angle="315" />
+
+    <!-- Viền ngoài màu xanh sáng -->
+    <stroke
+        android:width="4dp"
+        android:color="#A7C8FF" />
+
+    <!-- Bo góc nhẹ cho cảm giác thân thiện -->
+    <corners android:radius="0dp" />
+
+    <!-- Đổ bóng nhẹ (nếu cần hiệu ứng nổi) -->
+    <padding
+        android:left="8dp"
+        android:top="8dp"
+        android:right="8dp"
+        android:bottom="8dp" />
+</shape>
