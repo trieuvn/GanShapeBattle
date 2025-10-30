@@ -44,7 +44,7 @@ public class PictureCRUDActivity extends AppCompatActivity {
 
         lvPictures = findViewById(R.id.lvPictures); //
         btnAddPicture = findViewById(R.id.btnAddPicture); //
-        searchView = findViewById(R.id.searchViewPictures); //
+        searchView = findViewById(R.id.searchViewLobbies); //
         pictureService = new PictureService(); //
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());

@@ -45,7 +45,7 @@ public class UserCRUDActivity extends AppCompatActivity {
 
         lvUsers = findViewById(R.id.lvUsers); //
         btnAddUser = findViewById(R.id.btnAddUser); //
-        searchView = findViewById(R.id.searchViewPictures);
+        searchView = findViewById(R.id.searchViewLobbies);
         userService = new UserService(); //
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());

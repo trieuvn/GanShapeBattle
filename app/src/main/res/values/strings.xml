@@ -90,4 +90,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
+    <string name="joingame">Join game</string>
+    <string name="createlobby">Create lobby</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="gallery">Gallery</string>
+    <string name="gotoadmin">Go to admin</string>
 </resources>

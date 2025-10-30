@@ -9,7 +9,7 @@
 
     <!-- SearchBar (Material 3) -->
     <com.google.android.material.search.SearchBar
-        android:id="@+id/searchViewPictures"
+        android:id="@+id/searchViewLobbies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -24,7 +24,7 @@
         android:id="@+id/lvUsers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchViewPictures"
+        android:layout_below="@id/searchViewLobbies"
         android:layout_above="@+id/btnAddUser"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
