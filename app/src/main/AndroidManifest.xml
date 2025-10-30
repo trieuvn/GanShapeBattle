@@ -19,10 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GanShapeBattle">
         <activity
-            android:name=".ScoreBoardActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LeaderHistoryActivity"
+            android:name=".GameLoadActivity"
             android:exported="false" />
         <activity
             android:name=".DesignActivity"
@@ -83,8 +80,8 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
-
+            android:exported="true" />
+        <activity android:name=".CreatePasswordActivity" android:exported="false" />
         <activity
             android:name=".ResetPasswordActivity"
             android:exported="true">

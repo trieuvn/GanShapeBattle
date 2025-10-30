@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
-    //id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services'
     // Kotlin plugin không bắt buộc nếu module thuần Java,
     // nhưng nếu bạn có file .kt thì bật lại plugin Kotlin.
 }
