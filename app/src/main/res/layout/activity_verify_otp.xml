@@ -9,8 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Xác thực tài khoản"
-        android:textSize="24sp"
+        android:text="@string/verification_title" android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginBottom="16dp"/>
 
@@ -18,16 +17,14 @@
         android:id="@+id/tvInstruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Vui lòng nhập mã OTP đã được gửi đến email của bạn."
-        android:textAlignment="center"
+        android:text="@string/otp_instruction" android:textAlignment="center"
         android:layout_marginBottom="24dp"/>
 
     <EditText
         android:id="@+id/inputOtp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nhập mã OTP"
-        android:inputType="number"
+        android:hint="@string/otp_hint" android:inputType="number"
         android:maxLength="6"
         android:layout_marginBottom="16dp"/>
 
@@ -35,22 +32,20 @@
         android:id="@+id/inputNewPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nhập mật khẩu mới"
-        android:inputType="textPassword"
+        android:hint="@string/new_password_hint_reset" android:inputType="textPassword"
         android:layout_marginBottom="16dp"/>
 
     <EditText
         android:id="@+id/inputConfirmNewPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Xác nhận mật khẩu mới"
-        android:inputType="textPassword"
+        android:hint="@string/confirm_new_password_hint_reset" android:inputType="textPassword"
         android:layout_marginBottom="24dp"/>
 
     <Button
         android:id="@+id/btnVerifyAndReset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Xác nhận và Đổi mật khẩu"/>
+        android:text="@string/verify_and_reset_button" />
 
 </LinearLayout>

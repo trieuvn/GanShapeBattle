@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:text="Thêm hình ảnh mới"
+            android:text="@string/Addnewimage"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -38,27 +38,26 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:text="Chọn ảnh" />
+            android:text="@string/Chooseimage" />
 
         <EditText
             android:id="@+id/etPictureName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Tên ảnh" />
+            android:hint="@string/Imagename" />
 
         <EditText
             android:id="@+id/etPictureDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Mô tả" />
+            android:hint="@string/Description" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Loại"
-            android:textStyle="bold" />
+            android:text="@string/image_type" android:textStyle="bold" />
 
         <RadioGroup
             android:id="@+id/radioGroupType"
@@ -71,26 +70,25 @@
                 android:id="@+id/rbTypeArt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nghệ thuật" />
+                android:text="@string/Art" />
 
             <RadioButton
                 android:id="@+id/rbTypePhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nhiếp ảnh" />
+                android:text="@string/Photography" />
 
             <RadioButton
                 android:id="@+id/rbTypeDigital"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Digital Art" />
+                android:text="@string/DigitalArt" />
         </RadioGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tags"
-            android:textStyle="bold" />
+            android:text="@string/tags_label" android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/checkboxGroupTags"
@@ -103,26 +101,26 @@
                 android:id="@+id/cbTagNature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thiên nhiên" />
+                android:text="@string/nature" />
 
             <CheckBox
                 android:id="@+id/cbTagCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thành phố" />
+                android:text="@string/tag_city" />
 
             <CheckBox
                 android:id="@+id/cbTagPeople"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Con người" />
+                android:text="@string/tag_people" />
         </LinearLayout>
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn bộ sưu tập (Gallery)" />
+            android:text="@string/select_gallery" />
 
         <Spinner
             android:id="@+id/spinnerPictureGallery"
@@ -134,7 +132,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn người tạo (User)" />
+            android:text="@string/select_user" />
 
         <Spinner
             android:id="@+id/spinnerPictureUser"
@@ -147,6 +145,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Lưu hình ảnh" />
+            android:text="@string/save_image" />
     </LinearLayout>
 </ScrollView>

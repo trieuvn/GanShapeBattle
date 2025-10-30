@@ -15,8 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lobby ID"
-            android:textStyle="bold" />
+            android:text="@string/lobby_id_label" android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvLobbyId"
@@ -29,8 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Admin"
-            android:textStyle="bold" />
+            android:text="@string/lobby_admin_label" android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvLobbyAdmin"
@@ -43,8 +41,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chế độ chơi"
-            android:textStyle="bold" />
+            android:text="@string/lobby_mode_label" android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvLobbyMode"
@@ -57,8 +54,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Trạng thái"
-            android:textStyle="bold" />
+            android:text="@string/lobby_status_label" android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvLobbyStatus"
@@ -71,8 +67,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Số người chơi tối đa"
-            android:textStyle="bold" />
+            android:text="@string/lobby_max_players_label" android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvLobbyMaxPlayers"
@@ -87,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Cập nhật Xếp hạng" />
+            android:text="@string/calculate_ranks_button" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:text="Cập nhật" />
+                android:text="@string/update_button" />
 
             <Button
                 android:id="@+id/btnDeleteLobby"
@@ -110,7 +105,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/holo_red_light"
-                android:text="Xóa" />
+                android:text="@string/delete_button" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

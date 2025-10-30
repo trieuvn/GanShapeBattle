@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:iconifiedByDefault="false"
-        android:queryHint="Tìm kiếm theo Lobby ID..." />
+        android:queryHint="@string/search_lobby_hint" />
 
     <ListView
         android:id="@+id/lvLobbies"
@@ -27,6 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:text="Tạo phòng chơi mới" />
+        android:text="@string/create_new_lobby_button" />
 
 </RelativeLayout>

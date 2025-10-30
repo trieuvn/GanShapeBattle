@@ -22,8 +22,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tham gia phòng chơi"
-            android:textSize="24sp"
+            android:text="@string/join_lobby_title" android:textSize="24sp"
             android:textStyle="bold" />
 
         <EditText
@@ -32,8 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:background="@drawable/edittext_rounded_bg"
-            android:hint="Nhập mã phòng"
-            android:inputType="text"
+            android:hint="@string/enter_code_hint" android:inputType="text"
             android:maxLines="1"
             android:padding="12dp"
             android:textSize="16sp" />
@@ -46,8 +44,7 @@
             android:background="@drawable/btn_gradient_blue"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
-            android:text="Tham gia"
-            android:textColor="@android:color/white"
+            android:text="@string/join_button" android:textColor="@android:color/white"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -66,8 +63,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đã tham gia phòng!"
-            android:textSize="24sp"
+            android:text="@string/joined_lobby_title" android:textSize="24sp"
             android:textStyle="bold" />
 
         <TextView
@@ -76,13 +72,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textSize="18sp"
-            tools:text="Mã phòng: 1a2b3c" />
+            tools:text="@string/lobby_id_placeholder_user" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Đang chờ chủ phòng bắt đầu..." />
+            android:text="@string/waiting_for_host" />
 
         <Button
             android:id="@+id/buttonLeave"
@@ -92,8 +88,7 @@
             android:background="@drawable/btn_delete_gradient"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
-            android:text="Rời phòng"
-            android:textColor="@android:color/white"
+            android:text="@string/leave_lobby_button" android:textColor="@android:color/white"
             android:textSize="18sp" />
 
     </LinearLayout>

@@ -14,14 +14,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"
-        android:text="Chấm điểm người chơi"
-        android:textSize="24sp"
+        android:text="@string/player_scoring_title" android:textSize="24sp"
         android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chọn người dùng (User)" />
+        android:text="@string/select_user_player" />
 
     <Spinner
         android:id="@+id/spinnerPlayerUser"
@@ -32,7 +31,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chọn phòng chơi (Lobby)" />
+        android:text="@string/select_lobby" />
 
     <Spinner
         android:id="@+id/spinnerPlayerLobby"
@@ -43,7 +42,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chọn ảnh (Picture)" />
+        android:text="@string/select_picture" />
 
     <Spinner
         android:id="@+id/spinnerPlayerPicture"
@@ -56,13 +55,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:hint="Điểm"
-        android:inputType="number" />
+        android:hint="@string/point_hint" android:inputType="number" />
 
     <Button
         android:id="@+id/btnSavePlayer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Lưu điểm" />
+        android:text="@string/save_score_button" />
 </LinearLayout>

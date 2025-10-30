@@ -10,32 +10,28 @@
 
     <LinearLayout
         android:id="@+id/main"
-        android:layout_width="match_parent"
+        android:layout_width="match_match"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Tiêu đề -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:gravity="center"
-            android:text="🏆 Leaderboard 🏆"
-            android:textColor="#0D47A1"
+            android:text="@string/leaderboard_title" android:textColor="#0D47A1"
             android:textSize="26sp"
             android:textStyle="bold" />
 
-        <!-- Bục top 1–3 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/podiumLayout"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginBottom="24dp">
 
-            <!-- Top 2 -->
             <LinearLayout
                 android:id="@+id/top2Layout"
                 android:layout_width="80dp"
@@ -63,8 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Player 2"
-                    android:textColor="#0D47A1"
+                    android:text="@string/player2_name" android:textColor="#0D47A1"
                     android:textSize="14sp" />
 
                 <TextView
@@ -72,12 +67,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="850 pts"
-                    android:textColor="#1565C0"
+                    android:text="@string/player2_score" android:textColor="#1565C0"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Top 1 -->
             <LinearLayout
                 android:id="@+id/top1Layout"
                 android:layout_width="100dp"
@@ -103,8 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Player 1"
-                    android:textColor="#FFFFFF"
+                    android:text="@string/player1_name" android:textColor="#FFFFFF"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -113,12 +105,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="1000 pts"
-                    android:textColor="#E3F2FD"
+                    android:text="@string/player1_score" android:textColor="#E3F2FD"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Top 3 -->
             <LinearLayout
                 android:id="@+id/top3Layout"
                 android:layout_width="80dp"
@@ -145,8 +135,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Player 3"
-                    android:textColor="#0D47A1"
+                    android:text="@string/player3_name" android:textColor="#0D47A1"
                     android:textSize="14sp" />
 
                 <TextView
@@ -154,14 +143,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="700 pts"
-                    android:textColor="#1565C0"
+                    android:text="@string/player3_score" android:textColor="#1565C0"
                     android:textStyle="bold" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Top 4 & 5 bên dưới podium -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -189,15 +176,13 @@
                     android:id="@+id/tvName4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player 4"
-                    android:textColor="#0D47A1" />
+                    android:text="@string/player4_name" android:textColor="#0D47A1" />
 
                 <TextView
                     android:id="@+id/tvScore4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="650 pts"
-                    android:textColor="#1565C0"
+                    android:text="@string/player4_score" android:textColor="#1565C0"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -221,26 +206,22 @@
                     android:id="@+id/tvName5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Player 5"
-                    android:textColor="#0D47A1" />
+                    android:text="@string/player5_name" android:textColor="#0D47A1" />
 
                 <TextView
                     android:id="@+id/tvScore5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="600 pts"
-                    android:textColor="#1565C0"
+                    android:text="@string/player5_score" android:textColor="#1565C0"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Danh sách còn lại -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:text="Other Players"
-            android:textColor="#0D47A1"
+            android:text="@string/other_players_label" android:textColor="#0D47A1"
             android:textSize="18sp"
             android:textStyle="bold" />
 

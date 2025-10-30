@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-    <!-- Background gradient -->
     <View
         android:id="@+id/background_gradient"
         android:layout_width="match_parent"
@@ -16,7 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Loading Animation Container -->
     <LinearLayout
         android:id="@+id/loading_container"
         android:layout_width="wrap_content"
@@ -29,7 +27,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Loading Spinner -->
         <ProgressBar
             android:id="@+id/loading_spinner"
             android:layout_width="80dp"
@@ -37,19 +34,16 @@
             android:indeterminateTint="@color/white"
             android:indeterminateDrawable="@drawable/circular_progress" />
 
-        <!-- Loading Text -->
         <TextView
             android:id="@+id/loading_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Đang tính toán kết quả..."
-            android:textColor="@color/white"
+            android:text="@string/loading_text" android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             android:fontFamily="sans-serif-medium" />
 
-        <!-- Countdown Timer -->
         <TextView
             android:id="@+id/countdown_timer"
             android:layout_width="wrap_content"
@@ -63,7 +57,6 @@
 
     </LinearLayout>
 
-    <!-- Scoreboard Container -->
     <ScrollView
         android:id="@+id/scoreboard_container"
         android:layout_width="match_parent"
@@ -80,38 +73,32 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Game Over Title -->
             <TextView
                 android:id="@+id/game_over_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="GAME OVER"
-                android:textColor="@color/white"
+                android:text="@string/game_over_title" android:textColor="@color/white"
                 android:textSize="32sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:layout_marginBottom="32dp"
                 android:fontFamily="sans-serif-black" />
 
-            <!-- Winner Announcement -->
             <TextView
                 android:id="@+id/winner_announcement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Người thắng cuộc:"
-                android:textColor="@color/white"
+                android:text="@string/winner_announcement" android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:layout_marginBottom="24dp" />
 
-            <!-- Winner Name -->
             <TextView
                 android:id="@+id/winner_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Player Name"
-                android:textColor="@color/white"
+                android:text="@string/default_player_name" android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:gravity="center"
@@ -119,18 +106,15 @@
                 android:background="@drawable/winner_background"
                 android:padding="16dp" />
 
-            <!-- Scoreboard Title -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="BẢNG XẾP HẠNG"
-                android:textColor="@color/white"
+                android:text="@string/scoreboard_title" android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:layout_marginBottom="16dp" />
 
-            <!-- Players List -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/players_recycler_view"
                 android:layout_width="match_parent"
@@ -142,13 +126,11 @@
 
     </ScrollView>
 
-    <!-- Back to Menu Button -->
     <Button
         android:id="@+id/back_to_menu_btn"
         android:layout_width="200dp"
         android:layout_height="56dp"
-        android:text="Về Menu Chính"
-        android:textColor="@color/white"
+        android:text="@string/back_to_menu_button" android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         android:background="@drawable/button_background"

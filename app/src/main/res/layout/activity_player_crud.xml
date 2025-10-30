@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:iconifiedByDefault="false"
-        android:queryHint="Tìm kiếm theo username..." />
+        android:queryHint="@string/search_player_hint" />
 
     <ListView
         android:id="@+id/lvPlayers"
@@ -27,6 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:text="Chấm điểm người chơi" />
+        android:text="@string/score_player_button" />
 
 </RelativeLayout>

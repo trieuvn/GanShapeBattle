@@ -13,8 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
-        android:text="Bảng điều khiển"
-        android:textSize="28sp"
+        android:text="@string/admin_panel_title" android:textSize="28sp"
         android:textStyle="bold" />
 
     <Button
@@ -22,33 +21,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Quản lý Người dùng (User)" />
+        android:text="@string/manage_users_button" />
 
     <Button
         android:id="@+id/btnManageLobbies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Quản lý Phòng chơi (Lobby)" />
+        android:text="@string/manage_lobbies_button" />
 
     <Button
         android:id="@+id/btnManageGalleries"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Quản lý Bộ sưu tập (Gallery)" />
+        android:text="@string/manage_galleries_button" />
 
     <Button
         android:id="@+id/btnManagePictures"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Quản lý Hình ảnh (Picture)" />
+        android:text="@string/manage_pictures_button" />
 
     <Button
         android:id="@+id/btnManagePlayers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Quản lý Người chơi (Player)" />
+        android:text="@string/manage_players_button" />
 
 </LinearLayout>

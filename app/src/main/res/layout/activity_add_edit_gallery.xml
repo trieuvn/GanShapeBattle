@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"
-        android:text="Tạo bộ sưu tập mới"
+        android:text="@string/CreateNewGallery"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -23,19 +23,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:hint="Tên bộ sưu tập" />
+        android:hint="@string/Collectionname" />
 
     <EditText
         android:id="@+id/etGalleryDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:hint="Mô tả" />
+        android:hint="@string/Description" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loại bộ sưu tập" />
+        android:text="@string/Collectiontype" />
 
     <Spinner
         android:id="@+id/spinnerGalleryType"
@@ -48,5 +48,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Lưu bộ sưu tập" />
+        android:text="Savecollection" />
 </LinearLayout>

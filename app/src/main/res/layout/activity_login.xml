@@ -42,8 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="48dp"
-        android:text="Already Have an Account?"
-        android:textColor="@android:color/white"
+        android:text="@string/top_login_text" android:textColor="@android:color/white"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/imageView5"
@@ -165,7 +164,6 @@
         android:text="@string/new_user_register_now"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />

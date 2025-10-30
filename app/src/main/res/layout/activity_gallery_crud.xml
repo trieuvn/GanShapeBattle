@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:iconifiedByDefault="false"
-        android:queryHint="Tìm kiếm theo tên bộ sưu tập..." />
+        android:queryHint="@string/search_gallery_hint" />
 
     <ListView
         android:id="@+id/lvGalleries"
@@ -27,6 +27,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:text="Tạo bộ sưu tập mới" />
+        android:text="@string/create_new_gallery_button" />
 
 </RelativeLayout>

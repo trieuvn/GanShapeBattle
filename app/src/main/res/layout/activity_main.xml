@@ -16,21 +16,19 @@
         android:layout_marginTop="11dp"
         android:layout_marginEnd="-12dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="User Profile"
-        android:padding="8dp"
+        android:contentDescription="@string/profile_cd" android:padding="8dp"
         android:src="@drawable/ic_person"
         app:tint="?attr/colorControlNormal" />
 
     <TextView
-    android:id="@+id/tvWelcome"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Chào mừng đến với GanShapeBattle!"
-    android:textSize="24sp"
-    android:textStyle="bold"
-    android:layout_centerHorizontal="true"
-    android:layout_alignParentTop="true"
-    android:layout_marginTop="60dp"  android:layout_marginBottom="32dp"/>
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome_title" android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dp"  android:layout_marginBottom="32dp"/>
 
     <TextView
         android:id="@+id/tvCurrentUsername" android:layout_width="wrap_content"
@@ -51,40 +49,35 @@
             android:id="@+id/btnGoToDrawing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bắt đầu vẽ"
-            android:layout_marginBottom="16dp"
+            android:text="@string/start_drawing_button" android:layout_marginBottom="16dp"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/btnGoToGameRoom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Vào phòng chơi"
-            android:layout_marginBottom="16dp"
+            android:text="@string/go_to_game_room_button" android:layout_marginBottom="16dp"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/btnGoToLeaderboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bảng xếp hạng"
-            android:layout_marginBottom="16dp"
+            android:text="@string/go_to_leaderboard_button" android:layout_marginBottom="16dp"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/btnGoToGallery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Xem Thư viện"
-            android:layout_marginBottom="16dp"
+            android:text="@string/go_to_gallery_button" android:layout_marginBottom="16dp"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/btnAdminPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bảng điều khiển Admin"
-            android:backgroundTint="@color/design_default_color_secondary" android:textSize="18sp"
+            android:text="@string/admin_panel_button" android:backgroundTint="@color/design_default_color_secondary" android:textSize="18sp"
             android:visibility="gone"
             tools:visibility="visible"/>
 
@@ -96,6 +89,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Đăng xuất" />
+        android:text="@string/logout_button" />
 
 </RelativeLayout>

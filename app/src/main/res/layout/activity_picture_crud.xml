@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_margin="8dp"
         android:iconifiedByDefault="false"
-        android:queryHint="Tìm kiếm theo tên ảnh..." />
+        android:queryHint="@string/search_picture_hint" />
 
     <ListView
         android:id="@+id/lvPictures"
@@ -28,6 +28,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:text="Thêm hình ảnh mới" />
+        android:text="@string/add_new_picture_button" />
 
 </RelativeLayout>

@@ -15,14 +15,12 @@
         android:layout_height="120dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"
-        android:contentDescription="Avatar người dùng"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:contentDescription="@string/avatar_cd" tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Username"
-        android:textSize="14sp"
+        android:text="@string/username_label" android:textSize="14sp"
         android:textStyle="bold" />
 
     <TextView
@@ -36,8 +34,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Email"
-        android:textSize="14sp"
+        android:text="@string/email_label" android:textSize="14sp"
         android:textStyle="bold" />
 
     <TextView
@@ -51,8 +48,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Số điện thoại"
-        android:textSize="14sp"
+        android:text="@string/phone_number_label" android:textSize="14sp"
         android:textStyle="bold" />
 
     <TextView
@@ -66,8 +62,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ngày sinh"
-        android:textSize="14sp"
+        android:text="@string/dob_label" android:textSize="14sp"
         android:textStyle="bold" />
 
     <TextView
@@ -75,6 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
+        android:layout_marginBottom="16dp"
         tools:text="2000-01-01" />
 
     <LinearLayout
@@ -89,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:text="Cập nhật" />
+            android:text="@string/update_button" />
 
         <Button
             android:id="@+id/btnDeleteUser"
@@ -98,7 +94,7 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:backgroundTint="@android:color/holo_red_light"
-            android:text="Xóa" />
+            android:text="@string/delete_button" />
     </LinearLayout>
 
 </LinearLayout>

@@ -11,8 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Gallery ID"
-        android:textStyle="bold" />
+        android:text="@string/gallery_id_label" android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvGalleryId"
@@ -25,8 +24,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tên bộ sưu tập"
-        android:textStyle="bold" />
+        android:text="@string/gallery_name_label" android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvGalleryName"
@@ -39,8 +37,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mô tả"
-        android:textStyle="bold" />
+        android:text="@string/description_label" android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvGalleryDescription"
@@ -53,8 +50,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loại"
-        android:textStyle="bold" />
+        android:text="@string/type_label" android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvGalleryType"
@@ -76,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:text="Cập nhật" />
+            android:text="@string/update_button" />
 
         <Button
             android:id="@+id/btnDeleteGallery"
@@ -85,6 +81,6 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:backgroundTint="@android:color/holo_red_light"
-            android:text="Xóa" />
+            android:text="@string/delete_button" />
     </LinearLayout>
 </LinearLayout>

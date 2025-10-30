@@ -10,18 +10,15 @@
     android:padding="16dp"
     tools:context=".admin.Gallery">
 
-    <!-- Tiêu đề -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="🎨 Gallery"
-        android:textColor="#1976D2"
+        android:text="@string/gallery_title" android:textColor="#1976D2"
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <!-- Bộ lọc -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,11 +39,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:backgroundTint="#64B5F6"
-            android:text="➕ Add Category"
-            android:textColor="#FFFFFF" />
+            android:text="@string/add_category_button" android:textColor="#FFFFFF" />
     </LinearLayout>
 
-    <!-- Danh sách hình ảnh -->
     <GridView
         android:id="@+id/gridGallery"
         android:layout_width="match_parent"

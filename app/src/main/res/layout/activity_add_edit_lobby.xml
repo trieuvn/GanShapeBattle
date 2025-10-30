@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
-            android:text="Tạo phòng chơi mới"
+            android:text="@string/Createanewgameroom"
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:labelFor="@+id/spinnerLobbyMode"
-            android:text="Chế độ chơi" />
+            android:text="@string/Gamemode" />
 
         <Spinner
             android:id="@+id/spinnerLobbyMode"
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:labelFor="@+id/spinnerLobbyStatus"
-            android:text="Trạng thái" />
+            android:text="@string/Status" />
 
         <Spinner
             android:id="@+id/spinnerLobbyStatus"
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Số người chơi tối đa"
+            android:hint="@string/Maximumnumberofplayers"
             android:inputType="number" />
 
         <EditText
@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Thời gian thiết kế (giây)"
+            android:hint="@string/Designtime"
             android:inputType="number" />
 
         <EditText
@@ -80,7 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Thời gian bình chọn (giây)"
+            android:hint="@string/Votingtime"
             android:inputType="number" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -120,6 +120,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Lưu phòng chơi" />
+            android:text="@string/Savegameroom" />
     </LinearLayout>
 </ScrollView>

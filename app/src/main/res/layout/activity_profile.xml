@@ -15,8 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cập nhật Hồ sơ"
-            android:textSize="24sp"
+            android:text="@string/update_profile_title" android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="24dp"/>
 
@@ -33,12 +32,10 @@
             android:id="@+id/btnSelectAvatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn ảnh đại diện"
-            android:layout_marginBottom="24dp"/>
+            android:text="@string/select_avatar_button" android:layout_marginBottom="24dp"/>
         <TextView
             android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:text="Email (Không thể thay đổi)"
-            android:textStyle="bold"/>
+            android:text="@string/email_label_locked" android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/tvProfileEmail"
@@ -57,7 +54,7 @@
                 android:id="@+id/etProfileUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username"/>
+                android:hint="@string/username_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -67,10 +64,9 @@
             android:layout_marginBottom="16dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etProfilePhoneNumber"
-                android:layout_width="match_parent"
+                android:layout_width="match_match"
                 android:layout_height="wrap_content"
-                android:hint="Số điện thoại"
-                android:inputType="phone"/>
+                android:hint="@string/phone_number_hint" android:inputType="phone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -82,8 +78,7 @@
                 android:id="@+id/etProfileDateOfBirth"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ngày sinh (YYYY-MM-DD)"
-                android:focusable="false"
+                android:hint="@string/dob_hint" android:focusable="false"
                 android:clickable="true"
                 android:inputType="date"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -92,7 +87,7 @@
             android:id="@+id/btnSaveChanges"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Lưu thay đổi"/>
+            android:text="@string/save_changes_button" />
 
     </LinearLayout>
 </ScrollView>

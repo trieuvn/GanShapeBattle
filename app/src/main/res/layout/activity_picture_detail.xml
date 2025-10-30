@@ -24,8 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tên ảnh"
-            android:textStyle="bold" />
+            android:text="@string/picture_name_label" android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvPictureName"
@@ -38,8 +37,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mô tả"
-            android:textStyle="bold" />
+            android:text="@string/picture_description_label" android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvPictureDescription"
@@ -52,8 +50,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ngày tạo"
-            android:textStyle="bold" />
+            android:text="@string/picture_created_date_label" android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvPictureCreatedDate"
@@ -66,8 +63,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Loại"
-            android:textStyle="bold" />
+            android:text="@string/picture_type_label" android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvPictureType"
@@ -89,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:text="Cập nhật" />
+                android:text="@string/update_button" />
 
             <Button
                 android:id="@+id/btnDeletePicture"
@@ -98,7 +94,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/holo_red_light"
-                android:text="Xóa" />
+                android:text="@string/delete_button" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -65,7 +66,7 @@
     <ProgressBar
         android:id="@+id/time_progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
+        android:layout_width="match_match"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -111,8 +112,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="sky"
-                    android:textColor="#FF333333"
+                    android:text="@string/color_sky" android:textColor="#FF333333"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -131,8 +131,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="cloud"
-                    android:textColor="#FF333333"
+                    android:text="@string/color_cloud" android:textColor="#FF333333"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -151,8 +150,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="rock"
-                    android:textColor="#FF333333"
+                    android:text="@string/color_rock" android:textColor="#FF333333"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -171,8 +169,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="water"
-                    android:textColor="#FF333333"
+                    android:text="@string/color_water" android:textColor="#FF333333"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
@@ -197,8 +194,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="river"
-                    android:textColor="#FF333333"
+                    android:text="@string/color_river" android:textColor="#FF333333"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -217,8 +213,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="grass"
-                    android:textColor="#FF333333"
+                    android:text="@string/color_grass" android:textColor="#FF333333"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -237,8 +232,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="sun"
-                    android:textColor="#FF333333"
+                    android:text="@string/color_sun" android:textColor="#FF333333"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -257,8 +251,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="sand"
-                    android:textColor="#FF333333"
+                    android:text="@string/color_sand" android:textColor="#FF333333"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
