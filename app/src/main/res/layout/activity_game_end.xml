@@ -1,143 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black">
+    android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/background_gradient"
+    <VideoView
+        android:id="@+id/background_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gradient_background"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/loading_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="visible"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ProgressBar
-            android:id="@+id/loading_spinner"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:indeterminateTint="@color/white"
-            android:indeterminateDrawable="@drawable/circular_progress" />
-
-        <TextView
-            android:id="@+id/loading_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/loading_text" android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-medium" />
-
-        <TextView
-            android:id="@+id/countdown_timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="10"
-            android:textColor="@color/white"
-            android:textSize="48sp"
-            android:textStyle="bold"
-            android:fontFamily="sans-serif-light" />
-
-    </LinearLayout>
-
-    <ScrollView
-        android:id="@+id/scoreboard_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        android:padding="24dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/game_over_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/game_over_title" android:textColor="@color/white"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="32dp"
-                android:fontFamily="sans-serif-black" />
-
-            <TextView
-                android:id="@+id/winner_announcement"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/winner_announcement" android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="24dp" />
-
-            <TextView
-                android:id="@+id/winner_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/default_player_name" android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="32dp"
-                android:background="@drawable/winner_background"
-                android:padding="16dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/scoreboard_title" android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="16dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/players_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/scoreboard_background"
-                android:padding="16dp" />
-
-        </LinearLayout>
-
-    </ScrollView>
-
-    <Button
-        android:id="@+id/back_to_menu_btn"
-        android:layout_width="200dp"
-        android:layout_height="56dp"
-        android:text="@string/back_to_menu_button" android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:background="@drawable/button_background"
-        android:layout_marginBottom="32dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:keepScreenOn="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
