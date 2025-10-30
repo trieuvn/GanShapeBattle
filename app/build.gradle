@@ -45,7 +45,7 @@ dependencies {
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
-
+    implementation "com.github.skydoves:medal:1.2.1"
     // Supabase BOM
     implementation platform('io.github.jan-tennert.supabase:bom:3.2.5')
     implementation 'io.github.jan-tennert.supabase:postgrest-kt'
