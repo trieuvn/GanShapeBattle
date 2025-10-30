@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GanShapeBattle">
         <activity
+            android:name=".LobbyRateVoteActivity"
+            android:exported="false" />
+        <activity
             android:name=".GameVoteActivity"
             android:exported="false" />
         <activity
