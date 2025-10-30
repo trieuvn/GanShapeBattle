@@ -50,9 +50,6 @@ public class AddEditPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_edit_player);
 
         tvTitle = findViewById(R.id.tvPlayerTitle);
-        spinnerUser = findViewById(R.id.spinnerPlayerUser);
-        spinnerLobby = findViewById(R.id.spinnerPlayerLobby);
-        spinnerPicture = findViewById(R.id.spinnerPlayerPicture);
         etPoint = findViewById(R.id.etPlayerPoint);
         btnSave = findViewById(R.id.btnSavePlayer);
 

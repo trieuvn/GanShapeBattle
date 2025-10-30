@@ -1,0 +1,7 @@
+<!-- ic_empty_lobby.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp" android:height="120dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <path android:fillColor="#CCCCCC"
+        android:pathData="M3,13h8V3H3v10zm0,8h8v-6H3v6zm10,0h8V11h-8v10zm0-6h8V3h-8v12z"/>
+</vector>
