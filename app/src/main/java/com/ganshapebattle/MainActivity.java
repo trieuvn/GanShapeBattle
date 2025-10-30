@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ganshapebattle.admin.GalleryCRUDActivity; //
 import com.ganshapebattle.admin.MenuActivity; //
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 // <<< Thêm import SessionManager >>>
 import java.util.HashMap;
@@ -25,7 +26,9 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     // Khai báo các view components
-    private Button btnGoToDrawing, btnGoToGameRoom, btnGoToLeaderboard, btnGoToGallery, btnAdminPanel, btnLogout;
+    private Button btnJoinGame, btnCreateLobby, btnGoToLeaderboard, btnGoToGallery, btnAdminPanel;
+
+    private FloatingActionButton btnLogout;
     private ImageButton btnProfile; // Nút mở Profile
     private TextView tvCurrentUsername; // TextView hiển thị username
     private String currentUsername; // Biến lưu username hiện tại
@@ -49,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
         // <<< >>>
 
         // --- Ánh xạ View ---
-        btnGoToDrawing = findViewById(R.id.btnGoToDrawing); //
-        btnGoToGameRoom = findViewById(R.id.btnGoToGameRoom); //
+        btnJoinGame = findViewById(R.id.btnJoinGame); //
+        btnCreateLobby = findViewById(R.id.btnCreateLobby); //
         btnGoToLeaderboard = findViewById(R.id.btnGoToLeaderboard); //
         btnGoToGallery = findViewById(R.id.btnGoToGallery); //
         btnAdminPanel = findViewById(R.id.btnAdminPanel); //
@@ -86,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // --- Gắn sự kiện điều hướng cho các nút chức năng ---
-        btnGoToDrawing.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, DesignActivity.class))); //
-        btnGoToGameRoom.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, GameRoom.class))); //
+        btnJoinGame.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LobbyUserActivity.class).putExtra("username",currentUsername))); //
+        btnCreateLobby.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LobbyActivity.class).putExtra("username",currentUsername))); //
         btnGoToLeaderboard.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Leaderboard.class))); //
         // Chuyển đến màn hình quản lý Gallery của admin
         btnGoToGallery.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, GalleryCRUDActivity.class))); //

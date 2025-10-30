@@ -114,6 +114,7 @@ public class AddEditPictureActivity extends AppCompatActivity {
         ivSelectedImage = findViewById(R.id.ivSelectedImage);
         btnSelectImage = findViewById(R.id.btnSelectImage);
         btnSavePicture = findViewById(R.id.btnSavePicture);
+        //fabSave = findViewById(R.id.fabSave);
 
         etName = findViewById(R.id.etPictureName);
         etDescription = findViewById(R.id.etPictureDescription);

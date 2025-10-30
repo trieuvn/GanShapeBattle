@@ -19,7 +19,7 @@
         android:layout_marginTop="48dp"
         android:layout_marginBottom="8dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Chào mừng đến với\nGanShapeBattle!"
+        android:text="Gan Shape Battle"
         android:textAlignment="center"
         android:textColor="#0A6AED"
         android:textSize="26sp"
@@ -95,11 +95,11 @@
 
         <!-- Bắt đầu vẽ -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGoToDrawing"
+            android:id="@+id/btnJoinGame"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginBottom="12dp"
-            android:text="Bắt đầu vẽ"
+            android:text="@string/joingame"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -115,11 +115,11 @@
 
         <!-- Vào phòng chơi -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGoToGameRoom"
+            android:id="@+id/btnCreateLobby"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginBottom="12dp"
-            android:text="Vào phòng chơi"
+            android:text="@string/createlobby"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -139,7 +139,7 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginBottom="12dp"
-            android:text="Bảng xếp hạng"
+            android:text="@string/leaderboard"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -159,7 +159,7 @@
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginBottom="12dp"
-            android:text="Xem Thư viện"
+            android:text="@string/gallery"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
@@ -178,7 +178,7 @@
             android:id="@+id/btnAdminPanel"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:text="Bảng điều khiển Admin"
+            android:text="@string/gotoadmin"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
