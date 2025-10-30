@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F9FF"
+    tools:context=".LobbyRateVoteActivity">
+
+    <!-- SearchView (Đã khớp với Java) -->
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchViewPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:hint="Tìm kiếm theo username..."
+        app:iconifiedByDefault="false"
+        app:queryHint="Tìm kiếm theo username..."
+        android:background="@drawable/bg_soft_blue_gradient"
+        app:cornerRadius="24dp"
+        style="@style/Widget.AppCompat.SearchView.ActionBar" />
+
+    <!-- ListView (giữ nguyên) -->
+    <ListView
+        android:id="@+id/lvPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchViewPlayers"
+        android:layout_above="@id/btnFinish"
+        android:divider="#EEEEEE"
+        android:dividerHeight="8dp"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay"/>
+
+    <!-- ĐÃ SỬA LỖI GÂY CRASH:
+         1. Đổi ExtendedFloatingActionButton (không cho phép android:background)
+         2. Sang androidx.appcompat.widget.AppCompatButton (an toàn và cho phép)
+    -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="24dp"
+        android:text="Hoàn thành"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/btn_gradient_blue"
+        android:elevation="8dp"
+        android:paddingHorizontal="20dp"/>
+
+</RelativeLayout>
