@@ -109,6 +109,8 @@
         <activity android:name=".VerifyOtpActivity" />
         <activity android:name=".VerifySignupOtpActivity" />
         <activity android:name=".GameEndActivity" />
+        <activity android:name=".CreatePasswordActivity" android:exported="false" />
+        <activity android:name=".ProfileActivity" android:exported="false" />
     </application>
 
 </manifest>
