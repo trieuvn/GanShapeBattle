@@ -23,7 +23,9 @@ import com.ganshapebattle.services.PlayerService;
 import com.ganshapebattle.services.SupabaseCallback;
 import com.ganshapebattle.services.UserService;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -343,36 +345,82 @@ public class GameLoadActivity extends AppCompatActivity {
     /**
      * Hàm này được gọi khi tất cả player đã sẵn sàng
      */
+    // Bên trong file GameLoadActivity.java
+
+    /**
+     * Hàm này được gọi khi tất cả player đã sẵn sàng
+     */
+    // Bên trong file GameLoadActivity.java
+
+    /**
+     * Hàm này được gọi khi tất cả player đã sẵn sàng
+     */
     private void startGame() {
         // 1. Dừng vòng lặp kiểm tra
         stopPlayerCheckLoop();
 
-        // currentLobby đã được đảm bảo không null nhờ luồng setup trong onCreate
         if (currentLobby == null) {
-            // Đây là một safeguard, về lý thuyết không bao giờ xảy ra
             handleSetupFailure(new Exception("Lỗi nghiêm trọng: Lobby bị null trước khi startGame."));
             return;
         }
 
         try {
-            String beginDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault()).format(new Date());
-            currentLobby.setStatus("isPlaying"); // Chuyển trạng thái
-            currentLobby.setBeginDate(beginDate);
+            // ĐỊNH DẠNG CHUẨN (Khớp với Lobby.java)
+            // QUAN TRỌNG: Dùng format "simple" mà hàm getBeginVoteDate sẽ xuất ra
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
+            // 1. Tạo beginDate
+            String beginDate = sdf.format(new Date());
+            currentLobby.setStatus("isPlaying");
+            currentLobby.setBeginDate(beginDate); // Gán beginDate mới với format chuẩn
+
+            // 2. TÍNH TOÁN THỜI GIAN KẾT THÚC (BEGIN VOTE DATE)
+            String beginVoteDateString;
+            try {
+                Date parsedBeginDate = sdf.parse(beginDate); // Parse lại chuỗi vừa tạo
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(parsedBeginDate);
+
+                // Thêm designTime (SỐ GIÂY)
+                int designTime = currentLobby.getDesignTime();
+                if (designTime <= 0) {
+                    Toast.makeText(this, "Lỗi: DesignTime = 0. Gán tạm 60 giây.", Toast.LENGTH_SHORT).show();
+                    calendar.add(Calendar.SECOND, 60); // <-- TÍNH BẰNG GIÂY
+                } else {
+                    calendar.add(Calendar.SECOND, designTime); // <-- TÍNH BẰNG GIÂY
+                }
+
+                // Format lại thành chuỗi thời gian kết thúc
+                beginVoteDateString = sdf.format(calendar.getTime());
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Lỗi nghiêm trọng khi parse thời gian. Dừng lại.", Toast.LENGTH_LONG).show();
+                finish();
+                return; // DỪNG LẠI NẾU LỖI
+            }
+
+            // Tạo biến final cho lambda
+            final String finalBeginVoteDateString = beginVoteDateString;
+
+            // 3. Cập nhật Lobby lên Supabase
             lobbyService.updateLobby(currentLobby.getId(), currentLobby, new SupabaseCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
                     runOnUiThread(() -> {
                         Toast.makeText(GameLoadActivity.this, "Trò chơi bắt đầu!", Toast.LENGTH_SHORT).show();
 
-                        // Chuyển sang DesignActivity
+                        // 4. CHUYỂN ACTIVITY VÀ GỬI "VOTETIME"
                         Intent intent = new Intent(GameLoadActivity.this, DesignActivity.class);
                         intent.putExtra("username", username);
                         intent.putExtra("lobbyid", currentLobby.getId());
-                        startActivity(intent);
 
-                        // 3. Đóng Activity loading này
-                        //finish();
+                        // Gửi chuỗi thời gian kết thúc (đã được tính toán)
+                        intent.putExtra("votetime", finalBeginVoteDateString);
+
+                        startActivity(intent);
+                        finish();
                     });
                 }
 
@@ -381,8 +429,6 @@ public class GameLoadActivity extends AppCompatActivity {
                     runOnUiThread(() ->
                             Toast.makeText(GameLoadActivity.this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show()
                     );
-                    // Có lỗi, có thể thử lại hoặc hủy phòng
-                    // Tạm thời, chúng ta quay lại và bắt đầu lại vòng lặp check
                     startPlayerCheckLoop();
                 }
             });
@@ -390,10 +436,5 @@ public class GameLoadActivity extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-        // Xóa các lệnh gọi Intent thừa ở đây
-        // Intent intent = new Intent(GameLoadActivity.this, DesignActivity.class);
-        // ...
-        // finish();
     }
 }

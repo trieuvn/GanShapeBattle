@@ -159,8 +159,8 @@ public class LobbyActivity extends AppCompatActivity {
             currentLobby.setMode("vote");
             currentLobby.setStatus("waiting");
             currentLobby.setMaxPlayer(10);
-            currentLobby.setDesignTime(300);
-            currentLobby.setVoteTime(60);
+            currentLobby.setDesignTime(30);
+            currentLobby.setVoteTime(30);
             currentLobby.setCreatedDate(currentTime);
             currentLobby.setBeginDate(null);
 

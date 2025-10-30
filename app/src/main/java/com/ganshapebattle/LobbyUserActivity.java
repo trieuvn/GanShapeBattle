@@ -646,15 +646,40 @@ public class LobbyUserActivity extends AppCompatActivity {
 
                     //Giả định 2: Nếu game đã thực sự bắt đầu (ví dụ status là "isPlaying")
                 } else if ("isPlaying".equals(status)) {
-                    runOnUiThread(() -> {
-                        Toast.makeText(LobbyUserActivity.this, "Trò chơi đã bắt đầu! Vào thẳng...", Toast.LENGTH_SHORT).show();
-                        stopLobbyStatusCheck();
-                        Intent intent = new Intent(LobbyUserActivity.this, DesignActivity.class);
-                        intent.putExtra("username", username);
-                        intent.putExtra("lobbyid", currentLobbyId);
-                        startActivity(intent);
-                        finish();
-                    });
+                    // --- SỬA LỖI LOGIC Ở ĐÂY ---
+
+                    // 1. Lấy thời gian KẾT THÚC (beginVoteDate)
+                    //    (Hàm này đã được sửa lại để dùng API cũ và tính bằng GIÂY)
+                    String beginVoteDate = lobby.getBeginVoteDate();
+
+                    // 2. Kiểm tra xem thời gian đã có chưa
+                    if (beginVoteDate == null) {
+                        // LỖI: beginDate trong DB vẫn là null (do race condition).
+                        // Chúng ta phải thử lại sau vài giây.
+                        runOnUiThread(() -> {
+                            Toast.makeText(LobbyUserActivity.this, "Đang đồng bộ thời gian với phòng...", Toast.LENGTH_SHORT).show();
+                        });
+
+                        // Quan trọng: Lên lịch kiểm tra lại
+                        scheduleNextStatusCheck();
+                    } else {
+                        // THÀNH CÔNG: Đã có thời gian
+                        // Chuyển người chơi vào thẳng phòng vẽ
+                        runOnUiThread(() -> {
+                            Toast.makeText(LobbyUserActivity.this, "Trò chơi đã bắt đầu! Vào thẳng...", Toast.LENGTH_SHORT).show();
+                            stopLobbyStatusCheck();
+
+                            Intent intent = new Intent(LobbyUserActivity.this, DesignActivity.class);
+                            intent.putExtra("username", username);
+                            intent.putExtra("lobbyid", currentLobbyId);
+
+                            // Gửi chuỗi thời gian kết thúc (ví dụ: "2025-10-31 22:09:40")
+                            intent.putExtra("votetime", beginVoteDate);
+
+                            startActivity(intent);
+                            finish(); // Đóng Activity này
+                        });
+                    }
                 } else {
                     // Các trạng thái khác (isVoting, isOver...) -> tiếp tục chờ
                     scheduleNextStatusCheck();
