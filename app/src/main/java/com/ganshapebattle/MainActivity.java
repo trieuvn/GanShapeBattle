@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); //
 
+        Intent intent1 = new Intent(this, DesignActivity.class);
+        startActivity(intent1);
         // <<< Khởi tạo SessionManager >>>
         sessionManager = new SessionManager(getApplicationContext());
         // <<< >>>

@@ -72,15 +72,17 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
-        <!-- Avatar tròn hoàn hảo -->
+    <!-- Avatar tròn hoàn hảo -->
     <style name="AvatarCircle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
     <style name="Circle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
     <style name="ShapeAppearanceOverlay.Avatar.Rounded" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
@@ -90,6 +92,7 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
+
     <string name="joingame">Join game</string>
     <string name="createlobby">Create lobby</string>
     <string name="leaderboard">Leaderboard</string>

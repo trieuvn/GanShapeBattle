@@ -12,8 +12,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ganshapebattle.models.Lobby;
+import com.ganshapebattle.models.Picture;
+import com.ganshapebattle.models.Player;
 import com.ganshapebattle.models.User;
 import com.ganshapebattle.services.LobbyService;
+import com.ganshapebattle.services.PictureService;
 import com.ganshapebattle.services.PlayerService;
 import com.ganshapebattle.services.SupabaseCallback;
 import com.ganshapebattle.services.UserService;
@@ -50,6 +53,7 @@ public class LobbyActivity extends AppCompatActivity {
     private Lobby currentLobby;
     private User currentUser;
     private String username;
+    private PictureService pictureService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class LobbyActivity extends AppCompatActivity {
         lobbyService = new LobbyService();
         playerService = new PlayerService();
         userService = new UserService();
+        pictureService = new PictureService();
 
         // Ánh xạ View
         bindViews();
@@ -75,6 +80,12 @@ public class LobbyActivity extends AppCompatActivity {
 
         // Tải thông tin người dùng
         loadUserInfo();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        deleteLobby();
     }
 
     /** Truy vấn thông tin user */
@@ -136,6 +147,7 @@ public class LobbyActivity extends AppCompatActivity {
             Toast.makeText(this, "Chưa tải được thông tin người dùng!", Toast.LENGTH_SHORT).show();
             return;
         }
+        deleteLobby();
 
         try {
             String currentTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault()).format(new Date());
@@ -156,10 +168,10 @@ public class LobbyActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(String result) {
                     runOnUiThread(() -> {
-                        Toast.makeText(LobbyActivity.this, "Tạo phòng thành công!", Toast.LENGTH_SHORT).show();
                         createQrcode(currentLobby.getId());
                         updateUIAfterCreation();
                     });
+                    insertPlayer(currentLobby.getId());
                 }
 
                 @Override
@@ -173,6 +185,11 @@ public class LobbyActivity extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this, "Lỗi tạo phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void insertPlayer(String lobbyId) {
+        // Bước 9a: Tạo picture trước
+        createPictureForPlayer(lobbyId);
     }
 
     /** Cập nhật chế độ chơi */
@@ -204,7 +221,7 @@ public class LobbyActivity extends AppCompatActivity {
 
         try {
             String beginDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault()).format(new Date());
-            currentLobby.setStatus("in_progress");
+            currentLobby.setStatus("loading");
             currentLobby.setBeginDate(beginDate);
 
             lobbyService.updateLobby(currentLobby.getId(), currentLobby, new SupabaseCallback<String>() {
@@ -213,6 +230,10 @@ public class LobbyActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         Toast.makeText(LobbyActivity.this, "Trò chơi bắt đầu!", Toast.LENGTH_SHORT).show();
                         // TODO: start GameActivity
+                        Intent intent = new Intent(LobbyActivity.this, GameLoadActivity.class);
+                        intent.putExtra("username", username);
+                        intent.putExtra("lobbyid", currentLobby.getId());
+                        startActivity(intent);
                     });
                 }
 
@@ -232,7 +253,7 @@ public class LobbyActivity extends AppCompatActivity {
     /** Xóa phòng */
     private void deleteLobby() {
         if (currentLobby == null) {
-            Toast.makeText(this, "Chưa có phòng chơi!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Chưa có phòng chơi!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -244,16 +265,13 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(LobbyActivity.this, "Đã xóa phòng.", Toast.LENGTH_SHORT).show();
                     resetUI();
                 });
             }
 
             @Override
             public void onFailure(Exception e) {
-                runOnUiThread(() ->
-                        Toast.makeText(LobbyActivity.this, "Lỗi xóa phòng: " + e.getMessage(), Toast.LENGTH_LONG).show()
-                );
+
             }
         });
     }
@@ -286,5 +304,82 @@ public class LobbyActivity extends AppCompatActivity {
         buttonCreateLobby.setVisibility(View.VISIBLE);
         imageViewQRCode.setImageBitmap(null);
         textViewLobbyId.setText("");
+    }
+
+    private Picture createDefaultPicture(String lobbyId) {
+        // Sử dụng format ISO 8601 chuẩn cho PostgreSQL
+        String currentTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).format(new Date());
+        // Tạo ID đơn giản hơn, tránh ký tự đặc biệt
+        String pictureId = "pic_" + currentUser.getUsername().replaceAll("[^a-zA-Z0-9]", "_") + "_" + System.currentTimeMillis();
+
+        Picture defaultPicture = new Picture();
+        //defaultPicture.setId(pictureId);
+        defaultPicture.setName("Default Picture - " + currentUser.getUsername());
+        defaultPicture.setDescription("Default picture created when joining lobby " + lobbyId);
+        defaultPicture.setCreatedDate(currentTime);
+        defaultPicture.setType("default"); // Thay đổi type thành "default" thay vì "game_picture"
+        defaultPicture.setImage(""); // Sử dụng empty string thay vì null
+        defaultPicture.setTags("default,lobby,game,placeholder");
+        defaultPicture.setGalleryId("d819cf07-9afc-4089-8d50-d07ce29d47c2"); // Sử dụng empty string thay vì null
+        defaultPicture.setUsername(currentUser.getUsername());
+
+        return defaultPicture;
+    }
+
+    private void createPictureForPlayer(String lobbyId) {
+        Picture newPicture = createDefaultPicture(lobbyId);
+
+        pictureService.insertPicture(newPicture, new SupabaseCallback<Picture>() {
+            @Override
+            public void onSuccess(Picture insertedPicture) {
+                // Bước 9b: Sau khi tạo picture thành công, tạo player với pictureId từ Supabase
+                createPlayerWithPicture(lobbyId, insertedPicture.getId());
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(LobbyActivity.this, "Lỗi tạo picture: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    //editTextLobbyId.setText("Lỗi tạo picture: " + e.getMessage());
+                    //setLoading(false);
+                });
+            }
+        });
+    }
+
+    private void createPlayerWithPicture(String lobbyId, String pictureId) {
+        Player newPlayer = new Player();
+        newPlayer.setUsername(currentUser.getUsername());
+        newPlayer.setLobbyId(lobbyId);
+        newPlayer.setPoint(-1);
+        newPlayer.setRank(0);
+        newPlayer.setPictureId(pictureId); // Sử dụng pictureId vừa tạo
+
+        playerService.insertPlayer(newPlayer, new SupabaseCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                // Bước 11-12: Thành công, chuyển hướng giao diện
+                runOnUiThread(() -> { // Sử dụng username làm player ID
+                    //setLoading(false);
+                    //showInLobbyView();
+                    createQrcode(currentLobby.getId());
+                    updateUIAfterCreation();
+                    Toast.makeText(LobbyActivity.this, "Tạo phòng thành công", Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                runOnUiThread(() -> {
+                    String errorMessage = "Không thể tham gia phòng: " + e.getMessage();
+                    if (e.getMessage().contains("23503")) {
+                        errorMessage += "\nLỗi: Foreign key constraint - Kiểm tra dữ liệu liên quan";
+                    }
+                    Toast.makeText(LobbyActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+                    //editTextLobbyId.setText(errorMessage);
+                    //setLoading(false);
+                });
+            }
+        });
     }
 }
