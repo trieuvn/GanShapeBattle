@@ -53,7 +53,7 @@ public class LobbyUserActivity extends AppCompatActivity {
     // --- Thêm biến cho Polling ---
     private Handler lobbyStatusHandler;
     private Runnable lobbyStatusRunnable;
-    private static final long CHECK_INTERVAL = 3000; // 3 giây
+    private static final long CHECK_INTERVAL = 2000; // 3 giây
     private boolean isCheckingStatus = false; // Cờ để quản lý vòng lặp
 
     // --- Static method để tạo Intent với username ---
