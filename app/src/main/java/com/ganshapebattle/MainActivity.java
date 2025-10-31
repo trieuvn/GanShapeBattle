@@ -15,8 +15,23 @@ import androidx.activity.result.ActivityResultLauncher; // <<< Import ActivityRe
 import androidx.activity.result.contract.ActivityResultContracts; // <<< Import ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ganshapebattle.admin.AddEditGalleryActivity;
+import com.ganshapebattle.admin.AddEditLobbyActivity;
+import com.ganshapebattle.admin.AddEditPictureActivity;
+import com.ganshapebattle.admin.AddEditPlayerActivity;
+import com.ganshapebattle.admin.Admin;
+import com.ganshapebattle.admin.CreateCategory;
 import com.ganshapebattle.admin.GalleryCRUDActivity; //
+import com.ganshapebattle.admin.GalleryDetailActivity;
+import com.ganshapebattle.admin.LobbyCRUDActivity;
+import com.ganshapebattle.admin.LobbyDetailActivity;
 import com.ganshapebattle.admin.MenuActivity; //
+import com.ganshapebattle.admin.PictureCRUDActivity;
+import com.ganshapebattle.admin.PictureDetailActivity;
+import com.ganshapebattle.admin.PlayerCRUDActivity;
+import com.ganshapebattle.admin.PlayerDetailActivity;
+import com.ganshapebattle.admin.UserCRUDActivity;
+import com.ganshapebattle.admin.UserDetailActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 // <<< Thêm import SessionManager >>>
@@ -61,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
         btnProfile = findViewById(R.id.btnProfile); //
         tvCurrentUsername = findViewById(R.id.tvCurrentUsername); //
         // --- ---
+        Intent intent1 = new Intent(MainActivity.this, VerifySignupOtpActivity.class);
+        startActivity(intent1);
 
         // <<< Lấy thông tin người dùng từ Session thay vì Intent >>>
         if (sessionManager.isLoggedIn()) {
