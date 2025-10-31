@@ -81,6 +81,19 @@ public class LobbyDetailActivity extends AppCompatActivity {
         );
     }
 
+    /** Helper để quản lý trạng thái Loading của nút tính toán Rank */
+    private void setLoadingState(boolean isLoading) {
+        runOnUiThread(() -> {
+            if (isLoading) {
+                btnCalculateRanks.setEnabled(false);
+                btnCalculateRanks.setText("Đang tính toán...");
+            } else {
+                btnCalculateRanks.setEnabled(true);
+                btnCalculateRanks.setText(getString(R.string.calculate_ranks_button));
+            }
+        });
+    }
+
     private void fetchLobbyDetails(String lobbyId) {
         lobbyService.getLobbyById(lobbyId, new SupabaseCallback<Lobby>() {
             @Override
@@ -118,7 +131,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
     }
 
     private void calculateAndApplyRanks(String lobbyId) {
-//        Toast.makeText(this, "Đang tính toán xếp hạng...", Toast.LENGTH_SHORT).show();
+        setLoadingState(true); // Bắt đầu loading
 
         playerService.getAllPlayers(new SupabaseCallback<List<Player>>() {
             @Override
@@ -133,34 +146,52 @@ public class LobbyDetailActivity extends AppCompatActivity {
                 final int totalPlayers = playersInLobby.size();
 
                 if (totalPlayers == 0) {
-//                    runOnUiThread(() -> Toast.makeText(LobbyDetailActivity.this, "Không có người chơi nào trong phòng này.", Toast.LENGTH_SHORT).show());
+                    runOnUiThread(() -> {
+                        setLoadingState(false);
+//                        Toast.makeText(LobbyDetailActivity.this, "Không có người chơi nào trong phòng này.", Toast.LENGTH_SHORT).show();
+                    });
                     return;
                 }
 
-                for (int i = 0; i < totalPlayers; i++) {
-                    Player player = playersInLobby.get(i);
-                    player.setRank(i + 1);
-
-                    playerService.updatePlayer(player.getUsername(), player.getLobbyId(), player, new SupabaseCallback<String>() {
-                        @Override
-                        public void onSuccess(String result) {
-                            Log.d(TAG, "Cập nhật hạng thành công cho: " + player.getUsername());
-                            successCount[0]++;
-                            if (successCount[0] == totalPlayers) {
-//                                runOnUiThread(() -> Toast.makeText(LobbyDetailActivity.this, "Cập nhật xếp hạng hoàn tất!", Toast.LENGTH_LONG).show());
-                            }
-                        }
-                        @Override
-                        public void onFailure(Exception e) {
-                            Log.e(TAG, "Lỗi cập nhật hạng cho: " + player.getUsername(), e);
-                        }
-                    });
-                }
+                // Bắt đầu cập nhật Player đầu tiên
+                updatePlayerRank(playersInLobby, 0, totalPlayers);
             }
 
             @Override
             public void onFailure(Exception e) {
-//                runOnUiThread(() -> Toast.makeText(LobbyDetailActivity.this, "Lỗi khi lấy danh sách người chơi.", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> {
+                    setLoadingState(false);
+//                    Toast.makeText(LobbyDetailActivity.this, "Lỗi khi lấy danh sách người chơi.", Toast.LENGTH_SHORT).show();
+                });
+            }
+        });
+    }
+
+    /** Recursive function để cập nhật rank từng Player */
+    private void updatePlayerRank(List<Player> players, int index, int totalPlayers) {
+        if (index >= totalPlayers) {
+            // Hoàn thành tất cả các lần cập nhật
+            runOnUiThread(() -> {
+                setLoadingState(false);
+//                Toast.makeText(LobbyDetailActivity.this, "Cập nhật xếp hạng hoàn tất!", Toast.LENGTH_LONG).show();
+            });
+            return;
+        }
+
+        Player player = players.get(index);
+        player.setRank(index + 1); // Gán rank mới
+
+        playerService.updatePlayer(player.getUsername(), player.getLobbyId(), player, new SupabaseCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                // Tiếp tục cập nhật Player tiếp theo (dùng đệ quy)
+                updatePlayerRank(players, index + 1, totalPlayers);
+            }
+            @Override
+            public void onFailure(Exception e) {
+                Log.e(TAG, "Lỗi cập nhật hạng cho: " + player.getUsername(), e);
+                // Vẫn tiếp tục cập nhật Player tiếp theo dù có lỗi
+                updatePlayerRank(players, index + 1, totalPlayers);
             }
         });
     }

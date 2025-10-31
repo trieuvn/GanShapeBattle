@@ -1,10 +1,12 @@
+// main/java/com/ganshapebattle/LobbyUserActivity.java
 package com.ganshapebattle;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler; // <-- Thêm
-import android.os.Looper;  // <-- Thêm
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 //import android.widget.Toast;
+
+// --- THÊM CÁC IMPORT SAU ---
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import com.google.android.material.textfield.TextInputLayout;
+// --- KẾT THÚC THÊM IMPORT ---
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,6 +34,7 @@ import com.ganshapebattle.services.SupabaseCallback;
 import com.ganshapebattle.services.UserService;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,14 +42,21 @@ import java.util.Locale;
 
 public class LobbyUserActivity extends AppCompatActivity {
 
+    private static final String TAG = "LobbyUserActivity";
+
     // --- UI Elements ---
     private EditText editTextLobbyId;
     private Button buttonJoin, buttonLeave;
     private LinearLayout joinLobbyLayout, inLobbyLayout;
     private TextView textViewLobbyInfo;
     private ProgressBar progressBar;
+    private TextInputLayout layoutLobbyId; // <-- THÊM MỚI
 
-    // --- Services & Data ---
+    // --- THÊM MỚI: ActivityResultLauncher cho QR Scan ---
+    private ActivityResultLauncher<Intent> qrScanLauncher;
+    // --- KẾT THÚC THÊM MỚI ---
+
+    // ... (Các biến Services & Data giữ nguyên) ...
     private LobbyService lobbyService;
     private PlayerService playerService;
     private PictureService pictureService;
@@ -49,14 +65,13 @@ public class LobbyUserActivity extends AppCompatActivity {
     private String currentPlayerId;
     private String username;
     private User currentUser;
-
-    // --- Thêm biến cho Polling ---
     private Handler lobbyStatusHandler;
     private Runnable lobbyStatusRunnable;
-    private static final long CHECK_INTERVAL = 2000; // 3 giây
-    private boolean isCheckingStatus = false; // Cờ để quản lý vòng lặp
+    private static final long CHECK_INTERVAL = 2000;
+    private boolean isCheckingStatus = false;
+    private volatile boolean userManuallyJoined = false;
 
-    // --- Static method để tạo Intent với username ---
+
     public static Intent createIntent(android.content.Context context, String username) {
         Intent intent = new Intent(context, LobbyUserActivity.class);
         intent.putExtra("username", username);
@@ -68,7 +83,6 @@ public class LobbyUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby_user);
 
-        // Lấy username từ Intent
         username = getIntent().getStringExtra("username");
         if (username == null || username.isEmpty()) {
 //            Toast.makeText(this, "Lỗi: Không có thông tin người dùng!", Toast.LENGTH_LONG).show();
@@ -76,7 +90,32 @@ public class LobbyUserActivity extends AppCompatActivity {
             return;
         }
 
-        // Khởi tạo services
+        // --- THÊM MỚI: Đăng ký QR Launcher ---
+        // Phải đăng ký trước khi setupListeners
+        qrScanLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        // QrScanActivity trả về text trong EXTRA_QR_TEXT
+                        String scannedId = result.getData().getStringExtra(QrScanActivity.EXTRA_QR_TEXT);
+
+                        if (scannedId != null && !scannedId.isEmpty()) {
+                            Log.d(TAG, "QR Scan Result: " + scannedId);
+                            // Tự động điền vào EditText
+                            editTextLobbyId.setText(scannedId);
+                            // Tự động nhấn "Tham gia"
+                            // Toast.makeText(this, "Đã quét mã: " + scannedId + ". Đang tham gia...", Toast.LENGTH_SHORT).show();
+                            joinLobby(); // Tự động gọi join
+                        } else {
+                            // Toast.makeText(this, "Không tìm thấy mã lobby từ QR", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        // Toast.makeText(this, "Hủy quét QR", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+        // --- KẾT THÚC THÊM MỚI ---
+
         lobbyService = new LobbyService();
         playerService = new PlayerService();
         pictureService = new PictureService();
@@ -85,60 +124,190 @@ public class LobbyUserActivity extends AppCompatActivity {
         bindViews();
         setupListeners();
 
-        // Khởi tạo Handler
         lobbyStatusHandler = new Handler(Looper.getMainLooper());
-
-        // Truy vấn thông tin user từ username
         loadUserInfo();
     }
 
+    // ... (Hàm onStop giữ nguyên) ...
     @Override
     protected void onStop() {
         super.onStop();
-        // Dừng vòng lặp khi Activity không còn hiển thị
         stopLobbyStatusCheck();
     }
 
-    /**
-     * Kiểm tra xem user hiện tại đã có trong lobby nào chưa
-     */
+
+    // ... (Hàm checkCurrentLobbyStatus và findAndJoinFirstActiveLobby giữ nguyên) ...
     private void checkCurrentLobbyStatus() {
         if (currentUser == null) return;
+        userManuallyJoined = false;
 
-        // Sử dụng method getPlayers() của User model để lấy danh sách players
         currentUser.getPlayers(new SupabaseCallback<List<Player>>() {
             @Override
             public void onSuccess(List<Player> players) {
-                if (players != null && !players.isEmpty()) {
-                    // User đã có trong lobby, lấy lobby đầu tiên
-                    Player currentPlayer = players.get(0);
-                    currentLobbyId = currentPlayer.getLobbyId();
-                    currentPlayerId = currentPlayer.getUsername();
+                if (userManuallyJoined) return;
 
-                    runOnUiThread(() -> {
-                        showInLobbyView();
-//                        Toast.makeText(LobbyUserActivity.this, "Bạn đã ở trong phòng: " + currentLobbyId, Toast.LENGTH_SHORT).show();
-                        // Bắt đầu vòng lặp kiểm tra trạng thái
-                        startLobbyStatusCheck();
-                    });
+                if (players == null || players.isEmpty()) {
+                    Log.d(TAG, "checkCurrentLobbyStatus: Người dùng không ở trong phòng nào.");
+                    return;
+                }
+
+                Log.d(TAG, "checkCurrentLobbyStatus: Người dùng đang ở trong " + players.size() + " phòng. Bắt đầu kiểm tra...");
+                findAndJoinFirstActiveLobby(new java.util.ArrayList<>(players));
+            }
+            @Override
+            public void onFailure(Exception e) {
+                if (userManuallyJoined) return;
+                Log.e(TAG, "Lỗi khi lấy danh sách player: ", e);
+            }
+        });
+    }
+
+    private void findAndJoinFirstActiveLobby(List<Player> playersToCheck) {
+        if (userManuallyJoined) {
+            Log.d(TAG, "findAndJoinFirstActiveLobby: Dừng kiểm tra (userManuallyJoined=true).");
+            return;
+        }
+
+        if (playersToCheck.isEmpty()) {
+            Log.d(TAG, "findAndJoinFirstActiveLobby: Đã kiểm tra hết, không tìm thấy phòng nào active.");
+            return;
+        }
+
+        Player potentialPlayer = playersToCheck.remove(0);
+        String potentialLobbyId = potentialPlayer.getLobbyId();
+        Log.d(TAG, "findAndJoinFirstActiveLobby: Đang kiểm tra Lobby ID: " + potentialLobbyId);
+
+        lobbyService.getLobbyById(potentialLobbyId, new SupabaseCallback<Lobby>() {
+            @Override
+            public void onSuccess(Lobby lobby) {
+                if (userManuallyJoined) {
+                    Log.d(TAG, "findAndJoinFirstActiveLobby (onSuccess): Dừng kiểm tra (userManuallyJoined=true).");
+                    return;
+                }
+
+                if (lobby != null) {
+                    String status = lobby.getStatus();
+                    boolean isActive = "waiting".equals(status) ||
+                            "loading".equals(status) ||
+                            "isPlaying".equals(status) ||
+                            "isVoting".equals(status);
+
+                    if (isActive) {
+                        Log.d(TAG, "findAndJoinFirstActiveLobby: Tìm thấy phòng active: " + potentialLobbyId + " (Status: " + status + "). Sẽ lưu lại nhưng không tự động join.");
+                        currentLobbyId = potentialLobbyId;
+                        currentPlayerId = potentialPlayer.getUsername();
+                    } else {
+                        Log.w(TAG, "findAndJoinFirstActiveLobby: Bỏ qua phòng đã kết thúc: " + potentialLobbyId);
+                        findAndJoinFirstActiveLobby(playersToCheck); // Đệ quy
+                    }
+                } else {
+                    Log.e(TAG, "findAndJoinFirstActiveLobby: Player record trỏ đến lobby không tồn tại: " + potentialLobbyId);
+                    findAndJoinFirstActiveLobby(playersToCheck); // Đệ quy
                 }
             }
 
             @Override
             public void onFailure(Exception e) {
-                // Không có lỗi gì, user chưa có trong lobby nào
-                runOnUiThread(() -> {
-                    // Hiển thị giao diện tham gia phòng (mặc định)
-                });
+                if (userManuallyJoined) {
+                    Log.d(TAG, "findAndJoinFirstActiveLobby (onFailure): Dừng kiểm tra (userManuallyJoined=true).");
+                    return;
+                }
+                Log.e(TAG, "findAndJoinFirstActiveLobby: Lỗi khi kiểm tra lobby " + potentialLobbyId, e);
+                findAndJoinFirstActiveLobby(playersToCheck); // Đệ quy
             }
         });
     }
 
-    /**
-     * Truy vấn thông tin user từ username
-     */
+
+    // ... (Hàm joinLobby và proceedToJoinLobby giữ nguyên) ...
+    private void joinLobby() {
+        if (currentUser == null) {
+//            Toast.makeText(this, "Chưa tải được thông tin người dùng!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        userManuallyJoined = true;
+
+        String newLobbyId = editTextLobbyId.getText().toString().trim();
+        if (TextUtils.isEmpty(newLobbyId)) {
+//            Toast.makeText(this, "Vui lòng nhập mã phòng!", Toast.LENGTH_SHORT).show();
+            userManuallyJoined = false; // Reset cờ nếu nhập liệu sai
+            return;
+        }
+
+        setLoading(true);
+        String oldLobbyId = this.currentLobbyId;
+
+        if (oldLobbyId != null && !oldLobbyId.equals(newLobbyId)) {
+            Log.d(TAG, "joinLobby: Đang ở phòng " + oldLobbyId + ". Rời phòng cũ trước khi vào " + newLobbyId);
+            stopLobbyStatusCheck();
+
+            playerService.deletePlayer(currentUser.getUsername(), oldLobbyId, new SupabaseCallback<String>() {
+                @Override
+                public void onSuccess(String result) {
+                    Log.d(TAG, "joinLobby: Rời phòng cũ thành công. Đang tham gia phòng mới: " + newLobbyId);
+                    LobbyUserActivity.this.currentLobbyId = null;
+                    LobbyUserActivity.this.currentPlayerId = null;
+                    proceedToJoinLobby(newLobbyId);
+                }
+                @Override
+                public void onFailure(Exception e) {
+                    runOnUiThread(() -> {
+//                        Toast.makeText(LobbyUserActivity.this, "Lỗi khi rời phòng cũ: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        setLoading(false);
+                        userManuallyJoined = false; // Reset cờ nếu lỗi
+                    });
+                }
+            });
+        } else if (oldLobbyId != null && oldLobbyId.equals(newLobbyId)) {
+            Log.d(TAG, "joinLobby: Người dùng nhập lại mã phòng đang ở.");
+            runOnUiThread(() -> {
+//                Toast.makeText(this, "Bạn đã ở trong phòng này rồi!", Toast.LENGTH_SHORT).show();
+                setLoading(false);
+                showInLobbyView();
+                startLobbyStatusCheck();
+            });
+        } else {
+            Log.d(TAG, "joinLobby: Không ở phòng nào. Tham gia phòng mới: " + newLobbyId);
+            proceedToJoinLobby(newLobbyId); // Gọi hàm logic join
+        }
+    }
+
+    private void proceedToJoinLobby(String lobbyId) {
+        try {
+            lobbyService.getLobbyById(lobbyId, new SupabaseCallback<Lobby>() {
+                @Override
+                public void onSuccess(Lobby lobby) {
+                    if (lobby == null) {
+                        runOnUiThread(() -> {
+//                            Toast.makeText(LobbyUserActivity.this, "Phòng không tồn tại!", Toast.LENGTH_LONG).show();
+                            setLoading(false);
+                            userManuallyJoined = false; // Reset cờ nếu lỗi
+                        });
+                    } else {
+                        checkSlot(lobby);
+                    }
+                }
+                @Override
+                public void onFailure(Exception e) {
+                    runOnUiThread(() -> {
+//                        Toast.makeText(LobbyUserActivity.this, "Lỗi kiểm tra phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        setLoading(false);
+                        userManuallyJoined = false; // Reset cờ nếu lỗi
+                    });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+//            Toast.makeText(this, "Lỗi tham gia phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            setLoading(false);
+            userManuallyJoined = false; // Reset cờ nếu lỗi
+        }
+    }
+
+
+    // ... (Hàm loadUserInfo giữ nguyên) ...
     private void loadUserInfo() {
-        // ... (Giữ nguyên code)
         userService.getUserByUsername(username, new SupabaseCallback<User>() {
             @Override
             public void onSuccess(User user) {
@@ -146,8 +315,6 @@ public class LobbyUserActivity extends AppCompatActivity {
                     if (user != null) {
                         currentUser = user;
 //                        Toast.makeText(LobbyUserActivity.this, "Chào mừng " + user.getUsername() + "!", Toast.LENGTH_SHORT).show();
-
-                        // Sau khi load user thành công, kiểm tra xem user đã có trong lobby nào chưa
                         checkCurrentLobbyStatus();
                     } else {
 //                        Toast.makeText(LobbyUserActivity.this, "Không tìm thấy thông tin người dùng!", Toast.LENGTH_LONG).show();
@@ -155,7 +322,6 @@ public class LobbyUserActivity extends AppCompatActivity {
                     }
                 });
             }
-
             @Override
             public void onFailure(Exception e) {
                 runOnUiThread(() -> {
@@ -167,10 +333,9 @@ public class LobbyUserActivity extends AppCompatActivity {
     }
 
     /**
-     * Ánh xạ các thành phần UI từ XML.
+     * Ánh xạ các thành phần UI từ XML. (ĐÃ SỬA)
      */
     private void bindViews() {
-        // ... (Giữ nguyên code)
         editTextLobbyId = findViewById(R.id.editTextLobbyId);
         buttonJoin = findViewById(R.id.buttonJoin);
         buttonLeave = findViewById(R.id.buttonLeave);
@@ -178,210 +343,134 @@ public class LobbyUserActivity extends AppCompatActivity {
         inLobbyLayout = findViewById(R.id.inLobbyLayout);
         textViewLobbyInfo = findViewById(R.id.textViewLobbyInfo);
         progressBar = findViewById(R.id.progressBar);
+        layoutLobbyId = findViewById(R.id.layoutLobbyId); // <-- THÊM MỚI
     }
 
     /**
-     * Thiết lập các sự kiện click cho nút.
+     * Thiết lập các sự kiện click cho nút. (ĐÃ SỬA)
      */
     private void setupListeners() {
         buttonJoin.setOnClickListener(v -> joinLobby());
         buttonLeave.setOnClickListener(v -> leaveLobby());
-    }
 
-    /**
-     * Bước 1-12: Xử lý logic khi người dùng nhấn nút "Tham gia".
-     */
-    private void joinLobby() {
-        // ... (Giữ nguyên code)
-        if (currentUser == null) {
-//            Toast.makeText(this, "Chưa tải được thông tin người dùng!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String lobbyId = editTextLobbyId.getText().toString().trim();
-
-        if (TextUtils.isEmpty(lobbyId)) {
-//            Toast.makeText(this, "Vui lòng nhập mã phòng!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (currentLobbyId != null) {
-//            Toast.makeText(this, "Bạn đã ở trong phòng khác!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            // Bước 3: Gọi service để lấy thông tin phòng (getById)
-            lobbyService.getLobbyById(lobbyId, new SupabaseCallback<Lobby>() {
-                @Override
-                public void onSuccess(Lobby lobby) {
-                    if (lobby == null) {
-                        // Bước 7-8: Phòng không tồn tại
-                        runOnUiThread(() -> {
-//                            Toast.makeText(LobbyUserActivity.this, "Phòng không tồn tại!", Toast.LENGTH_LONG).show();
-                            setLoading(false);
-                        });
-                    } else {
-                        // Bước 5: Kiểm tra slot trống
-                        checkSlot(lobby);
-                    }
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    runOnUiThread(() -> {
-//                        Toast.makeText(LobbyUserActivity.this, "Lỗi kiểm tra phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        setLoading(false);
-                    });
-                }
+        // --- THÊM MỚI: Sự kiện click cho icon quét QR ---
+        if (layoutLobbyId != null) {
+            layoutLobbyId.setEndIconOnClickListener(v -> {
+                // Mở QrScanActivity
+                Intent intent = new Intent(LobbyUserActivity.this, QrScanActivity.class);
+                qrScanLauncher.launch(intent);
             });
-        } catch (Exception e) {
-            e.printStackTrace();
-//            Toast.makeText(this, "Lỗi tham gia phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            setLoading(false);
         }
+        // --- KẾT THÚC THÊM MỚI ---
     }
 
-    /**
-     * Bước 5: Kiểm tra slot trống trong lobby
-     */
+    // ... (Các hàm checkSlot, insertPlayer, createDefaultPicture, createPictureForPlayer,
+    //      leaveLobby, showInLobbyView, displayLobbyInfo, displayAdminInfo,
+    //      getStatusText, showJoinView, setLoading, isLobbyFull,
+    //      startLobbyStatusCheck, stopLobbyStatusCheck,
+    //      fetchAndCheckLobbyStatus, scheduleNextStatusCheck
+    //      GIỮ NGUYÊN NHƯ FILE TRƯỚC) ...
+
     private void checkSlot(Lobby lobby) {
-        // ... (Giữ nguyên code)
-        // Sử dụng method getPlayers() của Lobby model để lấy danh sách players
         lobby.getPlayers(new SupabaseCallback<List<Player>>() {
             @Override
             public void onSuccess(List<Player> players) {
-                // Kiểm tra số lượng players hiện tại với maxPlayer
                 int currentPlayerCount = players.size();
                 int maxPlayers = lobby.getMaxPlayer();
-
                 if (currentPlayerCount >= maxPlayers) {
-                    // Bước 7-8: Phòng đã đầy
                     runOnUiThread(() -> {
 //                        Toast.makeText(LobbyUserActivity.this, "Phòng đã đầy! (" + currentPlayerCount + "/" + maxPlayers + ")", Toast.LENGTH_LONG).show();
                         setLoading(false);
+                        userManuallyJoined = false;
                     });
                 } else {
-                    // Bước 9: Thêm người chơi mới
                     insertPlayer(lobby.getId());
                 }
             }
-
             @Override
             public void onFailure(Exception e) {
                 runOnUiThread(() -> {
 //                    Toast.makeText(LobbyUserActivity.this, "Lỗi kiểm tra slot: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     setLoading(false);
+                    userManuallyJoined = false;
                 });
             }
         });
     }
 
-    /**
-     * Bước 9: Thêm người chơi mới vào lobby
-     */
     private void insertPlayer(String lobbyId) {
         createPictureForPlayer(lobbyId);
     }
 
-    /**
-     * Tạo default picture cho player
-     */
     private Picture createDefaultPicture(String lobbyId) {
-        // Sử dụng format ISO 8601 chuẩn cho PostgreSQL
         String currentTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).format(new Date());
-        // Tạo ID đơn giản hơn, tránh ký tự đặc biệt
-        String pictureId = "pic_" + currentUser.getUsername().replaceAll("[^a-zA-Z0-9]", "_") + "_" + System.currentTimeMillis();
-
         Picture defaultPicture = new Picture();
-        //defaultPicture.setId(pictureId);
         defaultPicture.setName("Default Picture - " + currentUser.getUsername());
         defaultPicture.setDescription("Default picture created when joining lobby " + lobbyId);
         defaultPicture.setCreatedDate(currentTime);
-        defaultPicture.setType("default"); // Thay đổi type thành "default" thay vì "game_picture"
-        defaultPicture.setImage(""); // Sử dụng empty string thay vì null
+        defaultPicture.setType("default");
+        defaultPicture.setImage("");
         defaultPicture.setTags("default,lobby,game,placeholder");
-        defaultPicture.setGalleryId("d819cf07-9afc-4089-8d50-d07ce29d47c2"); // Sử dụng empty string thay vì null
+        defaultPicture.setGalleryId("d819cf07-9afc-4089-8d50-d07ce29d47c2");
         defaultPicture.setUsername(currentUser.getUsername());
-
         return defaultPicture;
     }
 
-    /**
-     * Tạo picture cho player trước khi tạo player
-     */
     private void createPictureForPlayer(String lobbyId) {
         Picture newPicture = createDefaultPicture(lobbyId);
-
         pictureService.insertPicture(newPicture, new SupabaseCallback<Picture>() {
             @Override
             public void onSuccess(Picture insertedPicture) {
-                // Bước 9b: Sau khi tạo picture thành công, tạo player với pictureId từ Supabase
                 createPlayerWithPicture(lobbyId, insertedPicture.getId());
             }
-
             @Override
             public void onFailure(Exception e) {
                 runOnUiThread(() -> {
 //                    Toast.makeText(LobbyUserActivity.this, "Lỗi tạo picture: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     editTextLobbyId.setText("Lỗi tạo picture: " + e.getMessage());
                     setLoading(false);
+                    userManuallyJoined = false;
                 });
             }
         });
     }
 
-    /**
-     * Tạo player với pictureId đã tạo
-     */
     private void createPlayerWithPicture(String lobbyId, String pictureId) {
         Player newPlayer = new Player();
         newPlayer.setUsername(currentUser.getUsername());
         newPlayer.setLobbyId(lobbyId);
-        newPlayer.setPoint(-1); // Point = -1 khi mới tham gia
+        newPlayer.setPoint(-1);
         newPlayer.setRank(0);
-        newPlayer.setPictureId(pictureId); // Sử dụng pictureId vừa tạo
+        newPlayer.setPictureId(pictureId);
 
         playerService.insertPlayer(newPlayer, new SupabaseCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                // Bước 11-12: Thành công, chuyển hướng giao diện
                 runOnUiThread(() -> {
                     currentLobbyId = lobbyId;
-                    currentPlayerId = currentUser.getUsername(); // Sử dụng username làm player ID
+                    currentPlayerId = currentUser.getUsername();
                     setLoading(false);
                     showInLobbyView();
 //                    Toast.makeText(LobbyUserActivity.this, "Tham gia thành công! Đang chờ admin...", Toast.LENGTH_SHORT).show();
-
-                    // BẮT ĐẦU VÒNG LẶP KIỂM TRA
                     startLobbyStatusCheck();
                 });
             }
-
             @Override
             public void onFailure(Exception e) {
-                // ... (Giữ nguyên code)
                 runOnUiThread(() -> {
                     String errorMessage = "Không thể tham gia phòng: " + e.getMessage();
-                    if (e.getMessage().contains("23503")) {
-                        errorMessage += "\nLỗi: Foreign key constraint - Kiểm tra dữ liệu liên quan";
-                    }
 //                    Toast.makeText(LobbyUserActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     editTextLobbyId.setText(errorMessage);
                     setLoading(false);
+                    userManuallyJoined = false;
                 });
             }
         });
     }
 
-    /**
-     * Bước 13-18: Xử lý logic khi người dùng nhấn nút "Rời phòng".
-     */
     private void leaveLobby() {
-        // DỪNG VÒNG LẶP NGAY LẬP TỨC
         stopLobbyStatusCheck();
+        userManuallyJoined = false;
 
         if (currentPlayerId == null || currentLobbyId == null) {
 //            Toast.makeText(this, "Bạn chưa ở trong phòng nào!", Toast.LENGTH_SHORT).show();
@@ -391,23 +480,21 @@ public class LobbyUserActivity extends AppCompatActivity {
         setLoading(true);
 
         try {
-            // Bước 15: Gọi service để xóa người chơi (delete(Player))
             playerService.deletePlayer(currentUser.getUsername(), currentLobbyId, new SupabaseCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    // Bước 17-18: Thành công, chuyển hướng giao diện
                     runOnUiThread(() -> {
 //                        Toast.makeText(LobbyUserActivity.this, "Đã rời phòng.", Toast.LENGTH_SHORT).show();
                         setLoading(false);
                         showJoinView();
                     });
                 }
-
                 @Override
                 public void onFailure(Exception e) {
                     runOnUiThread(() -> {
 //                        Toast.makeText(LobbyUserActivity.this, "Lỗi khi rời phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         setLoading(false);
+                        startLobbyStatusCheck();
                     });
                 }
             });
@@ -415,32 +502,22 @@ public class LobbyUserActivity extends AppCompatActivity {
             e.printStackTrace();
 //            Toast.makeText(this, "Lỗi khi rời phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
             setLoading(false);
+            startLobbyStatusCheck();
         }
     }
 
-    /**
-     * Hiển thị giao diện khi đã ở trong phòng.
-     */
     private void showInLobbyView() {
-        // ... (Giữ nguyên code)
         joinLobbyLayout.setVisibility(View.GONE);
         inLobbyLayout.setVisibility(View.VISIBLE);
-
-        // Hiển thị thông tin lobby chi tiết
         displayLobbyInfo();
     }
 
-    /**
-     * Hiển thị thông tin chi tiết của lobby
-     */
     private void displayLobbyInfo() {
-        // ... (Giữ nguyên code)
         if (currentLobbyId == null) {
             textViewLobbyInfo.setText("Mã phòng: Không xác định");
             return;
         }
 
-        // Lấy thông tin lobby từ database
         lobbyService.getLobbyById(currentLobbyId, new SupabaseCallback<Lobby>() {
             @Override
             public void onSuccess(Lobby lobby) {
@@ -448,13 +525,11 @@ public class LobbyUserActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         String lobbyInfo = "Mã phòng: " + lobby.getId() + "\n" +
                                 "Chế độ: " + (lobby.getMode().equals("vote") ? "Vote" : "Rate") + "\n" +
-                                "Trạng thái: " + getStatusText(lobby.getStatus()) + "\n" + // Cập nhật trạng thái ở đây
+                                "Trạng thái: " + getStatusText(lobby.getStatus()) + "\n" +
                                 "Số người tối đa: " + lobby.getMaxPlayer() + "\n" +
                                 "Thời gian thiết kế: " + lobby.getDesignTime() + " phút\n" +
                                 "Thời gian vote: " + lobby.getVoteTime() + " phút";
                         textViewLobbyInfo.setText(lobbyInfo);
-
-                        // Lấy thông tin admin của lobby
                         displayAdminInfo(lobby);
                     });
                 } else {
@@ -463,7 +538,6 @@ public class LobbyUserActivity extends AppCompatActivity {
                     });
                 }
             }
-
             @Override
             public void onFailure(Exception e) {
                 runOnUiThread(() -> {
@@ -473,12 +547,7 @@ public class LobbyUserActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Hiển thị thông tin admin của lobby
-     */
     private void displayAdminInfo(Lobby lobby) {
-        // ... (Giữ nguyên code)
-        // Sử dụng method getAdmin() của Lobby model để lấy thông tin admin
         lobby.getAdmin(new SupabaseCallback<User>() {
             @Override
             public void onSuccess(User admin) {
@@ -491,43 +560,25 @@ public class LobbyUserActivity extends AppCompatActivity {
                     });
                 }
             }
-
             @Override
-            public void onFailure(Exception e) {
-                // Không hiển thị thông tin admin nếu có lỗi
-            }
+            public void onFailure(Exception e) {}
         });
     }
 
-    /**
-     * Chuyển đổi status code thành text hiển thị
-     */
     private String getStatusText(String status) {
         if (status == null) return "Không xác định";
-
         switch (status) {
-            case "waiting":
-                return "Đang chờ";
-            case "loading":
-                return "Đang load";
-            case "isPlaying":
-                return "Đang thiết kế";
-            case "isVoting":
-                return "Đang vote";
-            case "isOver":
-                return "Kết thúc";
-            case "isEnd":
-                return "Hoàn thành";
-            default:
-                return status;
+            case "waiting": return "Đang chờ";
+            case "loading": return "Đang load";
+            case "isPlaying": return "Đang thiết kế";
+            case "isVoting": return "Đang vote";
+            case "isOver": return "Kết thúc";
+            case "isEnd": return "Hoàn thành";
+            default: return status;
         }
     }
 
-    /**
-     * Reset và hiển thị lại giao diện tham gia phòng ban đầu.
-     */
     private void showJoinView() {
-        // ... (GiGitữ nguyên code)
         inLobbyLayout.setVisibility(View.GONE);
         joinLobbyLayout.setVisibility(View.VISIBLE);
         editTextLobbyId.setText("");
@@ -535,12 +586,7 @@ public class LobbyUserActivity extends AppCompatActivity {
         this.currentPlayerId = null;
     }
 
-    /**
-     * Hiển thị hoặc ẩn ProgressBar.
-     * @param isLoading Trạng thái loading.
-     */
     private void setLoading(boolean isLoading) {
-        // ... (Giữ nguyên code)
         if (isLoading) {
             progressBar.setVisibility(View.VISIBLE);
             buttonJoin.setEnabled(false);
@@ -552,50 +598,24 @@ public class LobbyUserActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Kiểm tra xem phòng có đầy không (helper method cho Supabase).
-     * @param lobbyData Dữ liệu phòng từ Supabase
-     * @return true nếu phòng đầy, false nếu còn chỗ
-     */
     private boolean isLobbyFull(HashMap<String, Object> lobbyData) {
-        // ... (Giữ nguyên code)
-        // Giả sử có field max_players và current_players trong lobby data
-        // int maxPlayers = (Integer) lobbyData.get("max_players");
-        // int currentPlayers = (Integer) lobbyData.get("current_players");
-        // return currentPlayers >= maxPlayers;
-
-        // Tạm thời return false để giả lập
         return false;
     }
 
-    // ==================================================================
-    // --- PHẦN CODE MỚI: VÒNG LẶP KIỂM TRA TRẠNG THÁI LOBBY ---
-    // ==================================================================
-
-    /**
-     * Bắt đầu vòng lặp kiểm tra trạng thái lobby
-     */
     private void startLobbyStatusCheck() {
-        if (isCheckingStatus) return; // Đã chạy rồi thì thôi
-
+        if (isCheckingStatus) return;
         isCheckingStatus = true;
 
         lobbyStatusRunnable = new Runnable() {
             @Override
             public void run() {
-                if (!isCheckingStatus) return; // Dừng nếu cờ đã tắt
-
-                // Lấy thông tin lobby và kiểm tra
+                if (!isCheckingStatus) return;
                 fetchAndCheckLobbyStatus();
             }
         };
-        // Chạy lần đầu ngay lập tức
         lobbyStatusHandler.post(lobbyStatusRunnable);
     }
 
-    /**
-     * Dừng vòng lặp kiểm tra
-     */
     private void stopLobbyStatusCheck() {
         isCheckingStatus = false;
         if (lobbyStatusHandler != null) {
@@ -603,9 +623,6 @@ public class LobbyUserActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Lấy thông tin lobby từ Supabase và kiểm tra status
-     */
     private void fetchAndCheckLobbyStatus() {
         if (currentLobbyId == null) {
             stopLobbyStatusCheck();
@@ -616,87 +633,62 @@ public class LobbyUserActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Lobby lobby) {
                 if (lobby == null) {
-                    // Lobby không còn tồn tại (có thể bị admin xóa)
                     runOnUiThread(() -> {
 //                        Toast.makeText(LobbyUserActivity.this, "Phòng đã bị hủy!", Toast.LENGTH_LONG).show();
                         stopLobbyStatusCheck();
-                        showJoinView(); // Quay về màn hình tham gia
+                        showJoinView();
                     });
                     return;
                 }
 
                 String status = lobby.getStatus();
-
-                // Cập nhật lại UI thông tin (để người dùng thấy status thay đổi)
                 runOnUiThread(() -> displayLobbyInfo());
+
                 if (status == null){
                     scheduleNextStatusCheck();
+                    return;
                 }
+
                 if ("loading".equals(status)) {
                     runOnUiThread(() -> {
 //                        Toast.makeText(LobbyUserActivity.this, "Admin đã bắt đầu! Đang tải...", Toast.LENGTH_SHORT).show();
                         stopLobbyStatusCheck();
-
                         Intent intent = new Intent(LobbyUserActivity.this, GameLoadActivity.class);
                         intent.putExtra("username", username);
                         intent.putExtra("lobbyid", currentLobbyId);
                         startActivity(intent);
-                        finish(); // Đóng Activity này
+                        finish();
                     });
-
-                    //Giả định 2: Nếu game đã thực sự bắt đầu (ví dụ status là "isPlaying")
                 } else if ("isPlaying".equals(status)) {
-                    // --- SỬA LỖI LOGIC Ở ĐÂY ---
-
-                    // 1. Lấy thời gian KẾT THÚC (beginVoteDate)
-                    //    (Hàm này đã được sửa lại để dùng API cũ và tính bằng GIÂY)
                     String beginVoteDate = lobby.getBeginVoteDate();
-
-                    // 2. Kiểm tra xem thời gian đã có chưa
                     if (beginVoteDate == null) {
-                        // LỖI: beginDate trong DB vẫn là null (do race condition).
-                        // Chúng ta phải thử lại sau vài giây.
                         runOnUiThread(() -> {
 //                            Toast.makeText(LobbyUserActivity.this, "Đang đồng bộ thời gian với phòng...", Toast.LENGTH_SHORT).show();
                         });
-
-                        // Quan trọng: Lên lịch kiểm tra lại
                         scheduleNextStatusCheck();
                     } else {
-                        // THÀNH CÔNG: Đã có thời gian
-                        // Chuyển người chơi vào thẳng phòng vẽ
                         runOnUiThread(() -> {
 //                            Toast.makeText(LobbyUserActivity.this, "Trò chơi đã bắt đầu! Vào thẳng...", Toast.LENGTH_SHORT).show();
                             stopLobbyStatusCheck();
-
                             Intent intent = new Intent(LobbyUserActivity.this, DesignActivity.class);
                             intent.putExtra("username", username);
                             intent.putExtra("lobbyid", currentLobbyId);
-
-                            // Gửi chuỗi thời gian kết thúc (ví dụ: "2025-10-31 22:09:40")
                             intent.putExtra("votetime", beginVoteDate);
-
                             startActivity(intent);
-                            finish(); // Đóng Activity này
+                            finish();
                         });
                     }
                 } else {
-                    // Các trạng thái khác (isVoting, isOver...) -> tiếp tục chờ
                     scheduleNextStatusCheck();
                 }
             }
-
             @Override
             public void onFailure(Exception e) {
-                // Có lỗi mạng, thử lại sau
                 scheduleNextStatusCheck();
             }
         });
     }
 
-    /**
-     * Lên lịch kiểm tra tiếp theo
-     */
     private void scheduleNextStatusCheck() {
         if (isCheckingStatus) {
             lobbyStatusHandler.postDelayed(lobbyStatusRunnable, CHECK_INTERVAL);

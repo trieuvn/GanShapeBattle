@@ -98,6 +98,7 @@
     <string name="game_room_title">🎮 Phòng Chơi</string>
     <string name="room_info_placeholder">Phòng: #12345 | Chế độ: Thiết kế Chiến đấu</string>
     <string name="mode_label">Chế độ</string>
+    <string name="scan_qr_code_desc">Quét mã QR</string>
     <string name="vote_design_label">Bình chọn Thiết kế Tốt nhất</string>
     <string name="submit_vote_button">✅ Gửi Bình chọn</string>
     <string name="leaderboard_title">🏆 Bảng xếp hạng 🏆</string>
@@ -131,6 +132,12 @@
     <string name="join_lobby_title">Tham gia phòng chơi</string>
     <string name="enter_code_hint">Nhập mã phòng</string>
     <string name="join_button">Tham gia</string>
+
+    <string name="leaderboard_history_title">Lịch sử Xếp hạng</string>
+    <string name="leaderboard_history_for">Lịch sử </string>
+    <string name="no_history_available">Bạn chưa tham gia ván chơi xếp hạng nào.</string>
+    <string name="error_loading_history">Lỗi tải lịch sử</string>
+
     <string name="joined_lobby_title">Đã tham gia phòng!</string>
     <string name="lobby_id_placeholder_user">Mã phòng: 1a2b3c</string>
     <string name="waiting_for_host">Đang chờ chủ phòng bắt đầu...</string>

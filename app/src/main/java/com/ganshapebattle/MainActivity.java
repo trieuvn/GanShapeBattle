@@ -111,7 +111,15 @@ public class MainActivity extends AppCompatActivity {
         // --- Gắn sự kiện điều hướng cho các nút chức năng ---
         btnJoinGame.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LobbyUserActivity.class).putExtra("username",currentUsername))); //
         btnCreateLobby.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LobbyActivity.class).putExtra("username",currentUsername))); //
-        btnGoToLeaderboard.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LeaderHistoryActivity.class)));
+
+        // === SỬA ĐỔI CHÍNH Ở ĐÂY ===
+        btnGoToLeaderboard.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, LeaderHistoryActivity.class);
+            intent.putExtra("username", currentUsername);
+            startActivity(intent);
+        });
+        // ============================
+
         // Chuyển đến màn hình quản lý Gallery của admin
         btnGoToGallery.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, GalleryCRUDActivity.class))); //
         btnAdminPanel.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, MenuActivity.class))); //

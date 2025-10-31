@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">GanShapeBattle</string>
 
@@ -236,6 +237,24 @@
     <string name="start_new_msg">Start new drawing (you will lose the current drawing)?</string>
     <string name="super_gan_image">Super Gan image</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="scan_qr_code_desc">Scan QR Code</string>
+
+    <string name="leaderboard_history_title">Game History</string>
+    <string name="leaderboard_history_for">History for: %s</string>
+    <string name="no_history_available">You have not completed any ranked games yet.</string>
+    <string name="error_loading_history">Error loading history</string>
+
+    <string name="transforming">Transforming</string>
+
+    <string name="admin_label">Admin</string>
+    <string name="begin_date_hint">Begin Date (YYYY-MM-DD)</string>
+    <string name="created_date_hint">Created Date (YYYY-MM-DD)</string>
+    <string name="placeholder_name">Player Name</string>
+    <string name="placeholder_score">0 pts</string>
+    <string name="player_avatar_desc">Player Avatar</string>
+    <string name="rank_4_label">4</string>
+    <string name="rank_5_label">5</string>
+    <string name="view_profile">Details</string>
     <string-array name="prompt_photorealistic_segmentation_v2">
         <item>You are a literal rendering engine, not a creative artist.</item>
         <item>Your task is to convert the provided color-coded image mask into a photorealistic scene.</item>
@@ -253,39 +272,4 @@
         <item>If a color is NOT in the image, DO NOT render its corresponding object.</item>
         <item>Do not add any other details, objects, or inferred elements. Stick precisely to the mask.</item>
     </string-array>
-    <string name="transforming">Transforming</string>
-    <!-- res/values/styles.xml -->
-    <style name="RoundedCorner12" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">12dp</item>
-    </style>
-    <!-- Avatar tròn hoàn hảo -->
-    <style name="AvatarCircle" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
-
-    <style name="Circle" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
-
-    <style name="ShapeAppearanceOverlay.Avatar.Rounded" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
-
-    <style name="ShapeAppearanceOverlay.GAN.Rounded" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">12dp</item>
-    </style>
-    <string name="admin_label">Admin</string>
-    <string name="player_avatar_desc">Avatar người chơi</string>
-    <string name="view_profile">Chi tiết</string>
-    <string name="created_date_hint">Created Date (YYYY-MM-DD)</string>
-    <string name="begin_date_hint">Begin Date (YYYY-MM-DD)</string>
-    <string name="placeholder_name">Player Name</string>
-    <string name="placeholder_score">0 pts</string>
-    <string name="rank_4_label">4</string>
-    <string name="rank_5_label">5</string>
 </resources>

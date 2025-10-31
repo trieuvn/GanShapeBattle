@@ -6,32 +6,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LeaderHistoryActivity">
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="#F3F7FF"
         android:padding="16dp">
 
-        <!-- Header -->
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tvHistoryTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Game History"
+            android:text="@string/leaderboard_history_title"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="#1E40AF"
-            android:layout_gravity="center"/>
+            android:gravity="center"
+            android:layout_marginBottom="8dp"/>
 
-        <!-- Divider -->
+        <TextView
+            android:id="@+id/textViewUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lịch sử của: User"
+            android:textSize="16sp"
+            android:textColor="#4B5563"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#D1D5DB"
             android:layout_marginVertical="8dp"/>
 
-        <!-- ListView hiển thị lịch sử -->
+        <ProgressBar
+            android:id="@+id/progressBarLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/textViewNoHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_history_available"
+            android:textColor="#999999"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_marginTop="32dp"
+            android:visibility="gone"/>
+
         <ListView
             android:id="@+id/lvHistory"
             android:layout_width="match_parent"
@@ -41,6 +69,4 @@
             android:dividerHeight="1dp"
             android:paddingBottom="16dp"/>
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

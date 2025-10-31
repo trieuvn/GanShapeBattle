@@ -1,7 +1,10 @@
+// main/java/com/ganshapebattle/LobbyRateVoteActivity.java
 package com.ganshapebattle;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler; // <-- THÊM MỚI
+import android.os.Looper;  // <-- THÊM MỚI
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -55,8 +58,13 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
     private Lobby currentLobby;
 
     // --- Activity Launcher ---
-    // SỬA LỖI: Đổi tên launcher cho rõ nghĩa
     private ActivityResultLauncher<Intent> addEditLauncher;
+
+    // --- THÊM MỚI: Biến cho Vòng lặp Polling (Giống GameVoteActivity) ---
+    private Handler statusCheckHandler;
+    private Runnable statusCheckRunnable;
+    private boolean isActivityRunning = false;
+    private static final long CHECK_INTERVAL = 3000; // 3 giây
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +90,7 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
         // Khởi tạo services
         playerService = new PlayerService();
         lobbyService = new LobbyService();
+        statusCheckHandler = new Handler(Looper.getMainLooper()); // <-- THÊM MỚI
 
         bindViews();
         setupListeners();
@@ -91,25 +100,194 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
         lvPlayers.setAdapter(adapter);
 
         // Khởi tạo launcher
-        // SỬA LỖI: Đổi tên launcher
         addEditLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        Log.d(TAG, "Quay lại từ AddEdit, tải lại dữ liệu...");
-                        loadData(); // Tải lại danh sách
-                    }
+                    // Không cần làm gì ở đây, vì onResume/onStart sẽ tự động refresh
+                    Log.d(TAG, "Quay lại từ AddEdit...");
                 });
 
         Log.d(TAG, "onCreate: Activity được tạo.");
+        // XÓA: loadData(); // Polling sẽ thay thế hàm này
+    }
+
+    // ==================================================================
+    // --- THÊM MỚI: Quản lý Vòng lặp Polling ---
+    // ==================================================================
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+        // Bắt đầu vòng lặp kiểm tra status
+        startStatusCheckLoop();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityRunning = false;
+        // Dừng vòng lặp
+        stopStatusCheckLoop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: Tải lại dữ liệu...");
-        loadData(); // Tải dữ liệu khi quay lại
+        // XÓA: loadData();
+        // Khi quay lại từ AddEditPlayerActivity, đảm bảo polling đang chạy
+        if (!isActivityRunning) {
+            isActivityRunning = true;
+            startStatusCheckLoop();
+        }
     }
+
+    /**
+     * Bắt đầu vòng lặp kiểm tra status (3 giây 1 lần)
+     */
+    private void startStatusCheckLoop() {
+        if (statusCheckRunnable != null) {
+            statusCheckHandler.removeCallbacks(statusCheckRunnable); // Đảm bảo chỉ chạy 1 lần
+        }
+
+        statusCheckRunnable = () -> {
+            if (!isActivityRunning) return;
+            checkLobbyStatusAndRefreshList(); // Hàm polling chính
+        };
+        // Chạy lần đầu ngay lập tức
+        Log.d(TAG, "Bắt đầu Polling...");
+        statusCheckHandler.post(statusCheckRunnable);
+    }
+
+    /**
+     * Dừng vòng lặp kiểm tra status
+     */
+    private void stopStatusCheckLoop() {
+        Log.d(TAG, "Dừng Polling.");
+        if (statusCheckHandler != null && statusCheckRunnable != null) {
+            statusCheckHandler.removeCallbacks(statusCheckRunnable);
+            statusCheckRunnable = null;
+        }
+    }
+
+    /**
+     * Lên lịch kiểm tra tiếp theo
+     */
+    private void scheduleNextStatusCheck() {
+        if (isActivityRunning && statusCheckHandler != null && statusCheckRunnable != null) {
+            statusCheckHandler.postDelayed(statusCheckRunnable, CHECK_INTERVAL);
+        }
+    }
+
+    /**
+     * Hàm helper để chuyển sang GameEndActivity
+     */
+    private void navigateToGameEnd() {
+        if (!isActivityRunning) return;
+
+        isActivityRunning = false; // Ngăn chạy 2 lần
+        stopStatusCheckLoop();
+
+//        Toast.makeText(this, "Vote đã xong! Đang xem kết quả...", Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(LobbyRateVoteActivity.this, GameEndActivity.class);
+        intent.putExtra("username", username);
+        intent.putExtra("lobby_id", lobbyId); // GameEndActivity CẦN "lobby_id"
+        startActivity(intent);
+        finish(); // Đóng Activity này
+    }
+
+    /**
+     * HÀM POLLING CHÍNH:
+     * 1. Tải Lobby để kiểm tra status (isEnd).
+     * 2. Tải Players để refresh danh sách điểm.
+     */
+    private void checkLobbyStatusAndRefreshList() {
+        if (lobbyId == null || !isActivityRunning) {
+            stopStatusCheckLoop();
+            return;
+        }
+
+        // Bước 1: Lấy thông tin Lobby (để biết admin là ai và status)
+        lobbyService.getLobbyById(lobbyId, new SupabaseCallback<Lobby>() {
+            @Override
+            public void onSuccess(Lobby lobby) {
+                if (!isActivityRunning) return;
+
+                if (lobby == null) {
+//                    Toast.makeText(LobbyRateVoteActivity.this, "Lỗi: Không tìm thấy Lobby", Toast.LENGTH_LONG).show();
+                    finish();
+                    return;
+                }
+                currentLobby = lobby; // Cập nhật lobby
+                String status = lobby.getStatus();
+
+                // === KIỂM TRA ĐIỀU KIỆN KẾT THÚC ===
+                if ("isOver".equals(status) || "isEnd".equals(status)) {
+                    Log.d(TAG, "Polling: Phát hiện status=" + status + ", chuyển sang GameEnd.");
+                    navigateToGameEnd();
+                    return; // Dừng, không cần làm gì nữa
+                }
+                // ==================================
+
+                // Ẩn nút Finish nếu không phải là Admin
+                runOnUiThread(() -> {
+                    if (currentLobby != null && !username.equals(currentLobby.getAdminUsername())) {
+                        btnFinish.setVisibility(View.GONE);
+                    } else {
+                        btnFinish.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                // Bước 2: Tải tất cả player (sau đó lọc)
+                playerService.getAllPlayers(new SupabaseCallback<List<Player>>() {
+                    @Override
+                    public void onSuccess(List<Player> allPlayers) {
+                        if (!isActivityRunning) return;
+
+                        // Lọc ra chỉ những players thuộc lobby này
+                        List<Player> lobbyPlayers = allPlayers.stream()
+                                .filter(player -> lobbyId.equals(player.getLobbyId()))
+                                .sorted(Comparator.comparingInt(Player::getPoint).reversed())
+                                .collect(Collectors.toList());
+
+                        Log.d(TAG, "Polling: Tải " + lobbyPlayers.size() + " players cho lobby " + lobbyId);
+
+                        runOnUiThread(() -> {
+                            fullPlayerList.clear();
+                            fullPlayerList.addAll(lobbyPlayers);
+                            // Lấy query hiện tại từ searchView để giữ filter
+                            String currentQuery = (searchViewPlayers != null) ? searchViewPlayers.getQuery().toString() : "";
+                            filterPlayers(currentQuery); // <-- Refresh UI với filter
+                        });
+
+                        // Lên lịch kiểm tra tiếp theo
+                        scheduleNextStatusCheck();
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        if (!isActivityRunning) return;
+                        Log.e(TAG, "Polling: Lỗi tải players: ", e);
+                        // Lên lịch kiểm tra tiếp theo
+                        scheduleNextStatusCheck();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                if (!isActivityRunning) return;
+                Log.e(TAG, "Polling: Lỗi tải lobby: ", e);
+                // Lên lịch kiểm tra tiếp theo
+                scheduleNextStatusCheck();
+            }
+        });
+    }
+
+    // ==================================================================
+    // --- CÁC HÀM GỐC (Giữ nguyên hoặc chỉnh sửa) ---
+    // ==================================================================
 
     /**
      * Ánh xạ các thành phần UI
@@ -129,6 +307,8 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
 
         // Sự kiện click cho ListView
         lvPlayers.setOnItemClickListener((parent, view, position, id) -> {
+            if (position >= displayedPlayerList.size() || position < 0) return; // Guard clause
+
             Player selectedPlayer = displayedPlayerList.get(position);
             Log.d(TAG, "Đã chọn player: " + selectedPlayer.getUsername());
 
@@ -137,7 +317,6 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
             boolean isAdmin = (currentLobby != null) && username.equals(currentLobby.getAdminUsername());
             if (!isAdmin) {
 //                Toast.makeText(this, "Chỉ Admin mới có quyền chấm điểm.", Toast.LENGTH_SHORT).show();
-                // Bạn có thể mở PlayerDetailActivity (chỉ xem) ở đây nếu muốn
                 return;
             }
 
@@ -168,68 +347,8 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Tải dữ liệu (Lobby và Players)
-     */
-    private void loadData() {
-        if (lobbyId == null) return;
-//        Toast.makeText(this, "Đang tải dữ liệu phòng...", Toast.LENGTH_SHORT).show();
-
-        // Bước 1: Lấy thông tin Lobby (để biết admin là ai)
-        lobbyService.getLobbyById(lobbyId, new SupabaseCallback<Lobby>() {
-            @Override
-            public void onSuccess(Lobby lobby) {
-                if (lobby == null) {
-//                    runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi: Không tìm thấy Lobby", Toast.LENGTH_LONG).show());
-                    finish();
-                    return;
-                }
-                currentLobby = lobby; // Lưu lại thông tin lobby
-
-                // Ẩn nút Finish nếu không phải là Admin
-                runOnUiThread(() -> {
-                    if (!username.equals(currentLobby.getAdminUsername())) {
-                        btnFinish.setVisibility(View.GONE);
-                    } else {
-                        btnFinish.setVisibility(View.VISIBLE);
-                    }
-                });
-
-                // Bước 2: Tải tất cả player (sau đó lọc)
-                playerService.getAllPlayers(new SupabaseCallback<List<Player>>() {
-                    @Override
-                    public void onSuccess(List<Player> allPlayers) {
-                        // Lọc ra chỉ những players thuộc lobby này
-                        List<Player> lobbyPlayers = allPlayers.stream()
-                                .filter(player -> lobbyId.equals(player.getLobbyId()))
-                                // Sắp xếp theo điểm, cao nhất lên trước
-                                .sorted(Comparator.comparingInt(Player::getPoint).reversed())
-                                .collect(Collectors.toList());
-
-                        Log.d(TAG, "Đã tải " + lobbyPlayers.size() + " players cho lobby " + lobbyId);
-
-                        runOnUiThread(() -> {
-                            fullPlayerList.clear();
-                            fullPlayerList.addAll(lobbyPlayers);
-                            updateDisplayedPlayers(fullPlayerList); // Hiển thị
-                        });
-                    }
-
-                    @Override
-                    public void onFailure(Exception e) {
-                        Log.e(TAG, "Lỗi tải players: ", e);
-//                        runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi tải danh sách players: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.e(TAG, "Lỗi tải lobby: ", e);
-//                runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi tải thông tin lobby: " + e.getMessage(), Toast.LENGTH_LONG).show());
-            }
-        });
-    }
+    // XÓA: Hàm loadData() (đã được thay thế bằng checkLobbyStatusAndRefreshList)
+    // private void loadData() { ... }
 
     /**
      * Lọc danh sách player theo ô search
@@ -305,6 +424,8 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
      */
     private void updateLobbyStatusToIsEnd() {
 //        Toast.makeText(this, "Đang kết thúc trò chơi...", Toast.LENGTH_SHORT).show();
+        isActivityRunning = false; // Dừng polling ngay lập tức
+        stopStatusCheckLoop();
 
         currentLobby.setStatus("isEnd"); // <-- Yêu cầu của bạn
 
@@ -315,11 +436,9 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
 //                    Toast.makeText(LobbyRateVoteActivity.this, "Đã kết thúc! Đang xem kết quả.", Toast.LENGTH_SHORT).show();
 
                     // Mở GameEndActivity
-                    Intent intent = new Intent(LobbyRateVoteActivity.this, GameEndActivity.class);
-                    intent.putExtra("username", username);
-                    intent.putExtra("lobby_id", lobbyId);
-                    startActivity(intent);
-                    finish(); // Đóng Activity này
+                    // (Hàm navigateToGameEnd đã có sẵn, chỉ cần gọi nó)
+                    isActivityRunning = true; // Tạm bật lại cờ để hàm navigate chạy
+                    navigateToGameEnd();
                 });
             }
 
@@ -327,6 +446,9 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi cập nhật status: ", e);
 //                runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi khi kết thúc: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                // Bật lại polling nếu lỗi
+                isActivityRunning = true;
+                startStatusCheckLoop();
             }
         });
     }

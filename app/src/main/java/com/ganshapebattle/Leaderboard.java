@@ -1,35 +1,36 @@
 package com.ganshapebattle;
 
-import android.graphics.Bitmap; // <-- Thêm
+import android.content.Intent; // <-- THÊM IMPORT
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button; // <-- THÊM IMPORT
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-//import android.widget.Toast; // <-- Thêm
+//import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-// import com.bumptech.glide.Glide; // <-- Xóa Glide
 import com.ganshapebattle.adapters.LeaderboardAdapter;
-import com.ganshapebattle.models.Lobby; // <-- Thêm
-import com.ganshapebattle.models.Picture; // <-- Thêm
-import com.ganshapebattle.models.Player; // <-- Thêm
+import com.ganshapebattle.models.Lobby;
+import com.ganshapebattle.models.Picture;
+import com.ganshapebattle.models.Player;
 import com.ganshapebattle.models.PlayerScore;
-import com.ganshapebattle.services.LobbyService; // <-- Thêm
-import com.ganshapebattle.services.PlayerService; // <-- Thêm
-import com.ganshapebattle.services.SupabaseCallback; // <-- Thêm
-import com.ganshapebattle.utils.ImageUtils; // <-- Thêm
+import com.ganshapebattle.services.LobbyService;
+import com.ganshapebattle.services.PlayerService;
+import com.ganshapebattle.services.SupabaseCallback;
+import com.ganshapebattle.utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator; // <-- Thêm
+import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger; // <-- Thêm
-import java.util.stream.Collectors; // <-- Thêm
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class Leaderboard extends AppCompatActivity {
 
@@ -46,6 +47,10 @@ public class Leaderboard extends AppCompatActivity {
     private ListView lvOtherPlayers;
     private LeaderboardAdapter otherPlayersAdapter;
     private ArrayList<PlayerScore> otherPlayersList;
+
+    // --- THÊM MỚI ---
+    private Button btnBackToMenu;
+    // --- KẾT THÚC THÊM MỚI ---
 
     // Services
     private PlayerService playerService;
@@ -85,6 +90,18 @@ public class Leaderboard extends AppCompatActivity {
 
         // Bắt đầu tải dữ liệu
         loadLeaderboardData();
+
+        // --- THÊM MỚI: Gắn sự kiện cho nút "Về Menu" ---
+        btnBackToMenu.setOnClickListener(v -> {
+            // Tạo Intent để quay về MainActivity
+            Intent intent = new Intent(Leaderboard.this, MainActivity.class);
+            // Thêm cờ (flags) để xóa tất cả các Activity trung gian (như GameEnd, Vote, Design...)
+            // và chỉ giữ lại MainActivity là task gốc.
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish(); // Đóng LeaderboardActivity
+        });
+        // --- KẾT THÚC THÊM MỚI ---
     }
 
     /**
@@ -198,6 +215,10 @@ public class Leaderboard extends AppCompatActivity {
 
         // ListView cho các hạng còn lại
         lvOtherPlayers = findViewById(R.id.lvOtherPlayers);
+
+        // --- THÊM MỚI: Ánh xạ nút Về Menu ---
+        btnBackToMenu = findViewById(R.id.btnBackToMenu);
+        // --- KẾT THÚC THÊM MỚI ---
     }
 
     /**

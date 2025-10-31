@@ -138,14 +138,16 @@ public class GameVoteActivity extends AppCompatActivity {
 
                 String status = lobby.getStatus();
 
-                // Kiểm tra điều kiện bạn yêu cầu
-                if ("isOver".equals(status)) {
+                // === SỬA LỖI TẠI ĐÂY ===
+                // Kiểm tra "isOver" (từ logic cũ) HOẶC "isEnd" (từ LobbyRateVoteActivity)
+                if ("isOver".equals(status) || "isEnd".equals(status)) {
                     // THÀNH CÔNG: Chuyển sang GameEndActivity
                     navigateToGameEnd();
                 } else {
-                    // Vẫn là "isVoting", "loop tiếp"
+                    // Vẫn là "isVoting" hoặc trạng thái khác, "loop tiếp"
                     scheduleNextStatusCheck();
                 }
+                // === KẾT THÚC SỬA LỖI ===
             }
 
             @Override

@@ -331,7 +331,6 @@
             android:drawableStart="@drawable/ic_trophy_small"
             android:drawablePadding="8dp" />
 
-        <!-- ListView -->
         <ListView
             android:id="@+id/lvOtherPlayers"
             android:layout_width="match_parent"
@@ -343,5 +342,20 @@
             android:clipToPadding="false"
             android:scrollbars="none" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBackToMenu"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/back_to_menu_button"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:backgroundTint="@null"
+            android:background="@drawable/btn_gradient_blue"
+            app:rippleColor="#33FFFFFF"
+            app:cornerRadius="16dp"
+            android:elevation="8dp"
+            android:stateListAnimator="@animator/button_elevation"/>
     </LinearLayout>
 </ScrollView>

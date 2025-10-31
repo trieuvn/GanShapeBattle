@@ -511,7 +511,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
     }
 
     // ==================================================================
-    // --- LOGIC TIMER VÀ CHUYỂN ACTIVITY (Giữ nguyên) ---
+    // --- LOGIC TIMER VÀ CHUYỂN ACTIVITY (ĐÃ SỬA) ---
     // ==================================================================
 
     // ... (Giữ nguyên các hàm: parseTimeAndStartLoop, startTimerLoop, stopTimerLoop, updateTimerDisplay) ...
@@ -600,6 +600,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
                 }
                 String status = latestLobby.getStatus();
 
+                // === SỬA LOGIC CHUYỂN HƯỚNG ===
                 if ("isPlaying".equals(status)) {
                     // Hết giờ vẽ -> chuyển sang voting (Chỉ Admin mới làm)
                     if (username.equals(latestLobby.getAdminUsername())) {
@@ -607,37 +608,43 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
                         lobbyService.updateLobby(lobbyId, latestLobby, new SupabaseCallback<String>() {
                             @Override
                             public void onSuccess(String result) {
-                                navigateToActivity(GameVoteActivity.class, latestLobby);
+                                // SỬA: Chuyển sang LobbyRateVoteActivity
+                                navigateToActivity(LobbyRateVoteActivity.class, latestLobby);
                             }
                             @Override
                             public void onFailure(Exception e) {
 //                                Toast.makeText(context, "Lỗi cập nhật status, vẫn thử chuyển...", Toast.LENGTH_SHORT).show();
-                                navigateToActivity(GameVoteActivity.class, latestLobby);
+                                // SỬA: Chuyển sang LobbyRateVoteActivity
+                                navigateToActivity(LobbyRateVoteActivity.class, latestLobby);
                             }
                         });
                     } else {
-                        // Người chơi bình thường chỉ cần chuyển
-                        navigateToActivity(GameVoteActivity.class, latestLobby);
+                        // Người chơi bình thường cũng chuyển sang LobbyRateVoteActivity
+                        navigateToActivity(LobbyRateVoteActivity.class, latestLobby);
                     }
 
                 } else if ("isVoting".equals(status)) {
                     // Nếu status đã là "isVoting"
-                    navigateToActivity(GameVoteActivity.class, latestLobby);
-                } else if ("isOver".equals(status)) {
+                    // SỬA: Chuyển sang LobbyRateVoteActivity
+                    navigateToActivity(LobbyRateVoteActivity.class, latestLobby);
+
+                } else if ("isOver".equals(status) || "isEnd".equals(status)) { // Thêm kiểm tra "isEnd"
                     // Nếu game đã kết thúc
                     navigateToActivity(GameEndActivity.class, latestLobby);
                 }
+                // === KẾT THÚC SỬA LOGIC ===
             }
             @Override
             public void onFailure(Exception e) {
 //                Toast.makeText(context, "Lỗi kiểm tra trạng thái hết giờ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                navigateToActivity(GameVoteActivity.class, null);
+                // SỬA: Chuyển sang LobbyRateVoteActivity
+                navigateToActivity(LobbyRateVoteActivity.class, null);
             }
         });
     }
 
     /**
-     * Hàm helper để chuyển Activity
+     * Hàm helper để chuyển Activity (ĐÃ SỬA)
      */
     private void navigateToActivity(Class<?> activityClass, Lobby lobbyToPass) {
         if (!isActivityRunning) return;
@@ -646,20 +653,13 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
 
         Intent intent = new Intent(DesignActivity.this, activityClass);
         intent.putExtra("username", username);
-        intent.putExtra("lobbyid", lobbyId);
+        intent.putExtra("lobbyid", lobbyId); // LobbyRateVoteActivity cần "lobbyid"
 
-        if (activityClass == GameVoteActivity.class) {
-            int voteTime = 5; // Mặc định 5 (giây) nếu lỗi
-            String beginVoteDate = null;
-
-            if (lobbyToPass != null) {
-                voteTime = lobbyToPass.getVoteTime();
-                beginVoteDate = lobbyToPass.getBeginVoteDate();
-            }
-
-            intent.putExtra("votetime_duration", voteTime); // Gửi số giây
-            intent.putExtra("votetime_start", beginVoteDate); // Gửi mốc thời gian bắt đầu
+        // Đảm bảo GameEndActivity nhận đúng key "lobby_id"
+        if (activityClass == GameEndActivity.class) {
+            intent.putExtra("lobby_id", lobbyId);
         }
+
         startActivity(intent);
         finish();
     }
