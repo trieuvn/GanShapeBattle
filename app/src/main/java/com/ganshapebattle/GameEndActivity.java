@@ -39,7 +39,7 @@ public class GameEndActivity extends AppCompatActivity {
     }
     private void startLeaderboard() {
         Intent intent = new Intent(this, Leaderboard.class);
-        intent.putExtra("lobby_id", lobbyId);
+        intent.putExtra("lobbyid", lobbyId);
         startActivity(intent);
         finish();
     }
