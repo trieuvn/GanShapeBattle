@@ -70,7 +70,7 @@
                 android:layout_height="match_parent"
                 android:padding="16dp"
                 android:scaleType="center"
-                tools:src="@tools:sample/avatars" />
+                android:src="@drawable/ic_default_avatar" />
 
         </com.google.android.material.card.MaterialCardView>
 

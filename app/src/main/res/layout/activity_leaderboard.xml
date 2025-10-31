@@ -4,252 +4,395 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3F7FF"
+    android:background="#F8FBFF"
     android:fillViewport="true"
     tools:context=".Leaderboard">
+
 
     <LinearLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp"
+        android:gravity="center_horizontal">
 
         <!-- Tiêu đề -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:gravity="center"
-            android:text="🏆 Leaderboard 🏆"
-            android:textColor="#0D47A1"
+            android:text="LEADERBOARD"
             android:textSize="26sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#1E40AF"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="28dp" />
 
-        <!-- Bục top 1–3 -->
+        <!-- PODIUM TOP 1-3 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/podiumLayout"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="24dp">
 
             <!-- Top 2 -->
-            <LinearLayout
-                android:id="@+id/top2Layout"
-                android:layout_width="80dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTop2"
+                android:layout_width="90dp"
                 android:layout_height="180dp"
-                android:layout_marginEnd="16dp"
-                android:background="#BBDEFB"
-                android:elevation="4dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#E5E7EB"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/top1Layout"
-                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintEnd_toStartOf="@id/cardTop1"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <ImageView
-                    android:id="@+id/imgTop2"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginBottom="4dp"
-                    android:src="@drawable/ic_person" />
-
-                <TextView
-                    android:id="@+id/tvName2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
                     android:gravity="center"
-                    android:text="Player 2"
-                    android:textColor="#0D47A1"
-                    android:textSize="14sp" />
+                    android:padding="12dp">
 
-                <TextView
-                    android:id="@+id/tvScore2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="850 pts"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    <!-- Avatar + huy chương nhỏ -->
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp">
 
-            <!-- Top 1 -->
-            <LinearLayout
-                android:id="@+id/top1Layout"
-                android:layout_width="100dp"
-                android:layout_height="220dp"
-                android:background="#BBDEFB"
-                android:elevation="8dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp"
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imgAvatar2"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:src="@drawable/ic_default_avatar"
+                            app:shapeAppearanceOverlay="@style/AvatarCircle"
+                            app:strokeColor="#9CA3AF"
+                            app:strokeWidth="2dp" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_medal_silver_small"
+                            android:layout_alignBottom="@id/imgAvatar2"
+                            android:layout_alignEnd="@id/imgAvatar2"
+                            android:layout_marginBottom="-4dp"
+                            android:layout_marginEnd="-4dp"
+                            android:padding="2dp" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tvName2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Alex Kim"
+                        android:textColor="#1F2937"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
+
+                    <TextView
+                        android:id="@+id/tvScore2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="850 pts"
+                        android:textColor="#3B82F6"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Top 1 - CHAMPION + WINS -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTop1"
+                android:layout_width="110dp"
+                android:layout_height="240dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/top3Layout"
-                app:layout_constraintStart_toEndOf="@id/top2Layout">
+                app:layout_constraintStart_toEndOf="@id/cardTop2"
+                app:layout_constraintEnd_toStartOf="@id/cardTop3">
 
-                <ImageView
-                    android:id="@+id/imgTop1"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginBottom="4dp"
-                    android:src="@drawable/ic_users" />
-
-                <TextView
-                    android:id="@+id/tvName1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
                     android:gravity="center"
-                    android:text="Player 1"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:padding="12dp"
+                    android:background="@drawable/bg_podium_gold">
 
-                <TextView
-                    android:id="@+id/tvScore1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="1000 pts"
-                    android:textColor="#E3F2FD"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    <!-- Avatar + huy chương + vòng vàng -->
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="68dp"
+                            android:layout_height="68dp"
+                            android:src="@drawable/ic_crown_circle"
+                            android:layout_centerInParent="true" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imgAvatar1"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/ic_default_avatar"
+                            app:shapeAppearanceOverlay="@style/AvatarCircle"
+                            app:strokeColor="#F59E0B"
+                            app:strokeWidth="3dp"
+                            android:layout_centerInParent="true" />
+
+
+                        <ImageView
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_alignBottom="@id/imgAvatar1"
+                            android:layout_alignEnd="@id/imgAvatar1"
+                            android:layout_marginBottom="-6dp"
+                            android:layout_marginEnd="-6dp"
+                            android:background="@drawable/bg_medal_small_circle"
+                            android:padding="3dp" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tvName1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Champion"
+                        android:textColor="#FFFFFF"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:shadowColor="#92400E"
+                        android:shadowDx="1"
+                        android:shadowDy="1"
+                        android:shadowRadius="2" />
+
+                    <TextView
+                        android:id="@+id/tvScore1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1000 pts"
+                        android:textColor="#FEF3C7"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp" />
+
+                    <!-- SỐ LẦN CHIẾN THẮNG -->
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- Top 3 -->
-            <LinearLayout
-                android:id="@+id/top3Layout"
-                android:layout_width="80dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTop3"
+                android:layout_width="90dp"
                 android:layout_height="160dp"
-                android:layout_marginStart="16dp"
-                android:background="#BBDEFB"
-                android:elevation="4dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="#E5E7EB"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/top1Layout">
+                app:layout_constraintStart_toEndOf="@id/cardTop1"
+                app:layout_constraintEnd_toEndOf="parent">
 
-                <ImageView
-                    android:id="@+id/imgTop3"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_marginBottom="4dp"
-                    android:src="@drawable/ic_person" />
-
-                <TextView
-                    android:id="@+id/tvName3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
                     android:gravity="center"
-                    android:text="Player 3"
-                    android:textColor="#0D47A1"
-                    android:textSize="14sp" />
+                    android:padding="12dp">
 
-                <TextView
-                    android:id="@+id/tvScore3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="700 pts"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imgAvatar3"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:src="@drawable/ic_default_avatar"
+                            app:shapeAppearanceOverlay="@style/AvatarCircle"
+                            app:strokeColor="#D97706"
+                            app:strokeWidth="2dp" />
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_medal_bronze_small"
+                            android:layout_alignBottom="@id/imgAvatar3"
+                            android:layout_alignEnd="@id/imgAvatar3"
+                            android:layout_marginBottom="-4dp"
+                            android:layout_marginEnd="-4dp"
+                            android:padding="2dp" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tvName3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Jordan Lee"
+                        android:textColor="#1F2937"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
+
+                    <TextView
+                        android:id="@+id/tvScore3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="700 pts"
+                        android:textColor="#F59E0B"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Top 4 & 5 bên dưới podium -->
+        <!-- Top 4 & 5 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp">
 
-            <LinearLayout
-                android:id="@+id/top4Layout"
-                android:layout_width="100dp"
-                android:layout_height="120dp"
-                android:layout_marginEnd="16dp"
-                android:background="#E3F2FD"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTop4"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="#FFFFFF">
 
-                <ImageView
-                    android:id="@+id/imgTop4"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_person" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="10dp">
 
-                <TextView
-                    android:id="@+id/tvName4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Player 4"
-                    android:textColor="#0D47A1" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:textSize="12sp"
+                        android:textColor="#6B7280"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvScore4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="650 pts"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    <ImageView
+                        android:id="@+id/imgTop4"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_person"
+                        android:layout_marginVertical="4dp" />
 
-            <LinearLayout
-                android:id="@+id/top5Layout"
-                android:layout_width="100dp"
-                android:layout_height="120dp"
-                android:layout_marginStart="16dp"
-                android:background="#E3F2FD"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp">
+                    <TextView
+                        android:id="@+id/tvName4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sarah Park"
+                        android:textColor="#374151"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/imgTop5"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_person" />
+                    <TextView
+                        android:id="@+id/tvScore4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="650 pts"
+                        android:textColor="#10B981"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/tvName5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Player 5"
-                    android:textColor="#0D47A1" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardTop5"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="#FFFFFF">
 
-                <TextView
-                    android:id="@+id/tvScore5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="600 pts"
-                    android:textColor="#1565C0"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5"
+                        android:textSize="12sp"
+                        android:textColor="#6B7280"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/imgTop5"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_person"
+                        android:layout_marginVertical="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvName5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Mike Chen"
+                        android:textColor="#374151"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvScore5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="600 pts"
+                        android:textColor="#10B981"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
-        <!-- Danh sách còn lại -->
+        <!-- Other Players Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:text="Other Players"
-            android:textColor="#0D47A1"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#1E40AF"
+            android:layout_marginBottom="12dp"
+            android:drawableLeft="@drawable/ic_trophy_small"
+            android:drawablePadding="8dp" />
 
+        <!-- ListView -->
         <ListView
             android:id="@+id/lvOtherPlayers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:divider="#E0E0E0"
-            android:dividerHeight="1dp" />
+            android:background="@drawable/bg_list_rounded"
+            android:divider="#E5E7EB"
+            android:dividerHeight="1dp"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:scrollbars="none" />
+
     </LinearLayout>
+
 </ScrollView>
