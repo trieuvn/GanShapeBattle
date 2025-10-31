@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -63,7 +63,7 @@ public class LobbyActivity extends AppCompatActivity {
         // Lấy username từ Intent
         username = getIntent().getStringExtra("username");
         if (username == null || username.isEmpty()) {
-            Toast.makeText(this, "Lỗi: Không có thông tin người dùng!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi: Không có thông tin người dùng!", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -96,9 +96,9 @@ public class LobbyActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (user != null) {
                         currentUser = user;
-                        Toast.makeText(LobbyActivity.this, "Chào mừng " + user.getUsername() + "!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(LobbyActivity.this, "Chào mừng " + user.getUsername() + "!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(LobbyActivity.this, "Không tìm thấy thông tin người dùng!", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(LobbyActivity.this, "Không tìm thấy thông tin người dùng!", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -107,7 +107,7 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 runOnUiThread(() -> {
-                    Toast.makeText(LobbyActivity.this, "Lỗi tải thông tin người dùng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(LobbyActivity.this, "Lỗi tải thông tin người dùng: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     finish();
                 });
             }
@@ -144,7 +144,7 @@ public class LobbyActivity extends AppCompatActivity {
     /** Tạo phòng và hiển thị mã QR */
     private void createLobby() {
         if (currentUser == null) {
-            Toast.makeText(this, "Chưa tải được thông tin người dùng!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Chưa tải được thông tin người dùng!", Toast.LENGTH_SHORT).show();
             return;
         }
         deleteLobby();
@@ -176,14 +176,14 @@ public class LobbyActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    runOnUiThread(() ->
-                            Toast.makeText(LobbyActivity.this, "Lỗi tạo phòng: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                    runOnUiThread(() ->{}
+//                            Toast.makeText(LobbyActivity.this, "Lỗi tạo phòng: " + e.getMessage(), Toast.LENGTH_LONG).show()
                     );
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Lỗi tạo phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi tạo phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -198,15 +198,15 @@ public class LobbyActivity extends AppCompatActivity {
         lobbyService.updateLobby(currentLobby.getId(), currentLobby, new SupabaseCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                runOnUiThread(() ->
-                        Toast.makeText(LobbyActivity.this, "Đã đổi chế độ: " + mode, Toast.LENGTH_SHORT).show()
+                runOnUiThread(() ->{}
+//                        Toast.makeText(LobbyActivity.this, "Đã đổi chế độ: " + mode, Toast.LENGTH_SHORT).show()
                 );
             }
 
             @Override
             public void onFailure(Exception e) {
-                runOnUiThread(() ->
-                        Toast.makeText(LobbyActivity.this, "Lỗi cập nhật chế độ: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                runOnUiThread(() ->{}
+//                        Toast.makeText(LobbyActivity.this, "Lỗi cập nhật chế độ: " + e.getMessage(), Toast.LENGTH_LONG).show()
                 );
             }
         });
@@ -215,7 +215,7 @@ public class LobbyActivity extends AppCompatActivity {
     /** Bắt đầu trò chơi */
     private void beginGame() {
         if (currentLobby == null) {
-            Toast.makeText(this, "Chưa có phòng chơi!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Chưa có phòng chơi!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -228,7 +228,7 @@ public class LobbyActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(String result) {
                     runOnUiThread(() -> {
-                        Toast.makeText(LobbyActivity.this, "Trò chơi bắt đầu!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(LobbyActivity.this, "Trò chơi bắt đầu!", Toast.LENGTH_SHORT).show();
                         // TODO: start GameActivity
                         Intent intent = new Intent(LobbyActivity.this, GameLoadActivity.class);
                         intent.putExtra("username", username);
@@ -239,14 +239,14 @@ public class LobbyActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    runOnUiThread(() ->
-                            Toast.makeText(LobbyActivity.this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                    runOnUiThread(() ->{}
+//                            Toast.makeText(LobbyActivity.this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show()
                     );
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -285,7 +285,7 @@ public class LobbyActivity extends AppCompatActivity {
             textViewLobbyId.setText("Mã phòng: " + lobbyId);
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Lỗi tạo mã QR", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Lỗi tạo mã QR", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -339,7 +339,7 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 runOnUiThread(() -> {
-                    Toast.makeText(LobbyActivity.this, "Lỗi tạo picture: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(LobbyActivity.this, "Lỗi tạo picture: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     //editTextLobbyId.setText("Lỗi tạo picture: " + e.getMessage());
                     //setLoading(false);
                 });
@@ -364,7 +364,7 @@ public class LobbyActivity extends AppCompatActivity {
                     //showInLobbyView();
                     createQrcode(currentLobby.getId());
                     updateUIAfterCreation();
-                    Toast.makeText(LobbyActivity.this, "Tạo phòng thành công", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LobbyActivity.this, "Tạo phòng thành công", Toast.LENGTH_SHORT).show();
                 });
             }
 
@@ -375,7 +375,7 @@ public class LobbyActivity extends AppCompatActivity {
                     if (e.getMessage().contains("23503")) {
                         errorMessage += "\nLỗi: Foreign key constraint - Kiểm tra dữ liệu liên quan";
                     }
-                    Toast.makeText(LobbyActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(LobbyActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     //editTextLobbyId.setText(errorMessage);
                     //setLoading(false);
                 });

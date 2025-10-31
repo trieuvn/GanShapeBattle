@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -107,7 +107,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(LobbyDetailActivity.this, result, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LobbyDetailActivity.this, result, Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
                 });
@@ -118,7 +118,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
     }
 
     private void calculateAndApplyRanks(String lobbyId) {
-        Toast.makeText(this, "Đang tính toán xếp hạng...", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Đang tính toán xếp hạng...", Toast.LENGTH_SHORT).show();
 
         playerService.getAllPlayers(new SupabaseCallback<List<Player>>() {
             @Override
@@ -133,7 +133,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
                 final int totalPlayers = playersInLobby.size();
 
                 if (totalPlayers == 0) {
-                    runOnUiThread(() -> Toast.makeText(LobbyDetailActivity.this, "Không có người chơi nào trong phòng này.", Toast.LENGTH_SHORT).show());
+//                    runOnUiThread(() -> Toast.makeText(LobbyDetailActivity.this, "Không có người chơi nào trong phòng này.", Toast.LENGTH_SHORT).show());
                     return;
                 }
 
@@ -147,7 +147,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
                             Log.d(TAG, "Cập nhật hạng thành công cho: " + player.getUsername());
                             successCount[0]++;
                             if (successCount[0] == totalPlayers) {
-                                runOnUiThread(() -> Toast.makeText(LobbyDetailActivity.this, "Cập nhật xếp hạng hoàn tất!", Toast.LENGTH_LONG).show());
+//                                runOnUiThread(() -> Toast.makeText(LobbyDetailActivity.this, "Cập nhật xếp hạng hoàn tất!", Toast.LENGTH_LONG).show());
                             }
                         }
                         @Override
@@ -160,7 +160,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception e) {
-                runOnUiThread(() -> Toast.makeText(LobbyDetailActivity.this, "Lỗi khi lấy danh sách người chơi.", Toast.LENGTH_SHORT).show());
+//                runOnUiThread(() -> Toast.makeText(LobbyDetailActivity.this, "Lỗi khi lấy danh sách người chơi.", Toast.LENGTH_SHORT).show());
             }
         });
     }

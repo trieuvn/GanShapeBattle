@@ -7,7 +7,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -93,9 +92,9 @@ public class AddEditGalleryActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi tải chi tiết gallery: ", e);
-                runOnUiThread(() ->
-                        Toast.makeText(AddEditGalleryActivity.this, "Không thể tải dữ liệu", Toast.LENGTH_LONG).show()
-                );
+                // runOnUiThread(() ->
+                //         Toast.makeText(AddEditGalleryActivity.this, "Không thể tải dữ liệu", Toast.LENGTH_LONG).show() // <-- Đã xóa
+                // );
             }
         });
     }
@@ -107,11 +106,11 @@ public class AddEditGalleryActivity extends AppCompatActivity {
         String type = spinnerType.getText().toString().trim();
 
         if (name.isEmpty()) {
-            Toast.makeText(this, "Tên không được để trống", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Tên không được để trống", Toast.LENGTH_SHORT).show(); // <-- Đã xóa
             return;
         }
         if (type.isEmpty()) {
-            Toast.makeText(this, "Vui lòng chọn loại bộ sưu tập", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Vui lòng chọn loại bộ sưu tập", Toast.LENGTH_SHORT).show(); // <-- Đã xóa
             return;
         }
 
@@ -135,7 +134,7 @@ public class AddEditGalleryActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(AddEditGalleryActivity.this, result, Toast.LENGTH_LONG).show();
+                    // Toast.makeText(AddEditGalleryActivity.this, result, Toast.LENGTH_LONG).show(); // <-- Đã xóa
                     setResult(RESULT_OK);
                     finish();
                 });
@@ -144,8 +143,8 @@ public class AddEditGalleryActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi lưu gallery: ", e);
-                runOnUiThread(() ->
-                        Toast.makeText(AddEditGalleryActivity.this, "Lưu thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                runOnUiThread(() ->{}
+                        // Toast.makeText(AddEditGalleryActivity.this, "Lưu thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show() // <-- Đã xóa
                 );
             }
         };

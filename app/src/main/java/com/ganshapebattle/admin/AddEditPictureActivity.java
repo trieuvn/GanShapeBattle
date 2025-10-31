@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -134,7 +134,7 @@ public class AddEditPictureActivity extends AppCompatActivity {
                 new ActivityResultContracts.RequestPermission(),
                 isGranted -> {
                     if (isGranted) openImagePicker();
-                    else Toast.makeText(this, "Cần quyền truy cập để chọn ảnh", Toast.LENGTH_SHORT).show();
+//                    else Toast.makeText(this, "Cần quyền truy cập để chọn ảnh", Toast.LENGTH_SHORT).show();
                 });
 
         pickImageLauncher = registerForActivityResult(
@@ -254,7 +254,7 @@ public class AddEditPictureActivity extends AppCompatActivity {
     private void savePicture() {
         String name = etName.getText().toString().trim();
         if (name.isEmpty()) {
-            Toast.makeText(this, "Tên ảnh không được để trống", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Tên ảnh không được để trống", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -271,7 +271,7 @@ public class AddEditPictureActivity extends AppCompatActivity {
         String username = spinnerUser.getText().toString();
 
         if (galleryName.isEmpty() || username.isEmpty()) {
-            Toast.makeText(this, "Vui lòng chọn bộ sưu tập và người tạo", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Vui lòng chọn bộ sưu tập và người tạo", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -280,7 +280,7 @@ public class AddEditPictureActivity extends AppCompatActivity {
                 .findFirst().orElse(null);
 
         if (selectedGallery == null) {
-            Toast.makeText(this, "Không tìm thấy gallery", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Không tìm thấy gallery", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -313,7 +313,7 @@ public class AddEditPictureActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    Toast.makeText(AddEditPictureActivity.this, "Lỗi upload ảnh", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AddEditPictureActivity.this, "Lỗi upload ảnh", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -327,7 +327,7 @@ public class AddEditPictureActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Picture p) {
                     runOnUiThread(() -> {
-                        Toast.makeText(AddEditPictureActivity.this, "Thêm thành công!", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(AddEditPictureActivity.this, "Thêm thành công!", Toast.LENGTH_LONG).show();
                         setResult(RESULT_OK);
                         finish();
                     });
@@ -335,7 +335,7 @@ public class AddEditPictureActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    Toast.makeText(AddEditPictureActivity.this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AddEditPictureActivity.this, "Thêm thất bại", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -343,7 +343,7 @@ public class AddEditPictureActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(String s) {
                     runOnUiThread(() -> {
-                        Toast.makeText(AddEditPictureActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(AddEditPictureActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
                     });
@@ -351,7 +351,7 @@ public class AddEditPictureActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    Toast.makeText(AddEditPictureActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AddEditPictureActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
                 }
             });
         }

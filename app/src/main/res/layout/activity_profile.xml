@@ -13,7 +13,6 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Tiêu đề -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,25 +24,22 @@
             android:fontFamily="sans-serif-medium"
             android:layout_gravity="center_horizontal"/>
 
-        <!-- Avatar + FAB chọn ảnh (FrameLayout) -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp">
 
-            <com.google.android.material.imageview.ShapeableImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivProfileAvatar"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_default_avatar"
-                app:shapeAppearanceOverlay="@style/AvatarCircle"
-                app:strokeColor="#0A6AED"
-                app:strokeWidth="3dp"
+                app:civ_border_color="#0A6AED"
+                app:civ_border_width="3dp"
                 android:elevation="6dp"
                 android:contentDescription="Ảnh đại diện" />
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btnSelectAvatar"
                 android:layout_width="48dp"
@@ -63,7 +59,6 @@
 
         </FrameLayout>
 
-        <!-- Email (không sửa được) -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,7 +93,6 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Username -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,7 +119,6 @@
                 android:paddingEnd="16dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Số điện thoại -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -153,7 +146,6 @@
                 android:paddingEnd="16dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Ngày sinh -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -184,7 +176,6 @@
                 android:paddingEnd="56dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Nút Lưu -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSaveChanges"
             android:layout_width="match_parent"

@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,14 +66,14 @@ public class GameLoadActivity extends AppCompatActivity {
         // Lấy username từ Intent
         username = getIntent().getStringExtra("username");
         if (username == null || username.isEmpty()) {
-            Toast.makeText(this, "Lỗi: Không có thông tin người dùng!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi: Không có thông tin người dùng!", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
 
         lobbyid = getIntent().getStringExtra("lobbyid");
         if (lobbyid == null || lobbyid.isEmpty()) {
-            Toast.makeText(this, "Lỗi: Không có thông tin lobby!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi: Không có thông tin lobby!", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -147,8 +147,8 @@ public class GameLoadActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 // Bước 4: TẤT CẢ THÀNH CÔNG
-                runOnUiThread(() ->
-                        Toast.makeText(GameLoadActivity.this, "Cập nhật điểm thành công", Toast.LENGTH_SHORT).show()
+                runOnUiThread(() ->{}
+//                        Toast.makeText(GameLoadActivity.this, "Cập nhật điểm thành công", Toast.LENGTH_SHORT).show()
                 );
 
                 // Mọi thứ đã sẵn sàng, cho phép vòng lặp bắt đầu
@@ -172,7 +172,7 @@ public class GameLoadActivity extends AppCompatActivity {
      */
     private void handleSetupFailure(Exception e) {
         runOnUiThread(() -> {
-            Toast.makeText(GameLoadActivity.this, "Lỗi khi vào phòng, hãy kiểm tra internet của bạn: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(GameLoadActivity.this, "Lỗi khi vào phòng, hãy kiểm tra internet của bạn: " + e.getMessage(), Toast.LENGTH_LONG).show();
             // Không thể tiếp tục, đóng Activity
             finish();
         });
@@ -213,8 +213,8 @@ public class GameLoadActivity extends AppCompatActivity {
         // Ghi lại thời điểm bắt đầu
         startTimeMillis = System.currentTimeMillis();
 
-        runOnUiThread(() ->
-                Toast.makeText(this, "Đang kiểm tra trạng thái người chơi...", Toast.LENGTH_SHORT).show()
+        runOnUiThread(() ->{}
+//                Toast.makeText(this, "Đang kiểm tra trạng thái người chơi...", Toast.LENGTH_SHORT).show()
         );
 
         checkStatusRunnable = new Runnable() {
@@ -247,7 +247,7 @@ public class GameLoadActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Lobby lobby) {
                 if (lobby == null) {
-                    runOnUiThread(() -> Toast.makeText(GameLoadActivity.this, "Lỗi: Không tìm thấy phòng!", Toast.LENGTH_LONG).show());
+//                    runOnUiThread(() -> Toast.makeText(GameLoadActivity.this, "Lỗi: Không tìm thấy phòng!", Toast.LENGTH_LONG).show());
                     scheduleNextCheck(); // Thử lại
                     return;
                 }
@@ -260,7 +260,7 @@ public class GameLoadActivity extends AppCompatActivity {
                     public void onSuccess(List<Player> players) {
                         runOnUiThread(() -> {
                             if (players == null || players.isEmpty()) {
-                                Toast.makeText(GameLoadActivity.this, "Chưa có người chơi...", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(GameLoadActivity.this, "Chưa có người chơi...", Toast.LENGTH_SHORT).show();
                                 scheduleNextCheck(); // Vẫn chờ
                                 return;
                             }
@@ -278,11 +278,11 @@ public class GameLoadActivity extends AppCompatActivity {
                             // 4. Xử lý kết quả
                             if (allPlayersReady) {
                                 // Tất cả player đều có point > -1
-                                Toast.makeText(GameLoadActivity.this, "Tất cả đã sẵn sàng! Bắt đầu game...", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(GameLoadActivity.this, "Tất cả đã sẵn sàng! Bắt đầu game...", Toast.LENGTH_LONG).show();
                                 startGame();
                             } else {
                                 // Vẫn còn người chưa sẵn sàng (point = -1)
-                                Toast.makeText(GameLoadActivity.this, "Đang chờ người chơi khác kết nối...", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(GameLoadActivity.this, "Đang chờ người chơi khác kết nối...", Toast.LENGTH_SHORT).show();
                                 scheduleNextCheck(); // Lên lịch kiểm tra tiếp
                             }
                         });
@@ -291,7 +291,7 @@ public class GameLoadActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Exception e) {
                         // Lỗi khi lấy danh sách player
-                        runOnUiThread(() -> Toast.makeText(GameLoadActivity.this, "Lỗi kiểm tra player: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+//                        runOnUiThread(() -> Toast.makeText(GameLoadActivity.this, "Lỗi kiểm tra player: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                         scheduleNextCheck(); // Thử lại sau
                     }
                 });
@@ -300,7 +300,7 @@ public class GameLoadActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 // Lỗi khi lấy thông tin lobby
-                runOnUiThread(() -> Toast.makeText(GameLoadActivity.this, "Lỗi lấy thông tin phòng: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+//                runOnUiThread(() -> Toast.makeText(GameLoadActivity.this, "Lỗi lấy thông tin phòng: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                 scheduleNextCheck(); // Thử lại sau
             }
         });
@@ -323,7 +323,7 @@ public class GameLoadActivity extends AppCompatActivity {
         stopPlayerCheckLoop(); // Dừng vòng lặp
 
         runOnUiThread(() -> {
-            Toast.makeText(GameLoadActivity.this, "Hết thời gian chờ. Hủy phòng...", Toast.LENGTH_LONG).show();
+//            Toast.makeText(GameLoadActivity.this, "Hết thời gian chờ. Hủy phòng...", Toast.LENGTH_LONG).show();
 
             // Vì đây là Activity của admin, chúng ta sẽ xóa lobby
             lobbyService.deleteLobby(lobbyid, new SupabaseCallback<String>() {
@@ -335,7 +335,7 @@ public class GameLoadActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    Toast.makeText(GameLoadActivity.this, "Lỗi khi hủy phòng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(GameLoadActivity.this, "Lỗi khi hủy phòng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     finish(); // Vẫn đóng Activity
                 }
             });
@@ -385,7 +385,7 @@ public class GameLoadActivity extends AppCompatActivity {
                 // Thêm designTime (SỐ GIÂY)
                 int designTime = currentLobby.getDesignTime();
                 if (designTime <= 0) {
-                    Toast.makeText(this, "Lỗi: DesignTime = 0. Gán tạm 60 giây.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Lỗi: DesignTime = 0. Gán tạm 60 giây.", Toast.LENGTH_SHORT).show();
                     calendar.add(Calendar.SECOND, 60); // <-- TÍNH BẰNG GIÂY
                 } else {
                     calendar.add(Calendar.SECOND, designTime); // <-- TÍNH BẰNG GIÂY
@@ -396,7 +396,7 @@ public class GameLoadActivity extends AppCompatActivity {
 
             } catch (ParseException e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Lỗi nghiêm trọng khi parse thời gian. Dừng lại.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "Lỗi nghiêm trọng khi parse thời gian. Dừng lại.", Toast.LENGTH_LONG).show();
                 finish();
                 return; // DỪNG LẠI NẾU LỖI
             }
@@ -409,7 +409,7 @@ public class GameLoadActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(String result) {
                     runOnUiThread(() -> {
-                        Toast.makeText(GameLoadActivity.this, "Trò chơi bắt đầu!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(GameLoadActivity.this, "Trò chơi bắt đầu!", Toast.LENGTH_SHORT).show();
 
                         // 4. CHUYỂN ACTIVITY VÀ GỬI "VOTETIME"
                         Intent intent = new Intent(GameLoadActivity.this, DesignActivity.class);
@@ -426,15 +426,15 @@ public class GameLoadActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    runOnUiThread(() ->
-                            Toast.makeText(GameLoadActivity.this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                    runOnUiThread(() ->{}
+//                            Toast.makeText(GameLoadActivity.this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show()
                     );
                     startPlayerCheckLoop();
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi bắt đầu trò chơi: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }

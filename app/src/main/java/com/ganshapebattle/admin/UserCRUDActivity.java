@@ -7,17 +7,20 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ganshapebattle.R; //
-import com.ganshapebattle.models.User; //
-import com.ganshapebattle.services.SupabaseCallback; //
-import com.ganshapebattle.services.UserService; //
+// === SỬA LỖI: THAY ĐỔI IMPORT ===
+import androidx.appcompat.widget.SearchView;
+// ================================
+
+import com.ganshapebattle.R;
+import com.ganshapebattle.models.User;
+import com.ganshapebattle.services.SupabaseCallback;
+import com.ganshapebattle.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,9 @@ public class UserCRUDActivity extends AppCompatActivity {
 
     private ListView lvUsers;
     private Button btnAddUser;
-    private SearchView searchView;
+    // === SỬA LỖI: THAY ĐỔI KIỂU BIẾN ===
+    private androidx.appcompat.widget.SearchView searchView;
+    // ==================================
     private UserService userService;
     private ArrayAdapter<String> adapter;
 
@@ -41,19 +46,21 @@ public class UserCRUDActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_crud); //
+        setContentView(R.layout.activity_user_crud);
 
-        lvUsers = findViewById(R.id.lvUsers); //
-        btnAddUser = findViewById(R.id.btnAddUser); //
+        lvUsers = findViewById(R.id.lvUsers);
+        btnAddUser = findViewById(R.id.btnAddUser);
+        // === SỬA LỖI: Dòng 48 đã an toàn ===
         searchView = findViewById(R.id.searchViewLobbies);
-        userService = new UserService(); //
+        // =================================
+        userService = new UserService();
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         lvUsers.setAdapter(adapter);
 
         setupSearch();
 
-        // Khởi tạo Launcher để nhận kết quả từ AddEditUserActivity (khi thêm mới hoặc sửa từ detail)
+        // Khởi tạo Launcher
         addEditUserLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -70,10 +77,9 @@ public class UserCRUDActivity extends AppCompatActivity {
         lvUsers.setOnItemClickListener((parent, view, position, id) -> {
             if (position >= 0 && position < displayedUserList.size()) {
                 User selectedUser = displayedUserList.get(position);
-                Intent intent = new Intent(UserCRUDActivity.this, UserDetailActivity.class); // <<< Mở UserDetailActivity
+                Intent intent = new Intent(UserCRUDActivity.this, UserDetailActivity.class);
                 intent.putExtra("USER_USERNAME", selectedUser.getUsername()); // Truyền username
-                startActivity(intent); // Dùng startActivity thông thường
-                // Lưu ý: UserDetailActivity cần dùng launcher để mở AddEditUserActivity nếu nhấn Cập nhật
+                startActivity(intent);
             } else {
                 Log.e(TAG, "Vị trí item không hợp lệ: " + position);
             }
@@ -82,7 +88,7 @@ public class UserCRUDActivity extends AppCompatActivity {
         // Mở màn hình THÊM MỚI khi nhấn nút Add (dùng launcher)
         btnAddUser.setOnClickListener(v -> {
             Log.d(TAG, "Nhấn nút Thêm người dùng mới.");
-            Intent intent = new Intent(UserCRUDActivity.this, AddEditUserActivity.class); //
+            Intent intent = new Intent(UserCRUDActivity.this, AddEditUserActivity.class);
             addEditUserLauncher.launch(intent);
         });
 
@@ -92,7 +98,7 @@ public class UserCRUDActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume được gọi, tải lại danh sách người dùng.");
-        loadUsers(); // Tải lại dữ liệu khi quay lại màn hình
+        loadUsers();
     }
 
     private void setupSearch() {
@@ -105,7 +111,7 @@ public class UserCRUDActivity extends AppCompatActivity {
 
     private void loadUsers() {
         Log.d(TAG, "Bắt đầu tải danh sách người dùng...");
-        userService.getAllUsers(new SupabaseCallback<List<User>>() { //
+        userService.getAllUsers(new SupabaseCallback<List<User>>() {
             @Override
             public void onSuccess(List<User> result) {
                 Log.d(TAG, "Tải danh sách người dùng thành công, số lượng: " + (result != null ? result.size() : 0));
@@ -118,7 +124,7 @@ public class UserCRUDActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi tải danh sách user: ", e);
-                runOnUiThread(() -> Toast.makeText(UserCRUDActivity.this, "Lỗi tải danh sách: " + e.getMessage(), Toast.LENGTH_LONG).show());
+//                runOnUiThread(() -> Toast.makeText(UserCRUDActivity.this, "Lỗi tải danh sách: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
         });
     }

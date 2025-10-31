@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+//import android.widget.Toast;
 import androidx.appcompat.widget.SearchView;
 
 import androidx.activity.EdgeToEdge;
@@ -74,7 +74,7 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
         username = getIntent().getStringExtra("username");
 
         if (lobbyId == null || username == null) {
-            Toast.makeText(this, "Lỗi: Thiếu thông tin Lobby hoặc User.", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi: Thiếu thông tin Lobby hoặc User.", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -136,7 +136,7 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
             // 1. Chỉ Admin mới được quyền chấm điểm (edit)
             boolean isAdmin = (currentLobby != null) && username.equals(currentLobby.getAdminUsername());
             if (!isAdmin) {
-                Toast.makeText(this, "Chỉ Admin mới có quyền chấm điểm.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Chỉ Admin mới có quyền chấm điểm.", Toast.LENGTH_SHORT).show();
                 // Bạn có thể mở PlayerDetailActivity (chỉ xem) ở đây nếu muốn
                 return;
             }
@@ -173,14 +173,14 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
      */
     private void loadData() {
         if (lobbyId == null) return;
-        Toast.makeText(this, "Đang tải dữ liệu phòng...", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Đang tải dữ liệu phòng...", Toast.LENGTH_SHORT).show();
 
         // Bước 1: Lấy thông tin Lobby (để biết admin là ai)
         lobbyService.getLobbyById(lobbyId, new SupabaseCallback<Lobby>() {
             @Override
             public void onSuccess(Lobby lobby) {
                 if (lobby == null) {
-                    runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi: Không tìm thấy Lobby", Toast.LENGTH_LONG).show());
+//                    runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi: Không tìm thấy Lobby", Toast.LENGTH_LONG).show());
                     finish();
                     return;
                 }
@@ -218,7 +218,7 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Exception e) {
                         Log.e(TAG, "Lỗi tải players: ", e);
-                        runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi tải danh sách players: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+//                        runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi tải danh sách players: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                     }
                 });
             }
@@ -226,7 +226,7 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi tải lobby: ", e);
-                runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi tải thông tin lobby: " + e.getMessage(), Toast.LENGTH_LONG).show());
+//                runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi tải thông tin lobby: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
         });
     }
@@ -278,13 +278,13 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
      */
     private void handleFinishClick() {
         if (currentLobby == null) {
-            Toast.makeText(this, "Chưa tải được thông tin phòng", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Chưa tải được thông tin phòng", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Kiểm tra lại quyền Admin
         if (!username.equals(currentLobby.getAdminUsername())) {
-            Toast.makeText(this, "Chỉ Admin mới có thể kết thúc trò chơi", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Chỉ Admin mới có thể kết thúc trò chơi", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -304,7 +304,7 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
      * Cập nhật status của Lobby lên "isEnd"
      */
     private void updateLobbyStatusToIsEnd() {
-        Toast.makeText(this, "Đang kết thúc trò chơi...", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Đang kết thúc trò chơi...", Toast.LENGTH_SHORT).show();
 
         currentLobby.setStatus("isEnd"); // <-- Yêu cầu của bạn
 
@@ -312,7 +312,7 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(LobbyRateVoteActivity.this, "Đã kết thúc! Đang xem kết quả.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LobbyRateVoteActivity.this, "Đã kết thúc! Đang xem kết quả.", Toast.LENGTH_SHORT).show();
 
                     // Mở GameEndActivity
                     Intent intent = new Intent(LobbyRateVoteActivity.this, GameEndActivity.class);
@@ -326,7 +326,7 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi cập nhật status: ", e);
-                runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi khi kết thúc: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+//                runOnUiThread(() -> Toast.makeText(LobbyRateVoteActivity.this, "Lỗi khi kết thúc: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         });
     }

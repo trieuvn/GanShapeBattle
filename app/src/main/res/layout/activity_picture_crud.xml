@@ -8,23 +8,18 @@
     android:background="#F5F9FF"
     tools:context=".admin.PictureCRUDActivity">
 
-    <!-- SearchBar (Material 3) -->
-    <com.google.android.material.search.SearchBar
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/searchViewLobbies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="12dp"
         android:hint="@string/search_picture_hint"
-        app:icon="@drawable/ic_search"
-        app:iconTint="#0A6AED"
-        app:strokeColor="#0A6AED"
-        app:strokeWidth="1.5dp"
+        app:iconifiedByDefault="false"
+        app:queryHint="@string/search_picture_hint"
+        android:background="@drawable/bg_soft_blue_gradient"
         app:cornerRadius="24dp"
-        android:backgroundTint="#FFFFFF"
-        style="@style/Widget.Material3.SearchBar.Outlined"/>
-
-    <!-- ListView (giữ nguyên) -->
+        style="@style/Widget.AppCompat.SearchView.ActionBar" />
     <ListView
         android:id="@+id/lvPictures"
         android:layout_width="match_parent"
@@ -37,8 +32,7 @@
         android:clipToPadding="false"
         android:scrollbarStyle="outsideOverlay"/>
 
-    <!-- FAB Thêm ảnh -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAddPicture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,14 +41,14 @@
         android:layout_margin="24dp"
         android:text="@string/add_new_picture_button"
         android:textColor="#FFFFFF"
-        app:icon="@drawable/ic_add_photo"
-        app:iconTint="#FFFFFF"
-        app:backgroundTint="@null"
+        android:drawableStart="@drawable/ic_add_photo"
+        android:drawableTint="#FFFFFF"
+        android:drawablePadding="12dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:background="@drawable/btn_gradient_blue"
         app:rippleColor="#33FFFFFF"
-        app:cornerRadius="20dp"
         android:elevation="8dp"
-        app:pressedTranslationZ="12dp"
+        android:stateListAnimator="@drawable/button_elevation"
         android:contentDescription="Thêm hình ảnh mới"/>
-
 </RelativeLayout>

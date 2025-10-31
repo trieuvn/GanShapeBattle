@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast; // <-- Thêm
+//import android.widget.Toast; // <-- Thêm
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -66,7 +66,7 @@ public class Leaderboard extends AppCompatActivity {
         // Lấy lobbyId từ Intent
         lobbyId = getIntent().getStringExtra("lobby_id");
         if (lobbyId == null || lobbyId.isEmpty()) {
-            Toast.makeText(this, "Lỗi: Không có thông tin lobby!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi: Không có thông tin lobby!", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -91,7 +91,7 @@ public class Leaderboard extends AppCompatActivity {
      * Tải dữ liệu bất đồng bộ: Players -> Pictures -> PlayerScores
      */
     private void loadLeaderboardData() {
-        Toast.makeText(this, "Đang tải Bảng xếp hạng...", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Đang tải Bảng xếp hạng...", Toast.LENGTH_SHORT).show();
 
         // 1. Tải tất cả Players
         playerService.getAllPlayers(new SupabaseCallback<List<Player>>() {
@@ -103,7 +103,7 @@ public class Leaderboard extends AppCompatActivity {
                         .collect(Collectors.toList());
 
                 if (lobbyPlayers.isEmpty()) {
-                    runOnUiThread(() -> Toast.makeText(Leaderboard.this, "Chưa có ai trong phòng này", Toast.LENGTH_SHORT).show());
+//                    runOnUiThread(() -> Toast.makeText(Leaderboard.this, "Chưa có ai trong phòng này", Toast.LENGTH_SHORT).show());
                     return;
                 }
 
@@ -157,7 +157,7 @@ public class Leaderboard extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi tải Players: ", e);
-                runOnUiThread(() -> Toast.makeText(Leaderboard.this, "Lỗi tải danh sách player: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+//                runOnUiThread(() -> Toast.makeText(Leaderboard.this, "Lỗi tải danh sách player: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         });
     }

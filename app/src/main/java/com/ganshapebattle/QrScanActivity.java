@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,7 +62,7 @@ public class QrScanActivity extends AppCompatActivity {
         setResult(RESULT_OK, result);
 
         String preview = decoded != null ? decoded : raw;
-        Toast.makeText(this, preview.length() > 200 ? preview.substring(0, 200) + "…" : preview, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, preview.length() > 200 ? preview.substring(0, 200) + "…" : preview, Toast.LENGTH_SHORT).show();
 
         finish();
     }
@@ -76,7 +76,7 @@ public class QrScanActivity extends AppCompatActivity {
             // Không có app ZXing → trả về CANCELED
             Log.w("QrScanActivity", "ZXing scanner not available: " + e.getMessage());
             setResult(RESULT_CANCELED);
-            Toast.makeText(this, "Không tìm thấy ứng dụng quét QR.", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Không tìm thấy ứng dụng quét QR.", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -94,7 +94,7 @@ public class QrScanActivity extends AppCompatActivity {
             }
             // Người dùng huỷ hoặc không có dữ liệu
             setResult(RESULT_CANCELED);
-            Toast.makeText(this, "Huỷ quét hoặc không có dữ liệu.", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Huỷ quét hoặc không có dữ liệu.", Toast.LENGTH_SHORT).show();
             finish();
         }
     }

@@ -8,7 +8,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -120,8 +120,8 @@ public class AddEditLobbyActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi tải danh sách user: ", e);
-                runOnUiThread(() ->
-                        Toast.makeText(AddEditLobbyActivity.this, "Không thể tải danh sách Admin", Toast.LENGTH_SHORT).show()
+                runOnUiThread(() ->{}
+//                        Toast.makeText(AddEditLobbyActivity.this, "Không thể tải danh sách Admin", Toast.LENGTH_SHORT).show()
                 );
             }
         });
@@ -167,8 +167,8 @@ public class AddEditLobbyActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi tải chi tiết lobby: ", e);
-                runOnUiThread(() ->
-                        Toast.makeText(AddEditLobbyActivity.this, "Lỗi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                runOnUiThread(() ->{}
+//                        Toast.makeText(AddEditLobbyActivity.this, "Lỗi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_LONG).show()
                 );
             }
         });
@@ -198,7 +198,7 @@ public class AddEditLobbyActivity extends AppCompatActivity {
     private void saveLobby() {
         String admin = spinnerAdmin.getText().toString().trim();
         if (admin.isEmpty()) {
-            Toast.makeText(this, "Vui lòng chọn Admin", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Vui lòng chọn Admin", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -214,7 +214,7 @@ public class AddEditLobbyActivity extends AppCompatActivity {
             lobbyToSave.setCreatedDate(etCreatedDate.getText().toString().trim());
             lobbyToSave.setBeginDate(etBeginDate.getText().toString().trim());
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Vui lòng nhập đúng định dạng số", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Vui lòng nhập đúng định dạng số", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -230,7 +230,7 @@ public class AddEditLobbyActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(AddEditLobbyActivity.this, result, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(AddEditLobbyActivity.this, result, Toast.LENGTH_LONG).show();
                     setResult(RESULT_OK);
                     finish();
                 });
@@ -239,8 +239,8 @@ public class AddEditLobbyActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi lưu lobby: ", e);
-                runOnUiThread(() ->
-                        Toast.makeText(AddEditLobbyActivity.this, "Lưu thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                runOnUiThread(() ->{}
+//                        Toast.makeText(AddEditLobbyActivity.this, "Lưu thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show()
                 );
             }
         };

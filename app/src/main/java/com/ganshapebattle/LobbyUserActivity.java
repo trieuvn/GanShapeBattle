@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -71,7 +71,7 @@ public class LobbyUserActivity extends AppCompatActivity {
         // Lấy username từ Intent
         username = getIntent().getStringExtra("username");
         if (username == null || username.isEmpty()) {
-            Toast.makeText(this, "Lỗi: Không có thông tin người dùng!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi: Không có thông tin người dùng!", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -117,7 +117,7 @@ public class LobbyUserActivity extends AppCompatActivity {
 
                     runOnUiThread(() -> {
                         showInLobbyView();
-                        Toast.makeText(LobbyUserActivity.this, "Bạn đã ở trong phòng: " + currentLobbyId, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(LobbyUserActivity.this, "Bạn đã ở trong phòng: " + currentLobbyId, Toast.LENGTH_SHORT).show();
                         // Bắt đầu vòng lặp kiểm tra trạng thái
                         startLobbyStatusCheck();
                     });
@@ -145,12 +145,12 @@ public class LobbyUserActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (user != null) {
                         currentUser = user;
-                        Toast.makeText(LobbyUserActivity.this, "Chào mừng " + user.getUsername() + "!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(LobbyUserActivity.this, "Chào mừng " + user.getUsername() + "!", Toast.LENGTH_SHORT).show();
 
                         // Sau khi load user thành công, kiểm tra xem user đã có trong lobby nào chưa
                         checkCurrentLobbyStatus();
                     } else {
-                        Toast.makeText(LobbyUserActivity.this, "Không tìm thấy thông tin người dùng!", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(LobbyUserActivity.this, "Không tìm thấy thông tin người dùng!", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -159,7 +159,7 @@ public class LobbyUserActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 runOnUiThread(() -> {
-                    Toast.makeText(LobbyUserActivity.this, "Lỗi tải thông tin người dùng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(LobbyUserActivity.this, "Lỗi tải thông tin người dùng: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     finish();
                 });
             }
@@ -194,19 +194,19 @@ public class LobbyUserActivity extends AppCompatActivity {
     private void joinLobby() {
         // ... (Giữ nguyên code)
         if (currentUser == null) {
-            Toast.makeText(this, "Chưa tải được thông tin người dùng!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Chưa tải được thông tin người dùng!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         String lobbyId = editTextLobbyId.getText().toString().trim();
 
         if (TextUtils.isEmpty(lobbyId)) {
-            Toast.makeText(this, "Vui lòng nhập mã phòng!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Vui lòng nhập mã phòng!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (currentLobbyId != null) {
-            Toast.makeText(this, "Bạn đã ở trong phòng khác!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Bạn đã ở trong phòng khác!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -220,7 +220,7 @@ public class LobbyUserActivity extends AppCompatActivity {
                     if (lobby == null) {
                         // Bước 7-8: Phòng không tồn tại
                         runOnUiThread(() -> {
-                            Toast.makeText(LobbyUserActivity.this, "Phòng không tồn tại!", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(LobbyUserActivity.this, "Phòng không tồn tại!", Toast.LENGTH_LONG).show();
                             setLoading(false);
                         });
                     } else {
@@ -232,14 +232,14 @@ public class LobbyUserActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Exception e) {
                     runOnUiThread(() -> {
-                        Toast.makeText(LobbyUserActivity.this, "Lỗi kiểm tra phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(LobbyUserActivity.this, "Lỗi kiểm tra phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         setLoading(false);
                     });
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Lỗi tham gia phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi tham gia phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
             setLoading(false);
         }
     }
@@ -260,7 +260,7 @@ public class LobbyUserActivity extends AppCompatActivity {
                 if (currentPlayerCount >= maxPlayers) {
                     // Bước 7-8: Phòng đã đầy
                     runOnUiThread(() -> {
-                        Toast.makeText(LobbyUserActivity.this, "Phòng đã đầy! (" + currentPlayerCount + "/" + maxPlayers + ")", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(LobbyUserActivity.this, "Phòng đã đầy! (" + currentPlayerCount + "/" + maxPlayers + ")", Toast.LENGTH_LONG).show();
                         setLoading(false);
                     });
                 } else {
@@ -272,7 +272,7 @@ public class LobbyUserActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 runOnUiThread(() -> {
-                    Toast.makeText(LobbyUserActivity.this, "Lỗi kiểm tra slot: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(LobbyUserActivity.this, "Lỗi kiểm tra slot: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     setLoading(false);
                 });
             }
@@ -325,7 +325,7 @@ public class LobbyUserActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 runOnUiThread(() -> {
-                    Toast.makeText(LobbyUserActivity.this, "Lỗi tạo picture: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(LobbyUserActivity.this, "Lỗi tạo picture: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     editTextLobbyId.setText("Lỗi tạo picture: " + e.getMessage());
                     setLoading(false);
                 });
@@ -353,7 +353,7 @@ public class LobbyUserActivity extends AppCompatActivity {
                     currentPlayerId = currentUser.getUsername(); // Sử dụng username làm player ID
                     setLoading(false);
                     showInLobbyView();
-                    Toast.makeText(LobbyUserActivity.this, "Tham gia thành công! Đang chờ admin...", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LobbyUserActivity.this, "Tham gia thành công! Đang chờ admin...", Toast.LENGTH_SHORT).show();
 
                     // BẮT ĐẦU VÒNG LẶP KIỂM TRA
                     startLobbyStatusCheck();
@@ -368,7 +368,7 @@ public class LobbyUserActivity extends AppCompatActivity {
                     if (e.getMessage().contains("23503")) {
                         errorMessage += "\nLỗi: Foreign key constraint - Kiểm tra dữ liệu liên quan";
                     }
-                    Toast.makeText(LobbyUserActivity.this, errorMessage, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(LobbyUserActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     editTextLobbyId.setText(errorMessage);
                     setLoading(false);
                 });
@@ -384,7 +384,7 @@ public class LobbyUserActivity extends AppCompatActivity {
         stopLobbyStatusCheck();
 
         if (currentPlayerId == null || currentLobbyId == null) {
-            Toast.makeText(this, "Bạn chưa ở trong phòng nào!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Bạn chưa ở trong phòng nào!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -397,7 +397,7 @@ public class LobbyUserActivity extends AppCompatActivity {
                 public void onSuccess(String result) {
                     // Bước 17-18: Thành công, chuyển hướng giao diện
                     runOnUiThread(() -> {
-                        Toast.makeText(LobbyUserActivity.this, "Đã rời phòng.", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(LobbyUserActivity.this, "Đã rời phòng.", Toast.LENGTH_SHORT).show();
                         setLoading(false);
                         showJoinView();
                     });
@@ -406,14 +406,14 @@ public class LobbyUserActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Exception e) {
                     runOnUiThread(() -> {
-                        Toast.makeText(LobbyUserActivity.this, "Lỗi khi rời phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(LobbyUserActivity.this, "Lỗi khi rời phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         setLoading(false);
                     });
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Lỗi khi rời phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi khi rời phòng: " + e.getMessage(), Toast.LENGTH_LONG).show();
             setLoading(false);
         }
     }
@@ -618,7 +618,7 @@ public class LobbyUserActivity extends AppCompatActivity {
                 if (lobby == null) {
                     // Lobby không còn tồn tại (có thể bị admin xóa)
                     runOnUiThread(() -> {
-                        Toast.makeText(LobbyUserActivity.this, "Phòng đã bị hủy!", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(LobbyUserActivity.this, "Phòng đã bị hủy!", Toast.LENGTH_LONG).show();
                         stopLobbyStatusCheck();
                         showJoinView(); // Quay về màn hình tham gia
                     });
@@ -634,7 +634,7 @@ public class LobbyUserActivity extends AppCompatActivity {
                 }
                 if ("loading".equals(status)) {
                     runOnUiThread(() -> {
-                        Toast.makeText(LobbyUserActivity.this, "Admin đã bắt đầu! Đang tải...", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(LobbyUserActivity.this, "Admin đã bắt đầu! Đang tải...", Toast.LENGTH_SHORT).show();
                         stopLobbyStatusCheck();
 
                         Intent intent = new Intent(LobbyUserActivity.this, GameLoadActivity.class);
@@ -657,7 +657,7 @@ public class LobbyUserActivity extends AppCompatActivity {
                         // LỖI: beginDate trong DB vẫn là null (do race condition).
                         // Chúng ta phải thử lại sau vài giây.
                         runOnUiThread(() -> {
-                            Toast.makeText(LobbyUserActivity.this, "Đang đồng bộ thời gian với phòng...", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(LobbyUserActivity.this, "Đang đồng bộ thời gian với phòng...", Toast.LENGTH_SHORT).show();
                         });
 
                         // Quan trọng: Lên lịch kiểm tra lại
@@ -666,7 +666,7 @@ public class LobbyUserActivity extends AppCompatActivity {
                         // THÀNH CÔNG: Đã có thời gian
                         // Chuyển người chơi vào thẳng phòng vẽ
                         runOnUiThread(() -> {
-                            Toast.makeText(LobbyUserActivity.this, "Trò chơi đã bắt đầu! Vào thẳng...", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(LobbyUserActivity.this, "Trò chơi đã bắt đầu! Vào thẳng...", Toast.LENGTH_SHORT).show();
                             stopLobbyStatusCheck();
 
                             Intent intent = new Intent(LobbyUserActivity.this, DesignActivity.class);

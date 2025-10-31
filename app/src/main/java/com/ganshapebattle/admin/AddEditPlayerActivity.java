@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView; // <-- Thêm
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ganshapebattle.R;
@@ -124,7 +124,7 @@ public class AddEditPlayerActivity extends AppCompatActivity {
             public void onSuccess(Player player) {
                 playerToEdit = player;
                 if (player == null) {
-                    runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Không tìm thấy Player", Toast.LENGTH_SHORT).show());
+//                    runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Không tìm thấy Player", Toast.LENGTH_SHORT).show());
                     return;
                 }
 
@@ -143,7 +143,7 @@ public class AddEditPlayerActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Picture picture) {
                         if (picture == null || picture.getImage() == null || picture.getImage().isEmpty()) {
-                            runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Không tìm thấy dữ liệu ảnh", Toast.LENGTH_SHORT).show());
+//                            runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Không tìm thấy dữ liệu ảnh", Toast.LENGTH_SHORT).show());
                             return;
                         }
 
@@ -159,21 +159,21 @@ public class AddEditPlayerActivity extends AppCompatActivity {
                             if (imageBitmap != null) {
                                 imageViewPlayerPicture.setImageBitmap(imageBitmap);
                             } else {
-                                Toast.makeText(AddEditPlayerActivity.this, "Lỗi giải mã ảnh base64", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(AddEditPlayerActivity.this, "Lỗi giải mã ảnh base64", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
 
                     @Override
                     public void onFailure(Exception e) {
-                        runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Picture: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+//                        runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Picture: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                     }
                 });
                 // --- KẾT THÚC LOGIC MỚI ---
             }
             @Override
             public void onFailure(Exception e) {
-                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Player: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+//                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Player: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         });
     }
@@ -194,7 +194,7 @@ public class AddEditPlayerActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Exception e) {
-                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Users", Toast.LENGTH_SHORT).show());
+//                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Users", Toast.LENGTH_SHORT).show());
             }
         });
     }
@@ -214,7 +214,7 @@ public class AddEditPlayerActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Exception e) {
-                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Lobbies", Toast.LENGTH_SHORT).show());
+//                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Lobbies", Toast.LENGTH_SHORT).show());
             }
         });
     }
@@ -223,7 +223,7 @@ public class AddEditPlayerActivity extends AppCompatActivity {
 
     private void savePlayer() {
         if (etPoint.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập điểm", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Vui lòng nhập điểm", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -232,13 +232,13 @@ public class AddEditPlayerActivity extends AppCompatActivity {
         try {
             player.setPoint(Integer.parseInt(etPoint.getText().toString()));
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Điểm không hợp lệ", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Điểm không hợp lệ", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (playerToEdit == null) { // Chế độ Create (Đã bị đơn giản hóa)
             if (spinnerUser == null || spinnerLobby == null) { // Xóa check spinnerPicture
-                Toast.makeText(this, "Lỗi Spinner bị null", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Lỗi Spinner bị null", Toast.LENGTH_SHORT).show();
                 return;
             }
             player.setUsername(userList.get(spinnerUser.getSelectedItemPosition()).getUsername());
@@ -253,7 +253,7 @@ public class AddEditPlayerActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(AddEditPlayerActivity.this, result, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(AddEditPlayerActivity.this, result, Toast.LENGTH_LONG).show();
                     setResult(RESULT_OK); // Báo cho LobbyRateVoteActivity biết để tải lại
                     finish();
                 });
@@ -261,7 +261,7 @@ public class AddEditPlayerActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e("AddEditPlayer", "Lỗi: ", e);
-                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+//                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         };
 

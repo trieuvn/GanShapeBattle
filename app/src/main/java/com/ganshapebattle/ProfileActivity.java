@@ -1,55 +1,55 @@
 package com.ganshapebattle; // Hoặc package của bạn
 
-import android.Manifest; // <<< Import Manifest
+import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.Intent; // <<< Import Intent
-import android.content.pm.PackageManager; // <<< Import PackageManager
-import android.graphics.Bitmap; // <<< Import Bitmap
-import android.graphics.drawable.Drawable; // <<< Import Drawable
-import android.net.Uri; // <<< Import Uri
-import android.os.Build; // <<< Import Build
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler; // <<< Import Handler
-import android.os.Looper; // <<< Import Looper
-import android.provider.MediaStore; // <<< Import MediaStore
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-// <<< Import các ActivityResultLaunchers >>>
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-// <<< >>>
-import androidx.annotation.NonNull; // <<< Import NonNull
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat; // <<< Import ContextCompat
+import androidx.core.content.ContextCompat;
 
-// <<< Import Glide và các lớp liên quan >>>
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-// <<< >>>
 
-import com.ganshapebattle.models.Lobby; // <<< Import Lobby model
-import com.ganshapebattle.models.User; //
-import com.ganshapebattle.services.LobbyService; // <<< Import LobbyService
-import com.ganshapebattle.services.SupabaseCallback; //
-import com.ganshapebattle.services.UserService; //
-import com.ganshapebattle.utils.ImageUtils; //
+// === SỬA LỖI IMPORTS ===
+import com.google.android.material.floatingactionbutton.FloatingActionButton; // 1. Dùng import này
+import de.hdodenhof.circleimageview.CircleImageView; // 2. Dùng import này
+// XÓA: import com.google.android.material.imageview.ShapeableImageView;
+// ======================
 
-import java.io.IOException; // <<< Import IOException
+import com.ganshapebattle.models.Lobby;
+import com.ganshapebattle.models.User;
+import com.ganshapebattle.services.LobbyService;
+import com.ganshapebattle.services.SupabaseCallback;
+import com.ganshapebattle.services.UserService;
+import com.ganshapebattle.utils.ImageUtils;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List; // <<< Import List
+import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutorService; // <<< Import ExecutorService
-import java.util.concurrent.Executors; // <<< Import Executors
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-
-import de.hdodenhof.circleimageview.CircleImageView; // <<< Import CircleImageView
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -58,24 +58,26 @@ public class ProfileActivity extends AppCompatActivity {
     // Khai báo các thành phần giao diện và service
     private TextView tvProfileEmail;
     private EditText etProfileUsername, etProfilePhoneNumber, etProfileDateOfBirth;
-    private Button btnSaveChanges, btnSelectAvatar;
-    private CircleImageView ivProfileAvatar;
+
+    // === SỬA LỖI KHAI BÁO BIẾN (Dòng 89-91) ===
+    private Button btnSaveChanges;
+    private FloatingActionButton btnSelectAvatar; // Đổi từ Button sang FloatingActionButton
+    private CircleImageView ivProfileAvatar; // Đổi về CircleImageView
+    // =====================================
+
     private UserService userService;
-    private LobbyService lobbyService; // <<< Thêm LobbyService
+    private LobbyService lobbyService;
     private String currentUserEmail;
-    private User currentUserData; // Lưu trữ dữ liệu user hiện tại
-    private boolean isLobbyAdmin = false; // <<< Cờ kiểm tra có phải admin lobby không
+    private User currentUserData;
+    private boolean isLobbyAdmin = false;
 
-    // Biến cho việc chọn ảnh mới
     private Uri selectedImageUri = null;
-    private String newAvatarBase64 = null; // Lưu Base64 ảnh mới
-    private boolean isSaving = false; // Cờ ngăn nhấn nút Lưu nhiều lần
+    private String newAvatarBase64 = null;
+    private boolean isSaving = false;
 
-    // Launchers cho quyền và chọn ảnh
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private ActivityResultLauncher<Intent> pickImageLauncher;
 
-    // Executor để xử lý Base64 trên background thread
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -83,23 +85,26 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile); //
+        setContentView(R.layout.activity_profile);
 
-        // --- Ánh xạ View ---
-        tvProfileEmail = findViewById(R.id.tvProfileEmail); //
-        etProfileUsername = findViewById(R.id.etProfileUsername); //
-        etProfilePhoneNumber = findViewById(R.id.etProfilePhoneNumber); //
-        etProfileDateOfBirth = findViewById(R.id.etProfileDateOfBirth); //
-        btnSaveChanges = findViewById(R.id.btnSaveChanges); //
-        ivProfileAvatar = findViewById(R.id.ivProfileAvatar); //
-        btnSelectAvatar = findViewById(R.id.btnSelectAvatar); //
-        // --- ---
+        // --- Ánh xạ View (Dòng 92-98) ---
+        tvProfileEmail = findViewById(R.id.tvProfileEmail);
+        etProfileUsername = findViewById(R.id.etProfileUsername);
+        etProfilePhoneNumber = findViewById(R.id.etProfilePhoneNumber);
+        etProfileDateOfBirth = findViewById(R.id.etProfileDateOfBirth);
+        btnSaveChanges = findViewById(R.id.btnSaveChanges);
 
-        userService = new UserService(); //
-        lobbyService = new LobbyService(); // <<< Khởi tạo LobbyService
+        // === SỬA LỖI ÉP KIỂU (Dòng 94 & 95) ===
+        // Các dòng này bây giờ sẽ an toàn nếu XML của bạn khớp
+        ivProfileAvatar = findViewById(R.id.ivProfileAvatar);
+        btnSelectAvatar = findViewById(R.id.btnSelectAvatar);
+        // ====================================
+
+        userService = new UserService();
+        lobbyService = new LobbyService();
         currentUserEmail = getIntent().getStringExtra("USER_EMAIL");
 
-        if (currentUserEmail == null || currentUserEmail.isEmpty()) { // Kiểm tra isEmpty
+        if (currentUserEmail == null || currentUserEmail.isEmpty()) {
             Log.e(TAG, "Email người dùng không được truyền sang hoặc rỗng.");
             Toast.makeText(this, "Lỗi: Không tìm thấy thông tin người dùng.", Toast.LENGTH_SHORT).show();
             finish();
@@ -107,15 +112,14 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         tvProfileEmail.setText(currentUserEmail);
-        setupLaunchers(); // Khởi tạo launchers
-        loadUserProfile(); // Tải thông tin hồ sơ (sẽ gọi checkIfLobbyAdmin bên trong)
+        setupLaunchers();
+        loadUserProfile();
 
         // --- Gắn sự kiện ---
         etProfileDateOfBirth.setOnClickListener(v -> showDatePickerDialog());
-        btnSelectAvatar.setOnClickListener(v -> checkPermissionAndPickImage()); // Sự kiện nút chọn avatar
+        btnSelectAvatar.setOnClickListener(v -> checkPermissionAndPickImage());
         btnSaveChanges.setOnClickListener(v -> {
             if (!isSaving) {
-                // Kiểm tra lại lần nữa trước khi lưu (phòng trường hợp UI chưa kịp disable)
                 if (isLobbyAdmin && currentUserData != null &&
                         !etProfileUsername.getText().toString().trim().equals(currentUserData.getUsername())) {
                     Toast.makeText(this, "Bạn không thể đổi username khi đang là admin phòng.", Toast.LENGTH_LONG).show();
@@ -126,9 +130,8 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Khởi tạo các ActivityResultLauncher để xử lý quyền và chọn ảnh.
-     */
+    // (Phần còn lại của tệp file giữ nguyên)
+
     private void setupLaunchers() {
         // Launcher xin quyền
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -179,9 +182,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Tải thông tin hồ sơ của người dùng hiện tại và kiểm tra quyền admin lobby.
-     */
     private void loadUserProfile() {
         Log.d(TAG, "Đang tải hồ sơ cho: " + currentUserEmail);
         btnSaveChanges.setEnabled(false); // Vô hiệu hóa nút lưu trong khi tải
@@ -220,14 +220,12 @@ public class ProfileActivity extends AppCompatActivity {
                             Log.d(TAG, "Không có dữ liệu avatar.");
                         }
                     });
-                    // <<< Gọi kiểm tra Lobby Admin SAU KHI có username >>>
                     checkIfUserIsLobbyAdmin(user.getUsername());
-                    // <<< >>>
                 } else {
                     Log.w(TAG, "Không tìm thấy hồ sơ cho email: " + currentUserEmail);
                     runOnUiThread(() -> {
                         Toast.makeText(ProfileActivity.this, "Không tìm thấy hồ sơ.", Toast.LENGTH_SHORT).show();
-                        btnSaveChanges.setEnabled(false); // Không cho lưu nếu không có user data
+                        btnSaveChanges.setEnabled(false);
                     });
                 }
             }
@@ -237,22 +235,18 @@ public class ProfileActivity extends AppCompatActivity {
                 Log.e(TAG, "Lỗi tải hồ sơ: ", e);
                 runOnUiThread(() -> {
                     Toast.makeText(ProfileActivity.this, "Lỗi tải hồ sơ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    btnSaveChanges.setEnabled(false); // Không cho lưu nếu lỗi tải
+                    btnSaveChanges.setEnabled(false);
                 });
             }
         });
     }
 
-    /**
-     * Kiểm tra xem username có phải là admin của bất kỳ lobby nào không.
-     * Cập nhật cờ isLobbyAdmin và trạng thái của EditText username.
-     */
     private void checkIfUserIsLobbyAdmin(final String usernameToCheck) {
         if (usernameToCheck == null || usernameToCheck.isEmpty()) {
             isLobbyAdmin = false;
             runOnUiThread(() -> {
                 etProfileUsername.setEnabled(true);
-                btnSaveChanges.setEnabled(true); // Bật nút lưu (nếu user tồn tại)
+                btnSaveChanges.setEnabled(true);
             });
             return;
         }
@@ -271,38 +265,33 @@ public class ProfileActivity extends AppCompatActivity {
                         }
                     }
                 }
-                isLobbyAdmin = isAdmin; // Cập nhật cờ
+                isLobbyAdmin = isAdmin;
                 Log.d(TAG, "Kết quả kiểm tra admin lobby: " + isLobbyAdmin);
 
-                // Cập nhật UI trên Main thread
                 runOnUiThread(() -> {
                     if (isLobbyAdmin) {
-                        etProfileUsername.setEnabled(false); // <<< Vô hiệu hóa EditText username
+                        etProfileUsername.setEnabled(false);
                         Toast.makeText(ProfileActivity.this, "Bạn là admin phòng, không thể đổi username.", Toast.LENGTH_SHORT).show();
                     } else {
-                        etProfileUsername.setEnabled(true); // <<< Cho phép sửa username
+                        etProfileUsername.setEnabled(true);
                     }
-                    btnSaveChanges.setEnabled(true); // Bật nút Lưu sau khi kiểm tra xong
+                    btnSaveChanges.setEnabled(true);
                 });
             }
 
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi kiểm tra danh sách lobby: ", e);
-                isLobbyAdmin = false; // Tạm coi là không phải admin nếu lỗi
+                isLobbyAdmin = false;
                 runOnUiThread(() -> {
                     Toast.makeText(ProfileActivity.this, "Lỗi kiểm tra quyền admin lobby.", Toast.LENGTH_SHORT).show();
-                    etProfileUsername.setEnabled(true); // Tạm cho phép sửa
-                    btnSaveChanges.setEnabled(true); // Bật nút Lưu
+                    etProfileUsername.setEnabled(true);
+                    btnSaveChanges.setEnabled(true);
                 });
             }
         });
     }
 
-
-    /**
-     * Hiển thị DatePickerDialog để chọn ngày sinh.
-     */
     private void showDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
         String currentDate = etProfileDateOfBirth.getText().toString();
@@ -325,13 +314,10 @@ public class ProfileActivity extends AppCompatActivity {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                     etProfileDateOfBirth.setText(sdf.format(selectedDate.getTime()));
                 }, year, month, day);
-        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis()); // Ngăn chọn ngày tương lai
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 
-    /**
-     * Kiểm tra quyền đọc bộ nhớ và yêu cầu nếu cần, sau đó mở thư viện ảnh.
-     */
     private void checkPermissionAndPickImage() {
         String permission;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -349,51 +335,41 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Mở Intent để người dùng chọn ảnh từ thư viện.
-     */
     private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*"); // Chỉ cho phép chọn ảnh
+        intent.setType("image/*");
         pickImageLauncher.launch(intent);
     }
 
-    /**
-     * Thu thập dữ liệu đã thay đổi, gọi API để cập nhật hồ sơ người dùng,
-     * và trả kết quả về MainActivity.
-     */
     private void saveChanges() {
-        // Kiểm tra lại lần nữa phòng trường hợp UI chưa kịp disable
         if (isLobbyAdmin && currentUserData != null &&
                 !etProfileUsername.getText().toString().trim().equals(currentUserData.getUsername())) {
             Toast.makeText(this, "Bạn không thể đổi username khi đang là admin phòng.", Toast.LENGTH_LONG).show();
             return;
         }
 
-        isSaving = true; // Đặt cờ đang lưu
+        isSaving = true;
         btnSaveChanges.setEnabled(false);
         btnSaveChanges.setText("Đang lưu...");
 
-        final String newUsername = etProfileUsername.getText().toString().trim(); // <<< Lưu vào biến final
+        final String newUsername = etProfileUsername.getText().toString().trim();
         String newPhoneNumber = etProfilePhoneNumber.getText().toString().trim();
         String newDateOfBirth = etProfileDateOfBirth.getText().toString().trim();
 
-        if (newUsername.isEmpty()) { // Username vẫn bắt buộc
+        if (newUsername.isEmpty()) {
             showErrorAndResetButton("Username không được để trống");
             return;
         }
 
-        User updatedUserData = new User(); //
+        User updatedUserData = new User();
         boolean changed = false;
 
-        // Chỉ thêm username vào đối tượng cập nhật NẾU nó được phép thay đổi VÀ đã thay đổi
         if (!isLobbyAdmin && (currentUserData == null || !newUsername.equals(currentUserData.getUsername()))) {
             updatedUserData.setUsername(newUsername);
             changed = true;
             Log.d(TAG, "Username sẽ được cập nhật.");
         }
 
-        // Kiểm tra và thêm các trường khác nếu thay đổi
         String currentPhone = currentUserData != null ? currentUserData.getPhoneNumber() : null;
         String phoneToSave = newPhoneNumber.isEmpty() ? null : newPhoneNumber;
         if ( (currentPhone == null && phoneToSave != null) || (currentPhone != null && !currentPhone.equals(phoneToSave)) ) {
@@ -412,7 +388,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         String currentAvatar = currentUserData != null ? currentUserData.getAvatar() : null;
         if (newAvatarBase64 != null && !newAvatarBase64.equals(currentAvatar)) {
-            updatedUserData.setAvatar(newAvatarBase64); // Thêm avatar mới (Base64)
+            updatedUserData.setAvatar(newAvatarBase64);
             changed = true;
             Log.d(TAG, "Avatar sẽ được cập nhật.");
         } else if (newAvatarBase64 == null && selectedImageUri != null) {
@@ -426,26 +402,23 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         Log.d(TAG, "Đang gọi updateUser cho email: " + currentUserEmail);
-        userService.updateUser(currentUserEmail, updatedUserData, new SupabaseCallback<String>() { //
+        userService.updateUser(currentUserEmail, updatedUserData, new SupabaseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 Log.d(TAG, "Cập nhật hồ sơ thành công trên Supabase: " + result);
                 runOnUiThread(() -> {
                     Toast.makeText(ProfileActivity.this, "Cập nhật hồ sơ thành công!", Toast.LENGTH_SHORT).show();
-                    newAvatarBase64 = null; // Reset trạng thái ảnh mới
+                    newAvatarBase64 = null;
                     selectedImageUri = null;
-                    isSaving = false; // Reset cờ
+                    isSaving = false;
 
-                    // === TRẢ KẾT QUẢ VỀ MainActivity ===
                     Intent resultIntent = new Intent();
-                    // Chỉ gửi username nếu nó thực sự đã thay đổi VÀ được phép thay đổi
                     if (!isLobbyAdmin && updatedUserData.getUsername() != null) {
-                        resultIntent.putExtra("UPDATED_USERNAME", newUsername); // <<< Gửi username mới
+                        resultIntent.putExtra("UPDATED_USERNAME", newUsername);
                     }
-                    setResult(RESULT_OK, resultIntent); // Đặt kết quả thành công
-                    // ===================================
+                    setResult(RESULT_OK, resultIntent);
 
-                    finish(); // <<< Quay về MainActivity >>>
+                    finish();
                 });
             }
 
@@ -457,25 +430,18 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Hiển thị Toast lỗi và kích hoạt lại nút Lưu.
-     * @param message Nội dung lỗi cần hiển thị.
-     */
     private void showErrorAndResetButton(String message) {
         runOnUiThread(() -> {
             Toast.makeText(ProfileActivity.this, message, Toast.LENGTH_LONG).show();
-            isSaving = false; // <<< Reset cờ isSaving
-            btnSaveChanges.setEnabled(true); // <<< Kích hoạt lại nút
-            btnSaveChanges.setText("Lưu thay đổi"); // <<< Đặt lại text nút
+            isSaving = false;
+            btnSaveChanges.setEnabled(true);
+            btnSaveChanges.setText("Lưu thay đổi");
         });
     }
 
-    /**
-     * Hủy executor khi Activity bị hủy để tránh rò rỉ.
-     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        executor.shutdownNow(); // Ngắt các tác vụ đang chạy nếu có
+        executor.shutdownNow();
     }
 }

@@ -76,8 +76,11 @@ public class MainActivity extends AppCompatActivity {
         btnProfile = findViewById(R.id.btnProfile); //
         tvCurrentUsername = findViewById(R.id.tvCurrentUsername); //
         // --- ---
-        Intent intent1 = new Intent(MainActivity.this, VerifySignupOtpActivity.class);
-        startActivity(intent1);
+
+        // === LỖI ĐÃ ĐƯỢC XÓA ===
+        // Intent intent1 = new Intent(MainActivity.this, VerifySignupOtpActivity.class);
+        // startActivity(intent1);
+        // =======================
 
         // <<< Lấy thông tin người dùng từ Session thay vì Intent >>>
         if (sessionManager.isLoggedIn()) {
@@ -108,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         // --- Gắn sự kiện điều hướng cho các nút chức năng ---
         btnJoinGame.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LobbyUserActivity.class).putExtra("username",currentUsername))); //
         btnCreateLobby.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LobbyActivity.class).putExtra("username",currentUsername))); //
-        btnGoToLeaderboard.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Leaderboard.class))); //
+        btnGoToLeaderboard.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LeaderHistoryActivity.class)));
         // Chuyển đến màn hình quản lý Gallery của admin
         btnGoToGallery.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, GalleryCRUDActivity.class))); //
         btnAdminPanel.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, MenuActivity.class))); //

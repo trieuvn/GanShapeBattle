@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,7 +46,7 @@ public class GameVoteActivity extends AppCompatActivity {
         lobbyId = getIntent().getStringExtra("lobbyid");
 
         if (lobbyId == null || username == null) {
-            Toast.makeText(this, "Lỗi: Thiếu thông tin Lobby hoặc User.", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi: Thiếu thông tin Lobby hoặc User.", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -62,7 +62,7 @@ public class GameVoteActivity extends AppCompatActivity {
         statusCheckHandler = new Handler(Looper.getMainLooper());
 
         // Hiển thị thông báo (ví dụ, bạn có thể thêm TextView)
-        Toast.makeText(this, "Đang chờ mọi người vote...", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Đang chờ mọi người vote...", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -131,7 +131,7 @@ public class GameVoteActivity extends AppCompatActivity {
                 if (!isActivityRunning) return; // Dừng nếu activity đã đóng
 
                 if (lobby == null) {
-                    Toast.makeText(GameVoteActivity.this, "Phòng không còn tồn tại.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(GameVoteActivity.this, "Phòng không còn tồn tại.", Toast.LENGTH_SHORT).show();
                     finish(); // Quay về
                     return;
                 }
@@ -152,7 +152,7 @@ public class GameVoteActivity extends AppCompatActivity {
             public void onFailure(Exception e) {
                 if (!isActivityRunning) return;
                 // Lỗi mạng, "loop tiếp"
-                Toast.makeText(GameVoteActivity.this, "Mất kết nối... Đang thử lại.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(GameVoteActivity.this, "Mất kết nối... Đang thử lại.", Toast.LENGTH_SHORT).show();
                 scheduleNextStatusCheck();
             }
         });
@@ -167,7 +167,7 @@ public class GameVoteActivity extends AppCompatActivity {
         isActivityRunning = false; // Ngăn chạy 2 lần
         stopStatusCheckLoop();
 
-        Toast.makeText(this, "Vote đã xong! Đang xem kết quả...", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "Vote đã xong! Đang xem kết quả...", Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(GameVoteActivity.this, GameEndActivity.class);
         //intent.putExtra("username", username);

@@ -41,13 +41,9 @@
             android:exported="false" />
         <activity
             android:name=".ForgotPassword"
-            android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".ui.login.ForgotPassword" -->
-        <!-- android:exported="false" -->
-        <!-- android:label="@string/title_activity_forgot_password" /> -->
-        <activity
-            android:name=".Register"
-            android:exported="false" />
+            android:exported="false" /> <activity
+        android:name=".Register"
+        android:exported="false" />
         <activity
             android:name=".Leaderboard"
             android:exported="false" />
@@ -65,14 +61,12 @@
             android:exported="true"
             android:launchMode="singleTask">
 
-            <!-- Khởi động app -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- Deep-link Supabase OAuth callback: com.ganshapebattle://oauth-callback -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -129,6 +123,8 @@
         <activity android:name=".admin.AddEditPlayerActivity" />
         <activity android:name=".VerifyOtpActivity" />
         <activity android:name=".VerifySignupOtpActivity" />
+
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".GameEndActivity" />
     </application>
 

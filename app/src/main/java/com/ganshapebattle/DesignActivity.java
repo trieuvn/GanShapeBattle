@@ -39,7 +39,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ganshapebattle.models.Lobby;
@@ -108,7 +108,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
         String beginVoteDateString = getIntent().getStringExtra("votetime");
 
         if (lobbyId == null || username == null) {
-            Toast.makeText(this, "Lỗi: Thiếu thông tin Lobby hoặc User.", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Lỗi: Thiếu thông tin Lobby hoặc User.", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -131,7 +131,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
             currPaint = (ImageButton) firstCard.getChildAt(0);
             currPaint.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.paint_pressed));
         } catch (Exception e) {
-            Toast.makeText(context, "Lỗi layout màu sắc: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Lỗi layout màu sắc: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         smallBrush = getResources().getInteger(R.integer.small_size);
         mediumBrush = getResources().getInteger(R.integer.medium_size);
@@ -152,7 +152,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
             transformBtn = (Button)findViewById(R.id.transform_btn);
             transformBtn.setOnClickListener(this);
         } catch (ClassCastException e) {
-            Toast.makeText(context, "Lỗi XML: ganimage hoặc transform_btn sai kiểu.", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Lỗi XML: ganimage hoặc transform_btn sai kiểu.", Toast.LENGTH_LONG).show();
         }
 
         loadPlayerData();
@@ -254,9 +254,9 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
                         getContentResolver(), drawView.getDrawingCache(),
                         UUID.randomUUID().toString() + ".png", "drawing");
                 if (imgSaved != null) {
-                    Toast.makeText(getApplicationContext(), R.string.drawing_saved_to_gallery, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), R.string.drawing_saved_to_gallery, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), R.string.oops_image_could_not_be_saved, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), R.string.oops_image_could_not_be_saved, Toast.LENGTH_SHORT).show();
                 }
                 drawView.destroyDrawingCache();
             });
@@ -350,7 +350,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
             @Override
             public void onSuccess(Player player) {
                 if (player == null) {
-                    Toast.makeText(context, "Lỗi: Không tìm thấy thông tin Player", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context, "Lỗi: Không tìm thấy thông tin Player", Toast.LENGTH_LONG).show();
                     return;
                 }
                 currentPlayer = player;
@@ -360,7 +360,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
                     @Override
                     public void onSuccess(Picture picture) {
                         if (picture == null) {
-                            Toast.makeText(context, "Lỗi: Không tìm thấy Picture của Player", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(context, "Lỗi: Không tìm thấy Picture của Player", Toast.LENGTH_LONG).show();
                             return;
                         }
                         currentPlayerPicture = picture;
@@ -368,13 +368,13 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
                     }
                     @Override
                     public void onFailure(Exception e) {
-                        Toast.makeText(context, "Lỗi tải Picture: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "Lỗi tải Picture: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(context, "Lỗi tải Player: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Lỗi tải Player: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -386,10 +386,10 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
         if (!isActivityRunning || isSavingImage) return;
         isSavingImage = true;
 
-        Toast.makeText(context, "Hết giờ! Đang nộp bài...", Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, "Hết giờ! Đang nộp bài...", Toast.LENGTH_LONG).show();
 
         if (currentPlayer == null || currentPlayerPicture == null) {
-            Toast.makeText(context, "Lỗi: Không thể nộp bài (thiếu Player/Picture)", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Lỗi: Không thể nộp bài (thiếu Player/Picture)", Toast.LENGTH_LONG).show();
             proceedToVotePhase(null);
             return;
         }
@@ -400,7 +400,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
         if (playerganimage == null) {
             // --- NÂNG CẤP: "CƠ HỘI CUỐI" ---
             Log.d("DesignActivity", "Hết giờ: Không có ảnh GAN. Bắt đầu 'Cơ hội cuối'...");
-            Toast.makeText(context, "Cơ hội cuối! Đang tạo ảnh AI...", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Cơ hội cuối! Đang tạo ảnh AI...", Toast.LENGTH_SHORT).show();
             runSecondChanceTransformAndSave(); // Chạy ML
         } else {
             // Đã có ảnh GAN, lưu ảnh này
@@ -464,7 +464,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
             @Override
             public void onFailure(Throwable t) {
                 Log.e("DesignActivity", "Cơ hội cuối THẤT BẠI: " + t.getMessage());
-                Toast.makeText(context, "Tạo ảnh AI thất bại. Nộp ảnh vẽ tay...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Tạo ảnh AI thất bại. Nộp ảnh vẽ tay...", Toast.LENGTH_SHORT).show();
                 saveBitmapToSupabase(finalOriginalBitmap); // Lưu ảnh vẽ tay (fallback)
                 transformingDialog.cancel();
             }
@@ -477,7 +477,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
      */
     private void saveBitmapToSupabase(Bitmap finalBitmap) {
         if (finalBitmap == null) {
-            Toast.makeText(context, "Lỗi: Không có ảnh cuối cùng để nộp!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Lỗi: Không có ảnh cuối cùng để nộp!", Toast.LENGTH_LONG).show();
             proceedToVotePhase(null); // Vẫn tiếp tục dù lỗi
             return;
         }
@@ -486,7 +486,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
         String base64Image = ImageUtils.bitmapToBase64(finalBitmap, Bitmap.CompressFormat.PNG, 80); // Nén 80%
 
         if (base64Image == null) {
-            Toast.makeText(context, "Lỗi: Không thể chuyển đổi ảnh sang Base64!", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Lỗi: Không thể chuyển đổi ảnh sang Base64!", Toast.LENGTH_LONG).show();
             proceedToVotePhase(null);
             return;
         }
@@ -504,7 +504,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
             @Override
             public void onFailure(Exception e) {
                 Log.e("DesignActivity", "Lỗi nộp bài (update Picture): " + e.getMessage());
-                Toast.makeText(context, "Lỗi nộp bài: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Lỗi nộp bài: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 proceedToVotePhase(null); // Vẫn tiếp tục dù lỗi
             }
         });
@@ -518,7 +518,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
 
     private void parseTimeAndStartLoop(String beginVoteDateString) {
         if (beginVoteDateString == null || beginVoteDateString.isEmpty()) {
-            Toast.makeText(context, "Lỗi: Không nhận được 'votetime' từ Intent.", Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Lỗi: Không nhận được 'votetime' từ Intent.", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
@@ -527,14 +527,14 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
             Date beginVoteDate = sdf.parse(beginVoteDateString);
             designEndTimeMillis = beginVoteDate.getTime();
             if (designEndTimeMillis <= System.currentTimeMillis()) {
-                Toast.makeText(context, "Lỗi: Thời gian kết thúc đã ở trong quá khứ.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "Lỗi: Thời gian kết thúc đã ở trong quá khứ.", Toast.LENGTH_LONG).show();
                 handleTimeUp();
             } else {
                 startTimerLoop();
             }
         } catch (ParseException e) {
             e.printStackTrace();
-            Toast.makeText(context, "Lỗi định dạng thời gian: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//            Toast.makeText(context, "Lỗi định dạng thời gian: " + e.getMessage(), Toast.LENGTH_LONG).show();
             finish();
         }
     }
@@ -594,7 +594,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
             @Override
             public void onSuccess(Lobby latestLobby) {
                 if (latestLobby == null) {
-                    Toast.makeText(context, "Phòng không còn tồn tại.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "Phòng không còn tồn tại.", Toast.LENGTH_SHORT).show();
                     finish();
                     return;
                 }
@@ -611,7 +611,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
                             }
                             @Override
                             public void onFailure(Exception e) {
-                                Toast.makeText(context, "Lỗi cập nhật status, vẫn thử chuyển...", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(context, "Lỗi cập nhật status, vẫn thử chuyển...", Toast.LENGTH_SHORT).show();
                                 navigateToActivity(GameVoteActivity.class, latestLobby);
                             }
                         });
@@ -630,7 +630,7 @@ public class DesignActivity extends AppCompatActivity implements OnClickListener
             }
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(context, "Lỗi kiểm tra trạng thái hết giờ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Lỗi kiểm tra trạng thái hết giờ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 navigateToActivity(GameVoteActivity.class, null);
             }
         });
