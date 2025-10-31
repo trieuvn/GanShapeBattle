@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button; // <-- SỬA: Đổi sang Button
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.appcompat.widget.SearchView;
@@ -18,14 +18,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.ganshapebattle.admin.PlayerDetailActivity;
+// SỬA LỖI: Import đúng Activity
+import com.ganshapebattle.admin.AddEditPlayerActivity;
+// import com.ganshapebattle.admin.PlayerDetailActivity; // Không dùng cái này nữa
 import com.ganshapebattle.models.Lobby;
 import com.ganshapebattle.models.Player;
 import com.ganshapebattle.services.LobbyService;
 import com.ganshapebattle.services.PlayerService;
 import com.ganshapebattle.services.SupabaseCallback;
-
-// XÓA: import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -38,10 +38,7 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
 
     // --- UI Elements ---
     private ListView lvPlayers;
-
-    // --- SỬA: Đổi kiểu biến ---
     private Button btnFinish;
-
     private SearchView searchViewPlayers;
 
     // --- Services & Data ---
@@ -58,13 +55,14 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
     private Lobby currentLobby;
 
     // --- Activity Launcher ---
-    private ActivityResultLauncher<Intent> playerDetailLauncher;
+    // SỬA LỖI: Đổi tên launcher cho rõ nghĩa
+    private ActivityResultLauncher<Intent> addEditLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_lobby_rate_vote); // Sẽ load file XML đã sửa
+        setContentView(R.layout.activity_lobby_rate_vote);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -92,12 +90,13 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         lvPlayers.setAdapter(adapter);
 
-        // Khởi tạo launcher (để cập nhật khi quay lại)
-        playerDetailLauncher = registerForActivityResult(
+        // Khởi tạo launcher
+        // SỬA LỖI: Đổi tên launcher
+        addEditLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
-                        Log.d(TAG, "Quay lại từ PlayerDetail, tải lại dữ liệu...");
+                        Log.d(TAG, "Quay lại từ AddEdit, tải lại dữ liệu...");
                         loadData(); // Tải lại danh sách
                     }
                 });
@@ -117,10 +116,7 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
      */
     private void bindViews() {
         lvPlayers = findViewById(R.id.lvPlayers);
-
-        // --- SỬA: Không cần ép kiểu sang ExtendedFloatingActionButton ---
         btnFinish = findViewById(R.id.btnFinish);
-
         searchViewPlayers = findViewById(R.id.searchViewPlayers);
     }
 
@@ -136,15 +132,24 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
             Player selectedPlayer = displayedPlayerList.get(position);
             Log.d(TAG, "Đã chọn player: " + selectedPlayer.getUsername());
 
-            Intent intent = new Intent(LobbyRateVoteActivity.this, PlayerDetailActivity.class);
+            // --- SỬA LỖI TRUYỀN DỮ LIỆU ---
+            // 1. Chỉ Admin mới được quyền chấm điểm (edit)
+            boolean isAdmin = (currentLobby != null) && username.equals(currentLobby.getAdminUsername());
+            if (!isAdmin) {
+                Toast.makeText(this, "Chỉ Admin mới có quyền chấm điểm.", Toast.LENGTH_SHORT).show();
+                // Bạn có thể mở PlayerDetailActivity (chỉ xem) ở đây nếu muốn
+                return;
+            }
+
+            // 2. Mở AddEditPlayerActivity
+            Intent intent = new Intent(LobbyRateVoteActivity.this, AddEditPlayerActivity.class);
+
+            // 3. Truyền đúng 2 key mà AddEditPlayerActivity mong đợi
             intent.putExtra("PLAYER_USERNAME", selectedPlayer.getUsername());
             intent.putExtra("LOBBY_ID", selectedPlayer.getLobbyId());
 
-            // Phân biệt: chỉ admin mới được sửa
-            boolean isAdmin = (currentLobby != null) && username.equals(currentLobby.getAdminUsername());
-            intent.putExtra("IS_ADMIN", isAdmin);
-
-            playerDetailLauncher.launch(intent);
+            // 4. Khởi chạy
+            addEditLauncher.launch(intent);
         });
 
         // Sự kiện Search
