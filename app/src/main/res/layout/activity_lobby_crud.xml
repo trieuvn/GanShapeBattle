@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="12dp"
-        android:hint="Tìm kiếm theo Lobby ID..."
+        android:hint="@string/search_lobby_hint"
         app:icon="@drawable/ic_search"
         app:iconTint="#0A6AED"
         app:strokeColor="#0A6AED"
@@ -45,7 +45,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="24dp"
-        android:text="Tạo phòng"
+        android:text="@string/create_new_lobby_button"
         android:textColor="#FFFFFF"
         app:icon="@drawable/ic_add_lobby"
         app:iconTint="#FFFFFF"
@@ -55,7 +55,7 @@
         app:cornerRadius="20dp"
         android:elevation="8dp"
         app:pressedTranslationZ="12dp"
-        android:contentDescription="Tạo phòng chơi mới"/>
+        android:contentDescription="@string/Createanewgameroom"/>
 
     <!-- Empty State -->
     <LinearLayout

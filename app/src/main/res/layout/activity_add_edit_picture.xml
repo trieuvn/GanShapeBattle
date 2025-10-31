@@ -25,7 +25,7 @@
                 android:id="@+id/tvPictureTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Thêm hình ảnh mới"
+                android:text="@string/Addnewimage"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:textColor="#0D47A1"
@@ -49,7 +49,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_default_avatar"
-                    android:contentDescription="Ảnh đã chọn"/>
+                    android:contentDescription="@string/Chooseimage"/>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.button.MaterialButton
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="32dp"
-                android:text="Chọn ảnh"
+                android:text="@string/Chooseimage"
                 android:textColor="#0D47A1"
                 app:icon="@drawable/ic_camera"
                 app:iconTint="#0D47A1"
@@ -99,7 +99,7 @@
                             android:id="@+id/etPictureName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Tên ảnh"
+                            android:hint="@string/Imagename"
                             android:inputType="textCapWords"
                             android:maxLines="1"
                             android:paddingStart="40dp"
@@ -122,7 +122,7 @@
                             android:id="@+id/etPictureDescription"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Mô tả (tùy chọn)"
+                            android:hint="@string/Description"
                             android:inputType="textCapSentences"
                             android:maxLines="3"
                             android:paddingStart="40dp"
@@ -133,7 +133,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Loại ảnh"
+                        android:text="@string/image_type"
                         android:textSize="14sp"
                         android:textColor="#555555"
                         android:layout_marginBottom="8dp"/>
@@ -142,27 +142,27 @@
                         android:id="@+id/rbTypeArt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nghệ thuật"
+                        android:text="@string/Art"
                         android:layout_marginEnd="24dp"/>
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/rbTypePhoto"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Nhiếp ảnh"
+                        android:text="@string/Photography"
                         android:layout_marginEnd="24dp"/>
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:id="@+id/rbTypeDigital"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Digital Art"/>
+                        android:text="@string/DigitalArt"/>
 
                     <!-- Tags -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tags"
+                        android:text="@string/tags_label"
                         android:textSize="14sp"
                         android:textColor="#555555"
                         android:layout_marginTop="24dp"
@@ -180,7 +180,7 @@
                             style="@style/Widget.Material3.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Thiên nhiên"
+                            android:text="@string/nature"
                             app:chipBackgroundColor="#E3F2FD"
                             app:checkedIconEnabled="false"/>
 
@@ -189,7 +189,7 @@
                             style="@style/Widget.Material3.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Thành phố"
+                            android:text="@string/tag_city"
                             app:chipBackgroundColor="#E3F2FD"
                             app:checkedIconEnabled="false"/>
 
@@ -198,7 +198,7 @@
                             style="@style/Widget.Material3.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Con người"
+                            android:text="@string/tag_people"
                             app:chipBackgroundColor="#E3F2FD"
                             app:checkedIconEnabled="false"/>
                     </com.google.android.material.chip.ChipGroup>
@@ -207,7 +207,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chọn bộ sưu tập"
+                        android:text="@string/select_gallery"
                         android:textSize="14sp"
                         android:textColor="#555555"
                         android:layout_marginTop="24dp"
@@ -237,7 +237,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chọn người tạo"
+                        android:text="@string/select_user"
                         android:textSize="14sp"
                         android:textColor="#555555"
                         android:layout_marginBottom="8dp"/>
@@ -270,7 +270,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="32dp"
-                android:text="Lưu hình ảnh"
+                android:text="@string/save_image"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
@@ -286,8 +286,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <!-- FAB Lưu nhanh -->
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
