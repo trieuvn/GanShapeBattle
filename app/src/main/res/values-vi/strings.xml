@@ -254,4 +254,7 @@
         <item>Không thêm bất kỳ chi tiết, đối tượng hoặc yếu tố suy luận nào khác. Tuân thủ chính xác mặt nạ.</item>
     </string-array>
     <string name="transforming">Đang chuyển đổi</string>
+    <!-- Thêm các string mới -->
+    <string name="admin_label">Admin</string>
+
 </resources>

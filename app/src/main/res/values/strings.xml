@@ -279,6 +279,5 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
-    <string name="player_avatar_desc">Avatar người chơi</string>
-    <string name="view_profile">Chi tiết</string>
+
 </resources>

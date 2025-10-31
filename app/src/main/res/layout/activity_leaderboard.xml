@@ -8,7 +8,6 @@
     android:fillViewport="true"
     tools:context=".Leaderboard">
 
-
     <LinearLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="LEADERBOARD"
+            android:text="@string/leaderboard_title"
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="#1E40AF"
@@ -87,7 +86,7 @@
                         android:id="@+id/tvName2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Alex Kim"
+                        android:text="@string/player2_name"
                         android:textColor="#1F2937"
                         android:textSize="13sp"
                         android:textStyle="bold"
@@ -98,7 +97,7 @@
                         android:id="@+id/tvScore2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="850 pts"
+                        android:text="@string/player2_score"
                         android:textColor="#3B82F6"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -147,7 +146,6 @@
                             app:strokeWidth="3dp"
                             android:layout_centerInParent="true" />
 
-
                         <ImageView
                             android:layout_width="28dp"
                             android:layout_height="28dp"
@@ -163,7 +161,7 @@
                         android:id="@+id/tvName1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Champion"
+                        android:text="@string/player1_name"
                         android:textColor="#FFFFFF"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -176,14 +174,13 @@
                         android:id="@+id/tvScore1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1000 pts"
+                        android:text="@string/player1_score"
                         android:textColor="#FEF3C7"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginTop="4dp" />
 
                     <!-- SỐ LẦN CHIẾN THẮNG -->
-
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -236,7 +233,7 @@
                         android:id="@+id/tvName3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Jordan Lee"
+                        android:text="@string/player3_name"
                         android:textColor="#1F2937"
                         android:textSize="13sp"
                         android:textStyle="bold"
@@ -247,7 +244,7 @@
                         android:id="@+id/tvScore3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="700 pts"
+                        android:text="@string/player3_score"
                         android:textColor="#F59E0B"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -300,7 +297,7 @@
                         android:id="@+id/tvName4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sarah Park"
+                        android:text="@string/player4_name"
                         android:textColor="#374151"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -309,7 +306,7 @@
                         android:id="@+id/tvScore4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="650 pts"
+                        android:text="@string/player4_score"
                         android:textColor="#10B981"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -352,7 +349,7 @@
                         android:id="@+id/tvName5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mike Chen"
+                        android:text="@string/player5_name"
                         android:textColor="#374151"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -361,7 +358,7 @@
                         android:id="@+id/tvScore5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="600 pts"
+                        android:text="@string/player5_score"
                         android:textColor="#10B981"
                         android:textSize="13sp"
                         android:textStyle="bold" />
@@ -373,7 +370,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Other Players"
+            android:text="@string/other_players_label"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#1E40AF"

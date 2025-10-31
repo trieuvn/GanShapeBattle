@@ -52,7 +52,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Admin"
+                        android:text="@string/lobby_admin_label"
                         android:textSize="14sp"
                         android:textColor="#555555"
                         android:layout_marginBottom="8dp"/>
@@ -75,7 +75,8 @@
                             android:focusable="false"
                             android:inputType="none"
                             android:paddingStart="40dp"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            android:hint="@string/admin_label"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Chế độ -->
@@ -105,7 +106,7 @@
                             android:focusable="false"
                             android:inputType="none"
                             android:paddingStart="40dp"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Trạng thái -->
@@ -135,7 +136,7 @@
                             android:focusable="false"
                             android:inputType="none"
                             android:paddingStart="40dp"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Số người tối đa -->
@@ -232,7 +233,7 @@
                             android:clickable="true"
                             android:cursorVisible="false"
                             android:focusable="false"
-                            android:hint="Ngày tạo (YYYY-MM-DD)"
+                            android:hint="@string/created_date_hint"
                             android:paddingStart="40dp"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -258,7 +259,7 @@
                             android:clickable="true"
                             android:cursorVisible="false"
                             android:focusable="false"
-                            android:hint="Ngày bắt đầu (YYYY-MM-DD)"
+                            android:hint="@string/begin_date_hint"
                             android:paddingStart="40dp"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -288,8 +289,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <!-- FAB Lưu nhanh -->
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
