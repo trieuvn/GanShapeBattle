@@ -12,5 +12,7 @@
     <color name="dark_gray">#2a2a2a</color>
     <color name="medium_gray">#3a3a3a</color>
     <color name="light_gray">#555555</color>
-
+    <color name="dark_blue">#003366</color>
+    <color name="gray_300">#E5E7EB</color>
+    <color name="gray_600">#4B5563</color>
 </resources>

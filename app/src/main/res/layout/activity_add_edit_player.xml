@@ -25,7 +25,7 @@
                 android:id="@+id/tvPlayerTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Chấm điểm người chơi"
+                android:text="@string/player_scoring_title"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:textColor="#0D47A1"
@@ -50,7 +50,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Người chơi (Username)"
+                        android:text="@string/select_user_player"
                         android:textSize="14sp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
@@ -70,7 +70,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Lobby ID"
+                        android:text="@string/select_lobby"
                         android:textSize="14sp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
@@ -92,7 +92,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bức ảnh của người chơi"
+                        android:text="@string/select_picture"
                         android:textSize="14sp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
@@ -112,7 +112,7 @@
                             android:layout_height="250dp"
                             android:scaleType="centerCrop"
                             android:background="#E0E0E0"
-                            android:contentDescription="Bức ảnh của người chơi" />
+                            android:contentDescription="@string/select_picture" />
                     </com.google.android.material.card.MaterialCardView>
                     <!-- KẾT THÚC SỬA LỖI -->
 
@@ -130,7 +130,7 @@
                             android:id="@+id/etPlayerPoint"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Điểm (0 - 100)"
+                            android:hint="@string/point_hint"
                             android:inputType="number"
                             android:maxLines="1"
                             android:paddingStart="40dp"
@@ -146,7 +146,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="32dp"
-                android:text="Lưu điểm"
+                android:text="@string/save_score_button"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
