@@ -284,5 +284,8 @@
     <string name="view_profile">Chi tiết</string>
     <string name="created_date_hint">Created Date (YYYY-MM-DD)</string>
     <string name="begin_date_hint">Begin Date (YYYY-MM-DD)</string>
-
+    <string name="placeholder_name">Player Name</string>
+    <string name="placeholder_score">0 pts</string>
+    <string name="rank_4_label">4</string>
+    <string name="rank_5_label">5</string>
 </resources>

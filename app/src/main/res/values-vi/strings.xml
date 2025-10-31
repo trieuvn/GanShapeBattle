@@ -260,4 +260,8 @@
     <string name="view_profile">Chi tiết</string>
     <string name="created_date_hint">Ngày tạo (YYYY-MM-DD)</string>
     <string name="begin_date_hint">Ngày bắt đầu (YYYY-MM-DD)</string>
+    <string name="placeholder_name">Player Name</string>
+    <string name="placeholder_score">0 pts</string>
+    <string name="rank_4_label">4</string>
+    <string name="rank_5_label">5</string>
 </resources>
