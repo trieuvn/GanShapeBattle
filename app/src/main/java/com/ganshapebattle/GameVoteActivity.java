@@ -170,8 +170,8 @@ public class GameVoteActivity extends AppCompatActivity {
         Toast.makeText(this, "Vote đã xong! Đang xem kết quả...", Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(GameVoteActivity.this, GameEndActivity.class);
-        intent.putExtra("username", username);
-        intent.putExtra("lobbyid", lobbyId);
+        //intent.putExtra("username", username);
+        intent.putExtra("lobby_id", lobbyId);
         startActivity(intent);
         finish(); // Đóng GameVoteActivity
     }

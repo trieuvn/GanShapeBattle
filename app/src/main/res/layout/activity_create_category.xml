@@ -24,7 +24,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tạo danh mục mới"
+                android:text="@string/create_category_title"
                 android:textSize="26sp"
                 android:textStyle="bold"
                 android:textColor="#0D47A1"
@@ -65,7 +65,7 @@
                             android:id="@+id/edtCategoryName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Tên danh mục"
+                            android:hint="@string/category_name_hint"
                             android:inputType="textCapWords"
                             android:maxLines="1"
                             android:paddingStart="40dp"
@@ -87,7 +87,7 @@
                             android:id="@+id/edtCategoryDescription"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Mô tả (tùy chọn)"
+                            android:hint="@string/description_hint"
                             android:inputType="textCapSentences"
                             android:maxLines="3"
                             android:paddingStart="40dp"
@@ -102,7 +102,7 @@
                 android:id="@+id/btnCreateCategory"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="Tạo danh mục"
+                android:text="@string/create_button"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
@@ -119,7 +119,5 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <!-- FAB Tạo nhanh -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

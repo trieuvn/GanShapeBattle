@@ -14,7 +14,7 @@
         android:id="@+id/searchView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Tìm kiếm theo username..."
+        android:hint="@string/search_user_hint"
         app:strokeColor="#0A6AED"
         app:strokeWidth="1.5dp"
         style="@style/Widget.Material3.SearchBar.Outlined"

@@ -8,7 +8,6 @@
     android:background="@drawable/bg_outer_border"
     tools:context=".admin.AddEditGalleryActivity">
 
-    <!-- Nội dung chính -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,12 +19,11 @@
             android:orientation="vertical"
             android:padding="32dp">
 
-            <!-- Tiêu đề -->
             <TextView
                 android:id="@+id/tvGalleryTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tạo bộ sưu tập mới"
+                android:text="@string/CreateNewGallery"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:textColor="#0D47A1"
@@ -33,7 +31,6 @@
                 android:layout_marginBottom="32dp"
                 android:fontFamily="sans-serif-medium"/>
 
-            <!-- Form Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +45,6 @@
                     android:orientation="vertical"
                     android:padding="24dp">
 
-                    <!-- Tên bộ sưu tập -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilGalleryName"
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -65,14 +61,13 @@
                             android:id="@+id/etGalleryName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Tên bộ sưu tập"
+                            android:hint="@string/Collectionname"
                             android:inputType="textCapWords"
                             android:maxLines="1"
                             android:paddingStart="40dp"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Mô tả -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilGalleryDescription"
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -88,18 +83,17 @@
                             android:id="@+id/etGalleryDescription"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Mô tả (tùy chọn)"
+                            android:hint="@string/Description"
                             android:inputType="textCapSentences"
                             android:maxLines="3"
                             android:paddingStart="40dp"
                             android:textSize="16sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Loại bộ sưu tập -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Loại bộ sưu tập"
+                        android:text="@string/Collectiontype"
                         android:textSize="14sp"
                         android:textColor="#555555"
                         android:layout_marginBottom="8dp"/>
@@ -127,13 +121,12 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Nút Lưu -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveGallery"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="32dp"
-                android:text="Lưu bộ sưu tập"
+                android:text="@string/Savecollection"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"

@@ -317,7 +317,7 @@ public class LobbyRateVoteActivity extends AppCompatActivity {
                     // Mở GameEndActivity
                     Intent intent = new Intent(LobbyRateVoteActivity.this, GameEndActivity.class);
                     intent.putExtra("username", username);
-                    intent.putExtra("lobbyid", lobbyId);
+                    intent.putExtra("lobby_id", lobbyId);
                     startActivity(intent);
                     finish(); // Đóng Activity này
                 });

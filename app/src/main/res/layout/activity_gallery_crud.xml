@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
-        android:hint="Tìm kiếm theo tên bộ sưu tập..."
+        android:hint="@string/search_gallery_hint"
         app:icon="@drawable/ic_search"
         app:iconTint="#0A6AED"
         app:strokeColor="#0A6AED"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        android:text="Tạo mới"
+        android:text="@string/create_new_gallery_button"
         android:textColor="#FFFFFF"
         app:icon="@drawable/ic_add_gallery"
         app:iconTint="#FFFFFF"
@@ -55,7 +55,7 @@
         app:cornerRadius="20dp"
         android:elevation="8dp"
         app:pressedTranslationZ="12dp"
-        android:contentDescription="Tạo bộ sưu tập mới"/>
+        android:contentDescription="@string/CreateNewGallery"/>
 
     <!-- Empty State -->
     <LinearLayout
