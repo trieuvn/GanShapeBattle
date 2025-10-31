@@ -116,8 +116,8 @@
     <string name="invite_qr_instruction">Invite friends to scan the code!</string>
     <string name="lobby_id_placeholder">Lobby ID: 1a2b3c</string>
     <string name="game_mode_label">Game Mode</string>
-    <string name="mode_vote">Vote (Players vote themselves)</string>
-    <string name="mode_rate">Rate (Host votes)</string>
+    <string name="mode_vote">Vote</string>
+    <string name="mode_rate">Rate</string>
     <string name="delete_lobby_button">Delete Lobby</string>
     <string name="begin_button">Begin</string>
     <string name="search_lobby_hint">Search by Lobby ID...</string>
@@ -279,5 +279,10 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
+    <string name="admin_label">Admin</string>
+    <string name="player_avatar_desc">Avatar người chơi</string>
+    <string name="view_profile">Chi tiết</string>
+    <string name="created_date_hint">Created Date (YYYY-MM-DD)</string>
+    <string name="begin_date_hint">Begin Date (YYYY-MM-DD)</string>
 
 </resources>

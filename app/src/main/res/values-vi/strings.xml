@@ -116,8 +116,8 @@
     <string name="invite_qr_instruction">Mời bạn bè quét mã!</string>
     <string name="lobby_id_placeholder">Mã phòng: 1a2b3c</string>
     <string name="game_mode_label">Chế độ chơi</string>
-    <string name="mode_vote">Vote (Người chơi tự vote)</string>
-    <string name="mode_rate">Rate (Chủ phòng vote)</string>
+    <string name="mode_vote">Vote</string>
+    <string name="mode_rate">Rate</string>
     <string name="delete_lobby_button">Xóa phòng</string>
     <string name="begin_button">Bắt đầu</string>
     <string name="search_lobby_hint">Tìm kiếm theo Lobby ID...</string>
@@ -256,5 +256,8 @@
     <string name="transforming">Đang chuyển đổi</string>
     <!-- Thêm các string mới -->
     <string name="admin_label">Admin</string>
-
+    <string name="player_avatar_desc">Avatar người chơi</string>
+    <string name="view_profile">Chi tiết</string>
+    <string name="created_date_hint">Ngày tạo (YYYY-MM-DD)</string>
+    <string name="begin_date_hint">Ngày bắt đầu (YYYY-MM-DD)</string>
 </resources>
