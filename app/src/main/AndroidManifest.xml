@@ -25,6 +25,15 @@
             android:name=".LeaderHistoryActivity"
             android:exported="false" />
         <activity
+            android:name=".LobbyRateVoteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GameVoteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GameLoadActivity"
+            android:exported="false" />
+        <activity
             android:name=".DesignActivity"
             android:exported="false" />
         <activity
@@ -83,13 +92,10 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
+        <activity
+            android:name=".CreatePasswordActivity"
+            android:exported="false" />
         <activity
             android:name=".ResetPasswordActivity"
             android:exported="true">

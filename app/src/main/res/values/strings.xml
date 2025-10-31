@@ -94,4 +94,10 @@
     </style>
     <string name="player_avatar_desc">Avatar người chơi</string>
     <string name="view_profile">Chi tiết</string>
+
+    <string name="joingame">Join game</string>
+    <string name="createlobby">Create lobby</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="gallery">Gallery</string>
+    <string name="gotoadmin">Go to admin</string>
 </resources>
