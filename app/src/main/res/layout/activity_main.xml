@@ -1,101 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_outer_border"
     android:padding="24dp"
     tools:context=".MainActivity">
 
-    <ImageButton
-        android:id="@+id/btnProfile"
-        android:layout_width="177dp"
-        android:layout_height="177dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="-12dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="User Profile"
-        android:padding="8dp"
-        android:src="@drawable/ic_person"
-        app:tint="?attr/colorControlNormal" />
+    <!-- Tiêu đề -->
+
+    <!-- Tên người dùng -->
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Gan Shape Battle"
+        android:textAlignment="center"
+        android:textColor="#0A6AED"
+        android:textSize="26sp"
+        android:textStyle="bold" />
 
     <TextView
-    android:id="@+id/tvWelcome"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Chào mừng đến với GanShapeBattle!"
-    android:textSize="24sp"
-    android:textStyle="bold"
-    android:layout_centerHorizontal="true"
-    android:layout_alignParentTop="true"
-    android:layout_marginTop="60dp"  android:layout_marginBottom="32dp"/>
-
-    <TextView
-        android:id="@+id/tvCurrentUsername" android:layout_width="wrap_content"
+        android:id="@+id/tvCurrentUsername"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvWelcome"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/badge_username"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="8dp"
+        android:textColor="#FFFFFF"
         android:textSize="16sp"
-        android:textStyle="bold" tools:text="current_username"/>
+        android:textStyle="bold"
+        tools:text="player_one" />
 
+    <!-- Avatar + FAB Profile -->
+    <FrameLayout
+        android:id="@+id/frameAvatar"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="0dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivUserAvatar"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:contentDescription="Ảnh đại diện"
+            android:elevation="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_default_avatar"
+            app:shapeAppearanceOverlay="@style/AvatarCircle"
+            app:strokeColor="#0A6AED"
+            app:strokeWidth="4dp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnProfile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="Hồ sơ cá nhân"
+            app:backgroundTint="#FFFFFF"
+            app:borderWidth="2dp"
+            app:elevation="6dp"
+            app:fabCustomSize="48dp"
+            app:maxImageSize="28dp"
+            app:pressedTranslationZ="12dp"
+            app:rippleColor="#330A6AED"
+            app:srcCompat="@drawable/ic_person"
+            app:tint="#0A6AED" />
+
+    </FrameLayout>
+
+    <!-- Danh sách nút chức năng -->
     <LinearLayout
+        android:id="@+id/containerButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tvCurrentUsername"
+        android:layout_above="@id/btnLogout"
         android:orientation="vertical"
-        android:layout_below="@id/tvCurrentUsername" android:layout_above="@id/btnLogout">
+        android:layout_marginBottom="24dp">
 
-        <Button
-            android:id="@+id/btnGoToDrawing"
+        <!-- Bắt đầu vẽ -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnJoinGame"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bắt đầu vẽ"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp" />
+            android:layout_height="64dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/joingame"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:icon="@drawable/ic_draw"
+            app:iconTint="#FFFFFF"
+            app:iconGravity="start"
+            app:iconPadding="16dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/btn_gradient_blue"
+            app:rippleColor="#33FFFFFF"
+            app:cornerRadius="20dp"
+            android:elevation="6dp" />
 
-        <Button
-            android:id="@+id/btnGoToGameRoom"
+        <!-- Vào phòng chơi -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCreateLobby"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Vào phòng chơi"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp" />
+            android:layout_height="64dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/createlobby"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:icon="@drawable/ic_lobby"
+            app:iconTint="#FFFFFF"
+            app:iconGravity="start"
+            app:iconPadding="16dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/btn_gradient_blue"
+            app:rippleColor="#33FFFFFF"
+            app:cornerRadius="20dp"
+            android:elevation="6dp" />
 
-        <Button
+        <!-- Bảng xếp hạng -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGoToLeaderboard"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bảng xếp hạng"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp" />
+            android:layout_height="64dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/leaderboard"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:icon="@drawable/ic_leaderboard"
+            app:iconTint="#FFFFFF"
+            app:iconGravity="start"
+            app:iconPadding="16dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/btn_gradient_blue"
+            app:rippleColor="#33FFFFFF"
+            app:cornerRadius="20dp"
+            android:elevation="6dp" />
 
-        <Button
+        <!-- Xem thư viện -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGoToGallery"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Xem Thư viện"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp" />
+            android:layout_height="64dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/gallery"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:icon="@drawable/ic_gallery"
+            app:iconTint="#FFFFFF"
+            app:iconGravity="start"
+            app:iconPadding="16dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/btn_gradient_blue"
+            app:rippleColor="#33FFFFFF"
+            app:cornerRadius="20dp"
+            android:elevation="6dp" />
 
-        <Button
+        <!-- Admin Panel (chỉ hiện khi là admin) -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAdminPanel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bảng điều khiển Admin"
-            android:backgroundTint="@color/design_default_color_secondary" android:textSize="18sp"
+            android:layout_height="64dp"
+            android:text="@string/gotoadmin"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            app:icon="@drawable/ic_admin"
+            app:iconTint="#FFFFFF"
+            app:iconGravity="start"
+            app:iconPadding="16dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/btn_red"
+            app:rippleColor="#33FFFFFF"
+            app:cornerRadius="20dp"
+            android:elevation="6dp"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
     </LinearLayout>
 
-    <Button
+    <!-- FAB Đăng xuất -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="Đăng xuất" />
+        android:layout_marginBottom="24dp"
+        app:srcCompat="@drawable/ic_logout"
+        app:tint="#FFFFFF"
+        app:backgroundTint="#E53935"
+        app:rippleColor="#33FFFFFF"
+        android:contentDescription="Đăng xuất" />
 
 </RelativeLayout>

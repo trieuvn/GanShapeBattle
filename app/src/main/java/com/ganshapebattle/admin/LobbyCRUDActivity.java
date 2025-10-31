@@ -44,7 +44,7 @@ public class LobbyCRUDActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lobby_crud); //
 
         lvLobbies = findViewById(R.id.lvLobbies); //
-        btnAddLobby = findViewById(R.id.btnAddLobby); //
+        btnAddLobby = findViewById(R.id.fabAddLobby); //
         searchView = findViewById(R.id.searchViewLobbies); //
         lobbyService = new LobbyService(); //
 

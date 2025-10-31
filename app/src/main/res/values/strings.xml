@@ -60,11 +60,42 @@
         <item>- Green = grass</item>
         <item>- Brown = rock</item>
         <item>- Purple = river</item>
-        <item>- Red = animals</item>
-        <item>- Pink = houses</item>
+        <item>- Red = sun</item>
+        <item>- Yellow = sand</item>
         <item></item>
         <item>If a color is NOT in the image, DO NOT render its corresponding object.</item>
         <item>Do not add any other details, objects, or inferred elements. Stick precisely to the mask.</item>
     </string-array>
     <string name="transforming">Transforming</string>
+    <!-- res/values/styles.xml -->
+    <style name="RoundedCorner12" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    <!-- Avatar tròn hoàn hảo -->
+    <style name="AvatarCircle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.Avatar.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.GAN.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <string name="joingame">Join game</string>
+    <string name="createlobby">Create lobby</string>
+    <string name="leaderboard">Leaderboard</string>
+    <string name="gallery">Gallery</string>
+    <string name="gotoadmin">Go to admin</string>
 </resources>

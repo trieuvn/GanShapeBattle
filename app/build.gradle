@@ -8,12 +8,12 @@ plugins {
 android {
     namespace 'com.ganshapebattle'
 
-    // Sửa cảnh báo: dùng property thay vì API deprecated
-    compileSdkVersion 36      // tránh 36 preview nếu không cần
+    compileSdk 36
+
     defaultConfig {
         applicationId "com.ganshapebattle"
         minSdk 24
-        targetSdkVersion 36    // đồng bộ với compileSdk
+        targetSdk 36
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -25,13 +25,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    buildFeatures { viewBinding true }
 
-    // KHÔNG cần chỉ định buildToolsVersion – AGP tự chọn phù hợp
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -63,9 +65,11 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
 
     // Firebase
+
     implementation platform('com.google.firebase:firebase-bom:34.4.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'
+
     implementation 'com.google.android.gms:play-services-auth:21.2.0' // dùng One Tap/Identity
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'

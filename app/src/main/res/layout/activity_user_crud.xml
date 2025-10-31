@@ -1,33 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".admin.UserCRUDActivity">
 
-    <SearchView
-        android:id="@+id/searchView"
+    <!-- SearchBar (Material 3) -->
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/searchViewLobbies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="Tìm kiếm theo username..." />
+        android:layout_margin="16dp"
+        android:hint="Tìm kiếm theo username..."
+        app:strokeColor="#0A6AED"
+        app:strokeWidth="1.5dp"
+        style="@style/Widget.Material3.SearchBar.Outlined" />
 
+    <!-- ListView (giữ nguyên) -->
     <ListView
         android:id="@+id/lvUsers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/searchViewLobbies"
         android:layout_above="@+id/btnAddUser"
-        android:layout_below="@id/searchView" />
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="12dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp" />
 
-    <Button
+    <!-- Nút Thêm người dùng -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddUser"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:text="Thêm người dùng mới" />
+        android:text="Thêm người dùng mới"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="@null"
+        android:background="@drawable/btn_gradient_blue"
+        app:rippleColor="#33FFFFFF"
+        app:cornerRadius="16dp"
+        android:elevation="8dp"
+        android:stateListAnimator="@drawable/button_elevation" />
 
 </RelativeLayout>

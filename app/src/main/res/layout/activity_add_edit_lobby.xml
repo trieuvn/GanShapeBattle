@@ -1,125 +1,295 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_outer_border"
     tools:context=".admin.AddEditLobbyActivity">
 
-    <LinearLayout
+    <!-- Nội dung chính -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@+id/tvLobbyTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:text="Tạo phòng chơi mới"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/spinnerLobbyAdmin"
-            android:text="Admin" />
-
-        <Spinner
-            android:id="@+id/spinnerLobbyAdmin"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/spinnerLobbyMode"
-            android:text="Chế độ chơi" />
-
-        <Spinner
-            android:id="@+id/spinnerLobbyMode"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@+id/spinnerLobbyStatus"
-            android:text="Trạng thái" />
-
-        <Spinner
-            android:id="@+id/spinnerLobbyStatus"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp" />
-
-        <EditText
-            android:id="@+id/etLobbyMaxPlayers"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Số người chơi tối đa"
-            android:inputType="number" />
+            android:orientation="vertical"
+            android:padding="32dp">
 
-        <EditText
-            android:id="@+id/etLobbyDesignTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Thời gian thiết kế (giây)"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/etLobbyVoteTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Thời gian bình chọn (giây)"
-            android:inputType="number" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCreatedDate"
+            <!-- Tiêu đề -->
+            <TextView
+                android:id="@+id/tvLobbyTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:hint="(YYYY-MM-DD)"
-                android:inputType="date" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="Tạo phòng chơi mới"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#0D47A1"
+                android:gravity="center"
+                android:layout_marginBottom="32dp"
+                android:fontFamily="sans-serif-medium"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etBeginDate"
+            <!-- Form Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="false"
-                android:hint="(YYYY-MM-DD)"
-                android:inputType="date" />
-        </com.google.android.material.textfield.TextInputLayout>
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:strokeColor="#0D47A1"
+                app:strokeWidth="1.5dp">
 
-        <Button
-            android:id="@+id/btnSaveLobby"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Lưu phòng chơi" />
-    </LinearLayout>
-</ScrollView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- Admin -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Admin"
+                        android:textSize="14sp"
+                        android:textColor="#555555"
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilLobbyAdmin"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_admin"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinnerLobbyAdmin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Chế độ -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Chế độ chơi"
+                        android:textSize="14sp"
+                        android:textColor="#555555"
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilLobbyMode"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_game_mode"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinnerLobbyMode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Trạng thái -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Trạng thái"
+                        android:textSize="14sp"
+                        android:textColor="#555555"
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilLobbyStatus"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_status"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinnerLobbyStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Số người tối đa -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilMaxPlayers"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_group"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLobbyMaxPlayers"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Số người tối đa"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Thời gian thiết kế -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilDesignTime"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_timer"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLobbyDesignTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Thời gian thiết kế (giây)"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Thời gian bình chọn -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilVoteTime"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_how_to_vote"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLobbyVoteTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Thời gian bình chọn (giây)"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Ngày tạo -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilCreatedDate"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_calendar"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_calendar"
+                        app:endIconTint="#0D47A1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etCreatedDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:hint="Ngày tạo (YYYY-MM-DD)"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Ngày bắt đầu -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilBeginDate"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:startIconDrawable="@drawable/ic_event"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_calendar"
+                        app:endIconTint="#0D47A1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etBeginDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:hint="Ngày bắt đầu (YYYY-MM-DD)"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Nút Lưu -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveLobby"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="32dp"
+                android:text="Lưu phòng chơi"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                app:icon="@drawable/ic_save"
+                app:iconTint="#FFFFFF"
+                app:iconGravity="start"
+                app:iconPadding="12dp"
+                app:backgroundTint="@null"
+                android:background="@drawable/btn_gradient_blue"
+                app:rippleColor="#33FFFFFF"
+                app:cornerRadius="20dp"
+                android:elevation="8dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- FAB Lưu nhanh -->
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
