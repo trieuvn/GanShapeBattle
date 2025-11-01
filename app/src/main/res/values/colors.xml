@@ -12,5 +12,28 @@
     <color name="dark_gray">#2a2a2a</color>
     <color name="medium_gray">#3a3a3a</color>
     <color name="light_gray">#555555</color>
+    <color name="dark_blue">#003366</color>
+    <color name="gray_300">#E5E7EB</color>
+    <color name="gray_600">#4B5563</color>
 
+    <!-- Gold Gradient Colors -->
+    <color name="gold_gradient_start">#FFD700</color>
+    <color name="gold_gradient_center">#FFEC8B</color>
+    <color name="gold_gradient_end">#FFA500</color>
+
+    <!-- Silver Gradient Colors -->
+    <color name="silver_gradient_start">#C0C0C0</color>
+    <color name="silver_gradient_center">#FFFFFF</color>
+    <color name="silver_gradient_end">#A0A0A0</color>
+
+    <!-- Additional Colors -->
+    <color name="battle_red">#FF4444</color>
+    <color name="dark_red">#CC0000</color>
+    <color name="border_gold">#8B7500</color>
+    <color name="light_red">#FF6666</color>
+
+    <!-- Green Gradient Colors -->
+    <color name="green_gradient_start">#228B22</color>
+    <color name="green_gradient_center">#32CD32</color>
+    <color name="green_gradient_end">#006400</color>
 </resources>

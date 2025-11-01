@@ -1,13 +1,15 @@
 package com.ganshapebattle.admin;
 
+import android.graphics.Bitmap; // <-- Thêm
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView; // <-- Thêm
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ganshapebattle.R;
@@ -20,6 +22,7 @@ import com.ganshapebattle.services.PictureService;
 import com.ganshapebattle.services.PlayerService;
 import com.ganshapebattle.services.SupabaseCallback;
 import com.ganshapebattle.services.UserService;
+import com.ganshapebattle.utils.ImageUtils; // <-- Thêm
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,57 +30,152 @@ import java.util.stream.Collectors;
 
 public class AddEditPlayerActivity extends AppCompatActivity {
 
+    private static final String TAG = "AddEditPlayerActivity";
+
     private TextView tvTitle;
-    private Spinner spinnerUser, spinnerLobby, spinnerPicture;
+    private Spinner spinnerUser, spinnerLobby;
+    private ImageView imageViewPlayerPicture; // <-- Sửa: Từ Spinner sang ImageView
     private EditText etPoint;
     private Button btnSave;
 
     private PlayerService playerService;
     private UserService userService;
     private LobbyService lobbyService;
-    private PictureService pictureService;
+    private PictureService pictureService; // Cần giữ lại để dùng trong getPicture()
 
     private List<User> userList = new ArrayList<>();
     private List<Lobby> lobbyList = new ArrayList<>();
-    private List<Picture> pictureList = new ArrayList<>();
+    // private List<Picture> pictureList = new ArrayList<>(); // Không cần tải tất cả picture nữa
+    private List<String> userNames = new ArrayList<>();
+    private List<String> lobbyIds = new ArrayList<>();
+    // private List<String> pictureInfos = new ArrayList<>(); // Không cần
 
-    private String currentUsername, currentLobbyId;
     private Player playerToEdit;
+    private String currentUsername;
+    private String currentLobbyId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_player);
 
+        bindViews();
+        initServices();
+
+        btnSave.setOnClickListener(v -> savePlayer());
+
+        // Lấy dữ liệu từ Intent (do LobbyRateVoteActivity gửi)
+        currentUsername = getIntent().getStringExtra("PLAYER_USERNAME");
+        currentLobbyId = getIntent().getStringExtra("LOBBY_ID");
+
+        // --- SỬA LỖI: Xóa tham chiếu đến spinnerPicture ---
+        if (spinnerUser != null) spinnerUser.setEnabled(false);
+        if (spinnerLobby != null) spinnerLobby.setEnabled(false);
+        // Đã xóa spinnerPicture.setEnabled(false)
+
+        if (currentUsername != null && currentLobbyId != null) {
+            tvTitle.setText("Chấm điểm Player");
+            loadDataForEditMode();
+        } else {
+            tvTitle.setText("Thêm Player Mới");
+            loadDataForCreateMode();
+        }
+    }
+
+    private void bindViews() {
         tvTitle = findViewById(R.id.tvPlayerTitle);
-        spinnerUser = findViewById(R.id.spinnerPlayerUser);
-        spinnerLobby = findViewById(R.id.spinnerPlayerLobby);
-        spinnerPicture = findViewById(R.id.spinnerPlayerPicture);
+        spinnerUser = findViewById(R.id.spinnerUser);
+        spinnerLobby = findViewById(R.id.spinnerLobby);
+        // Sửa: Ánh xạ ID mới từ XML
+        imageViewPlayerPicture = findViewById(R.id.imageViewPlayerPicture);
         etPoint = findViewById(R.id.etPlayerPoint);
         btnSave = findViewById(R.id.btnSavePlayer);
+    }
 
+    private void initServices() {
         playerService = new PlayerService();
         userService = new UserService();
         lobbyService = new LobbyService();
-        pictureService = new PictureService();
+        pictureService = new PictureService(); // Vẫn cần
+    }
 
+    private void loadDataForEditMode() {
+        // Tải 2 danh sách (User, Lobby) và Player cần sửa
         loadUsers();
         loadLobbies();
-        loadPictures();
+        // loadPictures(); // Xóa: Không cần tải tất cả
+        loadPlayerToEdit();
+    }
 
-        currentUsername = getIntent().getStringExtra("PLAYER_USERNAME_EDIT");
-        currentLobbyId = getIntent().getStringExtra("PLAYER_LOBBY_ID_EDIT");
+    private void loadDataForCreateMode() {
+        // Tải 2 danh sách (User, Lobby)
+        loadUsers();
+        loadLobbies();
+        // loadPictures(); // Xóa
+        // Bật spinner
+        if (spinnerUser != null) spinnerUser.setEnabled(true);
+        if (spinnerLobby != null) spinnerLobby.setEnabled(true);
+        // Xóa spinnerPicture.setEnabled(true)
+    }
 
-        if (currentUsername != null && currentLobbyId != null) {
-            tvTitle.setText("Chỉnh sửa điểm");
-            spinnerUser.setEnabled(false);
-            spinnerLobby.setEnabled(false);
-            loadPlayerDetails(currentUsername, currentLobbyId);
-        } else {
-            tvTitle.setText("Chấm điểm người chơi");
-        }
+    private void loadPlayerToEdit() {
+        playerService.getPlayerByIds(currentUsername, currentLobbyId, new SupabaseCallback<Player>() {
+            @Override
+            public void onSuccess(Player player) {
+                playerToEdit = player;
+                if (player == null) {
+//                    runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Không tìm thấy Player", Toast.LENGTH_SHORT).show());
+                    return;
+                }
 
-        btnSave.setOnClickListener(v -> savePlayer());
+                // Cập nhật UI (Tên, Lobby, Điểm)
+                runOnUiThread(() -> {
+                    if (player != null) {
+                        etPoint.setText(String.valueOf(player.getPoint()));
+                        setSpinnerSelection(spinnerUser, userNames, player.getUsername());
+                        setSpinnerSelection(spinnerLobby, lobbyIds, player.getLobbyId());
+                    }
+                });
+
+                // --- LOGIC MỚI: Tải ảnh của Player ---
+                Log.d(TAG, "Đang tải Picture cho Player: " + player.getUsername());
+                player.getPicture(new SupabaseCallback<Picture>() {
+                    @Override
+                    public void onSuccess(Picture picture) {
+                        if (picture == null || picture.getImage() == null || picture.getImage().isEmpty()) {
+//                            runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Không tìm thấy dữ liệu ảnh", Toast.LENGTH_SHORT).show());
+                            return;
+                        }
+
+                        // 1. Lấy chuỗi base64
+                        String base64String = picture.getImage();
+
+                        // 2. Decode (sử dụng ImageUtils)
+                        // (Lưu ý: Nếu ảnh quá lớn, nên chạy cái này trong AsyncTask/thread)
+                        Bitmap imageBitmap = ImageUtils.base64ToBitmap(base64String);
+
+                        // 3. Hiển thị (trên UI Thread)
+                        runOnUiThread(() -> {
+                            if (imageBitmap != null) {
+                                imageViewPlayerPicture.setImageBitmap(imageBitmap);
+                            } else {
+//                                Toast.makeText(AddEditPlayerActivity.this, "Lỗi giải mã ảnh base64", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+//                        runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Picture: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    }
+                });
+                // --- KẾT THÚC LOGIC MỚI ---
+            }
+            @Override
+            public void onFailure(Exception e) {
+//                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Player: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+        });
     }
 
     private void loadUsers() {
@@ -85,17 +183,19 @@ public class AddEditPlayerActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<User> users) {
                 userList = users;
-                List<String> usernames = userList.stream().map(User::getUsername).collect(Collectors.toList());
+                userNames = userList.stream().map(User::getUsername).collect(Collectors.toList());
                 runOnUiThread(() -> {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(AddEditPlayerActivity.this, android.R.layout.simple_spinner_item, usernames);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerUser.setAdapter(adapter);
-                    if (playerToEdit != null) {
-                        setSpinnerSelection(spinnerUser, usernames, playerToEdit.getUsername());
-                    }
+                    ArrayAdapter<String> userAdapter = new ArrayAdapter<>(AddEditPlayerActivity.this, android.R.layout.simple_spinner_item, userNames);
+                    userAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    if (spinnerUser != null) spinnerUser.setAdapter(userAdapter);
+                    // Chọn lại nếu là edit mode
+                    if (playerToEdit != null) setSpinnerSelection(spinnerUser, userNames, playerToEdit.getUsername());
                 });
             }
-            @Override public void onFailure(Exception e) {}
+            @Override
+            public void onFailure(Exception e) {
+//                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Users", Toast.LENGTH_SHORT).show());
+            }
         });
     }
 
@@ -104,112 +204,77 @@ public class AddEditPlayerActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<Lobby> lobbies) {
                 lobbyList = lobbies;
-                List<String> lobbyIds = lobbyList.stream().map(Lobby::getId).collect(Collectors.toList());
+                lobbyIds = lobbyList.stream().map(Lobby::getId).collect(Collectors.toList());
                 runOnUiThread(() -> {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(AddEditPlayerActivity.this, android.R.layout.simple_spinner_item, lobbyIds);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerLobby.setAdapter(adapter);
-                    if (playerToEdit != null) {
-                        setSpinnerSelection(spinnerLobby, lobbyIds, playerToEdit.getLobbyId());
-                    }
+                    ArrayAdapter<String> lobbyAdapter = new ArrayAdapter<>(AddEditPlayerActivity.this, android.R.layout.simple_spinner_item, lobbyIds);
+                    lobbyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    if (spinnerLobby != null) spinnerLobby.setAdapter(lobbyAdapter);
+                    if (playerToEdit != null) setSpinnerSelection(spinnerLobby, lobbyIds, playerToEdit.getLobbyId());
                 });
             }
-            @Override public void onFailure(Exception e) {}
+            @Override
+            public void onFailure(Exception e) {
+//                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi tải Lobbies", Toast.LENGTH_SHORT).show());
+            }
         });
     }
 
-    private void loadPictures() {
-        pictureService.getAllPictures(new SupabaseCallback<List<Picture>>() {
-            @Override
-            public void onSuccess(List<Picture> pictures) {
-                pictureList = pictures;
-                List<String> pictureInfo = pictureList.stream().map(p -> p.getName() + " (" + p.getId().substring(0, 6) + ")").collect(Collectors.toList());
-                runOnUiThread(() -> {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(AddEditPlayerActivity.this, android.R.layout.simple_spinner_item, pictureInfo);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinnerPicture.setAdapter(adapter);
-                    if (playerToEdit != null) {
-                        setPictureSpinnerSelection();
-                    }
-                });
-            }
-            @Override public void onFailure(Exception e) {}
-        });
-    }
-
-    private void loadPlayerDetails(String username, String lobbyId) {
-        playerService.getPlayerByIds(username, lobbyId, new SupabaseCallback<Player>() {
-            @Override
-            public void onSuccess(Player player) {
-                if (player != null) {
-                    playerToEdit = player;
-                    runOnUiThread(() -> {
-                        etPoint.setText(String.valueOf(player.getPoint()));
-                        loadUsers();
-                        loadLobbies();
-                        loadPictures();
-                    });
-                }
-            }
-            @Override public void onFailure(Exception e) {}
-        });
-    }
+    // Xóa: private void loadPictures() { ... }
 
     private void savePlayer() {
-        if (spinnerUser.getSelectedItem() == null || spinnerLobby.getSelectedItem() == null) {
-            Toast.makeText(this, "Vui lòng chọn User và Lobby", Toast.LENGTH_SHORT).show();
+        if (etPoint.getText().toString().isEmpty()) {
+//            Toast.makeText(this, "Vui lòng nhập điểm", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Player playerToSave = (playerToEdit == null) ? new Player() : playerToEdit;
+        Player player = (playerToEdit != null) ? playerToEdit : new Player();
 
         try {
-            String selectedUsername = userList.get(spinnerUser.getSelectedItemPosition()).getUsername();
-            String selectedLobbyId = lobbyList.get(spinnerLobby.getSelectedItemPosition()).getId();
-            String selectedPictureId = pictureList.isEmpty() ? null : pictureList.get(spinnerPicture.getSelectedItemPosition()).getId();
-
-            if (playerToEdit == null) {
-                playerToSave.setUsername(selectedUsername);
-                playerToSave.setLobbyId(selectedLobbyId);
-            }
-
-            playerToSave.setPictureId(selectedPictureId);
-            playerToSave.setPoint(Integer.parseInt(etPoint.getText().toString()));
-            // Hạng sẽ được tính riêng nên không set ở đây
-            // playerToSave.setRank(...);
-        } catch (Exception e) {
-            Toast.makeText(this, "Dữ liệu không hợp lệ", Toast.LENGTH_SHORT).show();
+            player.setPoint(Integer.parseInt(etPoint.getText().toString()));
+        } catch (NumberFormatException e) {
+//            Toast.makeText(this, "Điểm không hợp lệ", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        executeSaveOrUpdate(playerToSave);
-    }
+        if (playerToEdit == null) { // Chế độ Create (Đã bị đơn giản hóa)
+            if (spinnerUser == null || spinnerLobby == null) { // Xóa check spinnerPicture
+//                Toast.makeText(this, "Lỗi Spinner bị null", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            player.setUsername(userList.get(spinnerUser.getSelectedItemPosition()).getUsername());
+            player.setLobbyId(lobbyList.get(spinnerLobby.getSelectedItemPosition()).getId());
+            // player.setPictureId(pictureList.get(spinnerPicture.getSelectedItemPosition()).getId()); // Xóa dòng này
+            player.setPictureId(null); // Hoặc bạn cần logic khác để gán Picture ID
+            player.setRank(0);
+        }
+        // Nếu là edit mode (đang chấm điểm), chúng ta chỉ thay đổi điểm (point)
 
-    private void executeSaveOrUpdate(Player player) {
         SupabaseCallback<String> callback = new SupabaseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(AddEditPlayerActivity.this, result, Toast.LENGTH_LONG).show();
-                    setResult(RESULT_OK);
+//                    Toast.makeText(AddEditPlayerActivity.this, result, Toast.LENGTH_LONG).show();
+                    setResult(RESULT_OK); // Báo cho LobbyRateVoteActivity biết để tải lại
                     finish();
                 });
             }
             @Override
             public void onFailure(Exception e) {
                 Log.e("AddEditPlayer", "Lỗi: ", e);
-                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+//                runOnUiThread(() -> Toast.makeText(AddEditPlayerActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             }
         };
 
         if (playerToEdit == null) {
             playerService.insertPlayer(player, callback);
         } else {
+            // Đây là flow chính: Cập nhật player với điểm mới
             playerService.updatePlayer(currentUsername, currentLobbyId, player, callback);
         }
     }
 
     private void setSpinnerSelection(Spinner spinner, List<String> options, String value) {
+        if (spinner == null || options == null || value == null) return;
         for (int i = 0; i < options.size(); i++) {
             if (options.get(i).equalsIgnoreCase(value)) {
                 spinner.setSelection(i);
@@ -218,13 +283,5 @@ public class AddEditPlayerActivity extends AppCompatActivity {
         }
     }
 
-    private void setPictureSpinnerSelection() {
-        if (playerToEdit == null || pictureList.isEmpty()) return;
-        for (int i = 0; i < pictureList.size(); i++) {
-            if (pictureList.get(i).getId().equals(playerToEdit.getPictureId())) {
-                spinnerPicture.setSelection(i);
-                return;
-            }
-        }
-    }
+    // Xóa: private void setPictureSpinnerSelection() { ... }
 }

@@ -7,7 +7,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -60,7 +60,7 @@ public class UserDetailActivity extends AppCompatActivity {
         if (currentUsername != null && !currentUsername.isEmpty()) {
             fetchUserDetails(currentUsername);
         } else {
-            Toast.makeText(this, "Không tìm thấy username", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Không tìm thấy username", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -124,7 +124,7 @@ public class UserDetailActivity extends AppCompatActivity {
                         // --- KẾT THÚC CẬP NHẬT ---
 
                     } else {
-                        Toast.makeText(UserDetailActivity.this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(UserDetailActivity.this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -133,7 +133,7 @@ public class UserDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi lấy thông tin user: ", e);
-                runOnUiThread(() -> Toast.makeText(UserDetailActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show());
+//                runOnUiThread(() -> Toast.makeText(UserDetailActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
         });
     }
@@ -143,7 +143,7 @@ public class UserDetailActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(UserDetailActivity.this, result, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(UserDetailActivity.this, result, Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK); // Báo cho Activity trước đó biết là đã xóa thành công
                     finish();
                 });
@@ -152,7 +152,7 @@ public class UserDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi xóa user: ", e);
-                runOnUiThread(() -> Toast.makeText(UserDetailActivity.this, "Lỗi khi xóa: " + e.getMessage(), Toast.LENGTH_LONG).show());
+//                runOnUiThread(() -> Toast.makeText(UserDetailActivity.this, "Lỗi khi xóa: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
         });
     }

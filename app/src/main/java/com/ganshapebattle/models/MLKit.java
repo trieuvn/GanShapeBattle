@@ -26,7 +26,7 @@ import java.util.concurrent.Executors;
 
 // THÊM CHÚ THÍCH OPT-IN TẠI ĐÂY:
 @com.google.firebase.ai.type.PublicPreviewAPI // <--- SỬA LỖI 3
-public class MLKit { // Bạn có thể đổi tên lớp này thành ImagenControlNet
+public class MLKit {
     private static final String TAG = "GeminiImageEditor";
     private static final String MODEL_NAME = "gemini-2.0-flash-preview-image-generation";
 

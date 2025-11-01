@@ -7,7 +7,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -55,7 +55,7 @@ public class PictureDetailActivity extends AppCompatActivity {
         if (currentPictureId != null && !currentPictureId.isEmpty()) {
             fetchPictureDetails(currentPictureId);
         } else {
-            Toast.makeText(this, "Không tìm thấy ID hình ảnh", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Không tìm thấy ID hình ảnh", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -122,7 +122,7 @@ public class PictureDetailActivity extends AppCompatActivity {
                         // --- KẾT THÚC CẬP NHẬT ---
 
                     } else {
-                        Toast.makeText(PictureDetailActivity.this, "Không tìm thấy thông tin ảnh", Toast.LENGTH_LONG).show();
+//                        Toast.makeText(PictureDetailActivity.this, "Không tìm thấy thông tin ảnh", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 });
@@ -131,7 +131,7 @@ public class PictureDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Error fetching picture details: ", e);
-                runOnUiThread(() -> Toast.makeText(PictureDetailActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show());
+//                runOnUiThread(() -> Toast.makeText(PictureDetailActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
         });
     }
@@ -141,7 +141,7 @@ public class PictureDetailActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(PictureDetailActivity.this, result, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(PictureDetailActivity.this, result, Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK); // Báo hiệu xóa thành công
                     finish();
                 });
@@ -150,7 +150,7 @@ public class PictureDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Error deleting picture: ", e);
-                runOnUiThread(() -> Toast.makeText(PictureDetailActivity.this, "Lỗi khi xóa: " + e.getMessage(), Toast.LENGTH_LONG).show());
+//                runOnUiThread(() -> Toast.makeText(PictureDetailActivity.this, "Lỗi khi xóa: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
         });
     }

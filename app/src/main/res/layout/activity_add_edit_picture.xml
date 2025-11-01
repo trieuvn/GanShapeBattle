@@ -1,152 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_outer_border"
     tools:context=".admin.AddEditPictureActivity">
 
-    <LinearLayout
+    <!-- Nội dung chính -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/tvPictureTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:text="Thêm hình ảnh mới"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/ivSelectedImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:background="#E0E0E0"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_default_avatar" />
-
-        <Button
-            android:id="@+id/btnSelectImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:text="Chọn ảnh" />
-
-        <EditText
-            android:id="@+id/etPictureName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Tên ảnh" />
-
-        <EditText
-            android:id="@+id/etPictureDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:hint="Mô tả" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Loại"
-            android:textStyle="bold" />
-
-        <RadioGroup
-            android:id="@+id/radioGroupType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rbTypeArt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nghệ thuật" />
-
-            <RadioButton
-                android:id="@+id/rbTypePhoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nhiếp ảnh" />
-
-            <RadioButton
-                android:id="@+id/rbTypeDigital"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Digital Art" />
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tags"
-            android:textStyle="bold" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:id="@+id/checkboxGroupTags"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="32dp">
 
-            <CheckBox
-                android:id="@+id/cbTagNature"
+            <!-- Tiêu đề -->
+            <TextView
+                android:id="@+id/tvPictureTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/Addnewimage"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#0D47A1"
+                android:gravity="center"
+                android:layout_marginBottom="32dp"
+                android:fontFamily="sans-serif-medium"/>
+
+            <!-- Xem trước ảnh -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:strokeColor="#0D47A1"
+                app:strokeWidth="1.5dp">
+
+                <ImageView
+                    android:id="@+id/ivSelectedImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_default_avatar"
+                    android:contentDescription="@string/Chooseimage"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSelectImage"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thiên nhiên" />
+                android:layout_gravity="center"
+                android:layout_marginBottom="32dp"
+                android:text="@string/Chooseimage"
+                android:textColor="#0D47A1"
+                app:icon="@drawable/ic_camera"
+                app:iconTint="#0D47A1"
+                app:strokeColor="#0D47A1"
+                app:strokeWidth="1.5dp"
+                app:cornerRadius="20dp"/>
 
-            <CheckBox
-                android:id="@+id/cbTagCity"
-                android:layout_width="wrap_content"
+            <!-- Form Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Thành phố" />
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
+                app:strokeColor="#0D47A1"
+                app:strokeWidth="1.5dp">
 
-            <CheckBox
-                android:id="@+id/cbTagPeople"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Con người" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <!-- Tên ảnh -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPictureName"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_label"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPictureName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/Imagename"
+                            android:inputType="textCapWords"
+                            android:maxLines="1"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Mô tả -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPictureDescription"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_description"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPictureDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/Description"
+                            android:inputType="textCapSentences"
+                            android:maxLines="3"
+                            android:paddingStart="40dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Loại ảnh -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/image_type"
+                        android:textSize="14sp"
+                        android:textColor="#555555"
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/rbTypeArt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Art"
+                        android:layout_marginEnd="24dp"/>
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/rbTypePhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Photography"
+                        android:layout_marginEnd="24dp"/>
+
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:id="@+id/rbTypeDigital"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/DigitalArt"/>
+
+                    <!-- Tags -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tags_label"
+                        android:textSize="14sp"
+                        android:textColor="#555555"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/checkboxGroupTags"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="false"
+                        app:chipSpacing="8dp">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cbTagNature"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/nature"
+                            app:chipBackgroundColor="#E3F2FD"
+                            app:checkedIconEnabled="false"/>
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cbTagCity"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tag_city"
+                            app:chipBackgroundColor="#E3F2FD"
+                            app:checkedIconEnabled="false"/>
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/cbTagPeople"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tag_people"
+                            app:chipBackgroundColor="#E3F2FD"
+                            app:checkedIconEnabled="false"/>
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <!-- Bộ sưu tập -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_gallery"
+                        android:textSize="14sp"
+                        android:textColor="#555555"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPictureGallery"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:startIconDrawable="@drawable/ic_gallery"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinnerPictureGallery"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:textSize="16sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Người tạo -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/select_user"
+                        android:textSize="14sp"
+                        android:textColor="#555555"
+                        android:layout_marginBottom="8dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPictureUser"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:startIconDrawable="@drawable/ic_person"
+                        app:startIconTint="#0D47A1"
+                        app:hintTextColor="#0D47A1"
+                        app:boxStrokeColor="#0D47A1">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/spinnerPictureUser"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:textSize="16sp"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Nút Lưu -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSavePicture"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/save_image"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                app:icon="@drawable/ic_save"
+                app:iconTint="#FFFFFF"
+                app:iconGravity="start"
+                app:iconPadding="12dp"
+                app:backgroundTint="@null"
+                android:background="@drawable/btn_gradient_blue"
+                app:rippleColor="#33FFFFFF"
+                app:cornerRadius="20dp"
+                android:elevation="8dp"/>
+
         </LinearLayout>
+    </ScrollView>
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chọn bộ sưu tập (Gallery)" />
-
-        <Spinner
-            android:id="@+id/spinnerPictureGallery"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chọn người tạo (User)" />
-
-        <Spinner
-            android:id="@+id/spinnerPictureUser"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp" />
-
-        <Button
-            android:id="@+id/btnSavePicture"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Lưu hình ảnh" />
-    </LinearLayout>
-</ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

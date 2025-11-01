@@ -1,120 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="@drawable/bg_outer_border"
+    android:padding="24dp"
+    android:orientation="vertical"
     tools:context=".LobbyActivity">
 
-    <Button
+    <!-- Nút Tạo phòng (ban đầu) -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonCreateLobby"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tạo phòng chơi"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/btn_gradient_blue"
+        android:elevation="12dp"
+        android:text="@string/create_lobby_button"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:backgroundTint="@null"
+        app:cornerRadius="32dp"
+        app:icon="@drawable/ic_add_lobby"
+        app:iconGravity="start"
+        app:iconPadding="16dp"
+        app:iconTint="#FFFFFF"
+        app:rippleColor="#33FFFFFF"
+        android:stateListAnimator="@drawable/button_elevation"
+        tools:visibility="visible" />
 
+    <!-- Layout: Thông tin phòng -->
     <LinearLayout
         android:id="@+id/layoutLobbyInfo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
 
+        <!-- Tiêu đề -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Mời bạn bè quét mã!"
-            android:textSize="20sp"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/invite_qr_instruction"
+            android:textColor="#0A6AED"
+            android:textSize="26sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imageViewQRCode"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_marginTop="16dp"
-            tools:src="@tools:sample/avatars" />
+        <!-- QR Code trong Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:layout_marginBottom="24dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="12dp"
+            app:strokeColor="#0A6AED"
+            app:strokeWidth="3dp">
 
-        <TextView
-            android:id="@+id/textViewLobbyId"
+            <ImageView
+                android:id="@+id/imageViewQRCode"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:scaleType="center" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Mã phòng + Copy -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="Mã phòng: 1a2b3c" />
+            android:layout_marginTop="80dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/badge_lobby"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp">
 
+            <TextView
+                android:id="@+id/textViewLobbyId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lobby_id_placeholder"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btnCopyCode"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Sao chép mã phòng"
+                app:srcCompat="@drawable/ic_copy"
+                app:tint="#FFFFFF" />
+
+        </LinearLayout>
+
+        <!-- Chế độ chơi -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Chế độ chơi"
+            android:layout_marginBottom="12dp"
+            android:text="@string/game_mode_label"
+            android:textColor="#1A1A1A"
             android:textSize="18sp" />
 
-        <RadioGroup
-            android:id="@+id/radioGroupMode"
+        <!-- Segmented Button -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleGroupMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            app:checkedButton="@id/btnVote"
+            app:selectionRequired="true"
+            app:singleSelection="true">
 
-            <RadioButton
-                android:id="@+id/radioButtonVote"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVote"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="Vote (Người chơi tự vote)" />
+                android:layout_height="48dp"
+                android:text="@string/mode_vote"
+                android:textSize="16sp"
+                app:cornerRadius="24dp"
+                app:strokeColor="#0A6AED"
+                app:strokeWidth="2dp" />
 
-            <RadioButton
-                android:id="@+id/radioButtonRate"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRate"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="Rate (Chủ phòng vote)" />
-        </RadioGroup>
+                android:layout_height="48dp"
+                android:text="@string/mode_rate"
+                android:textSize="16sp"
+                app:cornerRadius="24dp"
+                app:strokeColor="#0A6AED"
+                app:strokeWidth="2dp" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
     </LinearLayout>
 
+    <!-- Nút điều khiển (dưới cùng) -->
     <LinearLayout
         android:id="@+id/layoutControls"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible">
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal">
 
-        <Button
+        <!-- Xóa phòng -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonDelete"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:backgroundTint="#E53935"
-            android:text="Xóa phòng"
-            android:textColor="@android:color/white" />
+            android:background="@drawable/btn_red"
+            android:elevation="8dp"
+            android:text="@string/delete_lobby_button"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_delete"
+            app:iconGravity="start"
+            app:iconPadding="12dp"
+            app:iconTint="#FFFFFF"
+            app:rippleColor="#33FFFFFF" />
 
-        <Button
+        <!-- Bắt đầu -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonBegin"
-            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:backgroundTint="#43A047"
-            android:text="Bắt đầu"
-            android:textColor="@android:color/white" />
+            android:background="@drawable/btn_green"
+            android:elevation="8dp"
+            android:text="@string/begin_button"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null"
+            app:cornerRadius="16dp"
+            app:icon="@drawable/ic_play"
+            app:iconGravity="start"
+            app:iconPadding="12dp"
+            app:iconTint="#FFFFFF"
+            app:rippleColor="#33FFFFFF" />
+
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

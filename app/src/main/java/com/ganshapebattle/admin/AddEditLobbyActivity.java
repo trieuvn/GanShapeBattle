@@ -4,45 +4,44 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner; // Import Spinner
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-// THÊM CÁC DÒNG NÀY VÀO
+
 import com.ganshapebattle.R;
+import com.ganshapebattle.models.Lobby;
 import com.ganshapebattle.models.User;
+import com.ganshapebattle.services.LobbyService;
+import com.ganshapebattle.services.SupabaseCallback;
+import com.ganshapebattle.services.UserService;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
-import com.ganshapebattle.models.Lobby;
-import com.ganshapebattle.services.LobbyService;
-import com.ganshapebattle.services.SupabaseCallback;
-import com.ganshapebattle.services.UserService;
-
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class AddEditLobbyActivity extends AppCompatActivity {
 
     private static final String TAG = "AddEditLobbyActivity";
 
     private TextView tvTitle;
-    private EditText etAdmin, etMaxPlayers, etDesignTime, etVoteTime, etCreatedDate, etBeginDate;
+    private EditText etMaxPlayers, etDesignTime, etVoteTime, etCreatedDate, etBeginDate;
     private Button btnSaveLobby;
-    private Spinner spinnerMode, spinnerStatus; // <-- Khai báo Spinner
+    private AutoCompleteTextView spinnerMode, spinnerStatus, spinnerAdmin;
 
     private LobbyService lobbyService;
+    private UserService userService;
+
     private String currentLobbyId = null;
     private Lobby lobbyToEdit;
-    private Spinner spinnerAdmin; // Thay thế EditText etAdmin
-    private UserService userService; // Thêm UserService
 
-
-    // Dữ liệu cho các Spinner
+    // Dữ liệu cho Spinner
     private final String[] lobbyModes = {"Classic", "Timed", "Challenge", "Freestyle"};
     private final String[] lobbyStatuses = {"Waiting", "In-game", "Finished"};
 
@@ -51,28 +50,29 @@ public class AddEditLobbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_lobby);
 
-        // Ánh xạ views
+        // Ánh xạ View
         tvTitle = findViewById(R.id.tvLobbyTitle);
-        spinnerAdmin = findViewById(R.id.spinnerLobbyAdmin); // Ánh xạ Spinner
+        spinnerAdmin = findViewById(R.id.spinnerLobbyAdmin);
+        spinnerMode = findViewById(R.id.spinnerLobbyMode);
+        spinnerStatus = findViewById(R.id.spinnerLobbyStatus);
         etMaxPlayers = findViewById(R.id.etLobbyMaxPlayers);
         etDesignTime = findViewById(R.id.etLobbyDesignTime);
         etVoteTime = findViewById(R.id.etLobbyVoteTime);
-        btnSaveLobby = findViewById(R.id.btnSaveLobby);
         etCreatedDate = findViewById(R.id.etCreatedDate);
         etBeginDate = findViewById(R.id.etBeginDate);
+        btnSaveLobby = findViewById(R.id.btnSaveLobby);
 
-        spinnerMode = findViewById(R.id.spinnerLobbyMode); // <-- Ánh xạ Spinner
-        spinnerStatus = findViewById(R.id.spinnerLobbyStatus); // <-- Ánh xạ Spinner
+        // Khởi tạo service
+        lobbyService = new LobbyService();
+        userService = new UserService();
 
-        // Cài đặt Adapter cho các Spinner
+        // Cài đặt adapter cho Mode và Status
         setupSpinners();
 
-        lobbyService = new LobbyService();
+        // Tải danh sách admin
+        loadAdminUsernames();
 
-        userService = new UserService(); // Khởi tạo UserService
-
-        loadAdminUsernames(); // Tải danh sách admin
-
+        // Kiểm tra xem là tạo mới hay chỉnh sửa
         currentLobbyId = getIntent().getStringExtra("LOBBY_ID_EDIT");
         if (currentLobbyId != null) {
             tvTitle.setText("Chỉnh sửa phòng chơi");
@@ -81,34 +81,38 @@ public class AddEditLobbyActivity extends AppCompatActivity {
             tvTitle.setText("Tạo phòng chơi mới");
         }
 
-        etCreatedDate.setOnClickListener(v -> showDatePickerDialogCreatedDate());
+        // DatePicker cho CreatedDate
+        etCreatedDate.setOnClickListener(v -> showDatePickerDialog(etCreatedDate));
 
-        etBeginDate.setOnClickListener(v -> showDatePickerDialogBeginDate());
+        // DatePicker cho BeginDate
+        etBeginDate.setOnClickListener(v -> showDatePickerDialog(etBeginDate));
 
+        // Nút lưu
         btnSaveLobby.setOnClickListener(v -> saveLobby());
     }
+
+    // ------------------------
+    // Tải danh sách admin
+    // ------------------------
     private void loadAdminUsernames() {
-        // Gọi phương thức getAllUsers có sẵn
         userService.getAllUsers(new SupabaseCallback<List<User>>() {
             @Override
             public void onSuccess(List<User> users) {
-                // Từ danh sách User, chuyển đổi nó thành danh sách String (chỉ lấy username)
                 List<String> usernames = users.stream()
                         .map(User::getUsername)
                         .collect(Collectors.toList());
 
-                // Chạy trên UI thread để cập nhật Spinner
                 runOnUiThread(() -> {
                     ArrayAdapter<String> adminAdapter = new ArrayAdapter<>(
                             AddEditLobbyActivity.this,
-                            android.R.layout.simple_spinner_item,
-                            usernames);
-                    adminAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            android.R.layout.simple_dropdown_item_1line,
+                            usernames
+                    );
                     spinnerAdmin.setAdapter(adminAdapter);
 
-                    // Nếu ở chế độ sửa, chọn đúng admin trong Spinner
-                    if (lobbyToEdit != null) {
-                        setSpinnerSelection(spinnerAdmin, usernames.toArray(new String[0]), lobbyToEdit.getAdminUsername());
+                    // Nếu đang ở chế độ sửa, chọn đúng admin
+                    if (lobbyToEdit != null && lobbyToEdit.getAdminUsername() != null) {
+                        spinnerAdmin.setText(lobbyToEdit.getAdminUsername(), false);
                     }
                 });
             }
@@ -116,24 +120,27 @@ public class AddEditLobbyActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi tải danh sách user: ", e);
-                runOnUiThread(() -> Toast.makeText(AddEditLobbyActivity.this, "Không thể tải danh sách Admin", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() ->{}
+//                        Toast.makeText(AddEditLobbyActivity.this, "Không thể tải danh sách Admin", Toast.LENGTH_SHORT).show()
+                );
             }
         });
     }
 
+    // ------------------------
+    // Cài đặt Spinner cho Mode/Status
+    // ------------------------
     private void setupSpinners() {
-        // Adapter cho Mode Spinner
-        ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lobbyModes);
-        modeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, lobbyModes);
         spinnerMode.setAdapter(modeAdapter);
 
-        // Adapter cho Status Spinner
-        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, lobbyStatuses);
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, lobbyStatuses);
         spinnerStatus.setAdapter(statusAdapter);
     }
 
-
+    // ------------------------
+    // Tải chi tiết Lobby để chỉnh sửa
+    // ------------------------
     private void loadLobbyDetailsForEdit(String lobbyId) {
         lobbyService.getLobbyById(lobbyId, new SupabaseCallback<Lobby>() {
             @Override
@@ -146,51 +153,68 @@ public class AddEditLobbyActivity extends AppCompatActivity {
                         etVoteTime.setText(String.valueOf(lobby.getVoteTime()));
                         etCreatedDate.setText(lobby.getCreatedDate());
                         etBeginDate.setText(lobby.getBeginDate());
+                        spinnerMode.setText(lobby.getMode(), false);
+                        spinnerStatus.setText(lobby.getStatus(), false);
 
-                        // Chọn giá trị đúng cho Spinner
-                        setSpinnerSelection(spinnerMode, lobbyModes, lobby.getMode());
-                        setSpinnerSelection(spinnerStatus, lobbyStatuses, lobby.getStatus());
+                        // Nếu danh sách admin đã tải thì chọn admin luôn
+                        if (spinnerAdmin.getAdapter() != null) {
+                            spinnerAdmin.setText(lobby.getAdminUsername(), false);
+                        }
                     });
                 }
-            }            @Override
+            }
+
+            @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi tải chi tiết lobby: ", e);
-                runOnUiThread(() -> Toast.makeText(AddEditLobbyActivity.this, "Lỗi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                runOnUiThread(() ->{}
+//                        Toast.makeText(AddEditLobbyActivity.this, "Lỗi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
             }
         });
     }
 
-    // Hàm tiện ích để chọn item trong Spinner
-    private void setSpinnerSelection(Spinner spinner, String[] array, String value) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equalsIgnoreCase(value)) {
-                spinner.setSelection(i);
-                return;
-            }
-        }
+    // ------------------------
+    // Hiển thị DatePickerDialog
+    // ------------------------
+    private void showDatePickerDialog(EditText editText) {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    c.set(selectedYear, selectedMonth, selectedDay);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    editText.setText(sdf.format(c.getTime()));
+                }, year, month, day);
+        datePickerDialog.show();
     }
 
+    // ------------------------
+    // Lưu hoặc cập nhật Lobby
+    // ------------------------
     private void saveLobby() {
-        // Lấy admin từ Spinner thay vì EditText
-        if (spinnerAdmin.getSelectedItem() == null) {
-            Toast.makeText(this, "Vui lòng chọn Admin", Toast.LENGTH_SHORT).show();
+        String admin = spinnerAdmin.getText().toString().trim();
+        if (admin.isEmpty()) {
+//            Toast.makeText(this, "Vui lòng chọn Admin", Toast.LENGTH_SHORT).show();
             return;
         }
-        String admin = spinnerAdmin.getSelectedItem().toString();
 
         Lobby lobbyToSave = (currentLobbyId == null) ? new Lobby() : lobbyToEdit;
 
         try {
             lobbyToSave.setAdminUsername(admin);
-            lobbyToSave.setMode(spinnerMode.getSelectedItem().toString()); // Lấy giá trị từ Spinner
-            lobbyToSave.setStatus(spinnerStatus.getSelectedItem().toString()); // Lấy giá trị từ Spinner
+            lobbyToSave.setMode(spinnerMode.getText().toString());
+            lobbyToSave.setStatus(spinnerStatus.getText().toString());
             lobbyToSave.setMaxPlayer(Integer.parseInt(etMaxPlayers.getText().toString()));
             lobbyToSave.setDesignTime(Integer.parseInt(etDesignTime.getText().toString()));
             lobbyToSave.setVoteTime(Integer.parseInt(etVoteTime.getText().toString()));
             lobbyToSave.setCreatedDate(etCreatedDate.getText().toString().trim());
             lobbyToSave.setBeginDate(etBeginDate.getText().toString().trim());
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Vui lòng nhập đúng định dạng số", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Vui lòng nhập đúng định dạng số", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -201,21 +225,23 @@ public class AddEditLobbyActivity extends AppCompatActivity {
         executeSaveOrUpdate(lobbyToSave);
     }
 
-
     private void executeSaveOrUpdate(Lobby lobby) {
         SupabaseCallback<String> callback = new SupabaseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(AddEditLobbyActivity.this, result, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(AddEditLobbyActivity.this, result, Toast.LENGTH_LONG).show();
                     setResult(RESULT_OK);
                     finish();
                 });
-            }            @Override
+            }
+
+            @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi lưu lobby: ", e);
-                // THÊM TOAST Ở ĐÂY
-                runOnUiThread(() -> Toast.makeText(AddEditLobbyActivity.this, "Lưu thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                runOnUiThread(() ->{}
+//                        Toast.makeText(AddEditLobbyActivity.this, "Lưu thất bại: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
             }
         };
 
@@ -224,35 +250,5 @@ public class AddEditLobbyActivity extends AppCompatActivity {
         } else {
             lobbyService.updateLobby(currentLobbyId, lobby, callback);
         }
-    }
-
-    private void showDatePickerDialogCreatedDate() {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, selectedYear, selectedMonth, selectedDay) -> {
-                    c.set(selectedYear, selectedMonth, selectedDay);
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                    etCreatedDate.setText(sdf.format(c.getTime()));
-                }, year, month, day);
-        datePickerDialog.show();
-    }
-
-    private void showDatePickerDialogBeginDate() {
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, selectedYear, selectedMonth, selectedDay) -> {
-                    c.set(selectedYear, selectedMonth, selectedDay);
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                    etBeginDate.setText(sdf.format(c.getTime()));
-                }, year, month, day);
-        datePickerDialog.show();
     }
 }

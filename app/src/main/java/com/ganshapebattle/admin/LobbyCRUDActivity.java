@@ -7,17 +7,20 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ganshapebattle.R; //
-import com.ganshapebattle.models.Lobby; //
-import com.ganshapebattle.services.LobbyService; //
-import com.ganshapebattle.services.SupabaseCallback; //
+// === SỬA LỖI: THAY ĐỔI IMPORT ===
+import androidx.appcompat.widget.SearchView;
+// ================================
+
+import com.ganshapebattle.R;
+import com.ganshapebattle.models.Lobby;
+import com.ganshapebattle.services.LobbyService;
+import com.ganshapebattle.services.SupabaseCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,9 @@ public class LobbyCRUDActivity extends AppCompatActivity {
 
     private ListView lvLobbies;
     private Button btnAddLobby;
-    private SearchView searchView;
+    // === SỬA LỖI: THAY ĐỔI KIỂU BIẾN ===
+    private androidx.appcompat.widget.SearchView searchView;
+    // ==================================
     private LobbyService lobbyService;
     private ArrayAdapter<String> adapter;
 
@@ -41,12 +46,14 @@ public class LobbyCRUDActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lobby_crud); //
+        setContentView(R.layout.activity_lobby_crud);
 
-        lvLobbies = findViewById(R.id.lvLobbies); //
-        btnAddLobby = findViewById(R.id.btnAddLobby); //
-        searchView = findViewById(R.id.searchViewLobbies); //
-        lobbyService = new LobbyService(); //
+        lvLobbies = findViewById(R.id.lvLobbies);
+        // === SỬA LỖI: ID của nút trong XML là 'fabAddLobby' ===
+        btnAddLobby = findViewById(R.id.fabAddLobby);
+        // ===================================================
+        searchView = findViewById(R.id.searchViewLobbies);
+        lobbyService = new LobbyService();
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         lvLobbies.setAdapter(adapter);
@@ -59,7 +66,6 @@ public class LobbyCRUDActivity extends AppCompatActivity {
                 result -> {
                     if (result.getResultCode() == RESULT_OK) {
                         Log.d(TAG, "Nhận được kết quả OK từ AddEditLobbyActivity/LobbyDetailActivity.");
-                        // onResume sẽ tự động gọi loadLobbies()
                     } else {
                         Log.d(TAG, "AddEditLobbyActivity/LobbyDetailActivity không trả về RESULT_OK.");
                     }
@@ -70,17 +76,16 @@ public class LobbyCRUDActivity extends AppCompatActivity {
         lvLobbies.setOnItemClickListener((parent, view, position, id) -> {
             if (position >= 0 && position < displayedLobbyList.size()) {
                 Lobby selectedLobby = displayedLobbyList.get(position);
-                Intent intent = new Intent(LobbyCRUDActivity.this, LobbyDetailActivity.class); // <<< Mở LobbyDetailActivity
-                intent.putExtra("LOBBY_ID", selectedLobby.getId()); // <<< Truyền ID
-                startActivity(intent); // <<< Dùng startActivity thông thường
-                // Lưu ý: LobbyDetailActivity cần dùng launcher để mở AddEditLobbyActivity
+                Intent intent = new Intent(LobbyCRUDActivity.this, LobbyDetailActivity.class);
+                intent.putExtra("LOBBY_ID", selectedLobby.getId());
+                startActivity(intent);
             }
         });
 
         // Mở màn hình THÊM MỚI khi nhấn nút Add
         btnAddLobby.setOnClickListener(v -> {
-            Intent intent = new Intent(LobbyCRUDActivity.this, AddEditLobbyActivity.class); //
-            addEditLobbyLauncher.launch(intent); // Dùng launcher
+            Intent intent = new Intent(LobbyCRUDActivity.this, AddEditLobbyActivity.class);
+            addEditLobbyLauncher.launch(intent);
         });
 
     } // Kết thúc onCreate
@@ -89,7 +94,7 @@ public class LobbyCRUDActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume được gọi, tải lại danh sách lobbies.");
-        loadLobbies(); // Tải lại dữ liệu khi quay lại màn hình
+        loadLobbies();
     }
 
     private void setupSearch() {
@@ -102,7 +107,7 @@ public class LobbyCRUDActivity extends AppCompatActivity {
 
     private void loadLobbies() {
         Log.d(TAG, "Bắt đầu tải danh sách lobbies...");
-        lobbyService.getAllLobbies(new SupabaseCallback<List<Lobby>>() { //
+        lobbyService.getAllLobbies(new SupabaseCallback<List<Lobby>>() {
             @Override
             public void onSuccess(List<Lobby> result) {
                 Log.d(TAG, "Tải lobbies thành công: " + (result != null ? result.size() : 0));
@@ -115,7 +120,7 @@ public class LobbyCRUDActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi tải lobbies: ", e);
-                runOnUiThread(() -> Toast.makeText(LobbyCRUDActivity.this, "Lỗi tải lobbies", Toast.LENGTH_SHORT).show());
+//                runOnUiThread(() -> Toast.makeText(LobbyCRUDActivity.this, "Lỗi tải lobbies", Toast.LENGTH_SHORT).show());
             }
         });
     }

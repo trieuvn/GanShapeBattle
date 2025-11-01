@@ -1,116 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_outer_border"
     tools:context=".admin.LobbyDetailActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lobby ID"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvLobbyId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="lobby-uuid-123" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Admin"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvLobbyAdmin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="admin_user" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Chế độ chơi"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvLobbyMode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="Classic" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Trạng thái"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvLobbyStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="Waiting" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Số người chơi tối đa"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvLobbyMaxPlayers"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:textSize="18sp"
-            tools:text="8" />
-
-        <Button
-            android:id="@+id/btnCalculateRanks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Cập nhật Xếp hạng" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="24dp">
 
-            <Button
-                android:id="@+id/btnUpdateLobby"
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:text="Cập nhật" />
+                android:text="Chi tiết phòng chơi"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="#0A6AED"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="sans-serif-medium"
+                android:layout_gravity="center_horizontal"/>
 
-            <Button
-                android:id="@+id/btnDeleteLobby"
-                android:layout_width="0dp"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:backgroundTint="@android:color/holo_red_light"
-                android:text="Xóa" />
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp"
+                app:strokeColor="#0A6AED"
+                app:strokeWidth="1.5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/lobby_id_label"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textColor="#0A6AED"/>
+                        <TextView
+                            android:id="@+id/tvLobbyId"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:textSize="16sp"
+                            android:textColor="#1A1A1A"
+                            android:fontFamily="monospace"
+                            tools:text="lobby-uuid-123"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/lobby_admin_label"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textColor="#0A6AED"/>
+                        <TextView
+                            android:id="@+id/tvLobbyAdmin"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:textSize="16sp"
+                            android:textColor="#1A1A1A"
+                            tools:text="admin_user"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/lobby_mode_label"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textColor="#0A6AED"/>
+                        <TextView
+                            android:id="@+id/tvLobbyMode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:textSize="16sp"
+                            android:textColor="#1A1A1A"
+                            tools:text="Classic"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:text="@string/lobby_status_label"
+                            android:textColor="#0A6AED"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/tvLobbyStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Waiting"
+                            app:chipBackgroundColor="@drawable/chip_waiting"
+                            app:chipStrokeColor="#0A6AED"
+                            app:chipStrokeWidth="1.5dp"
+                            android:textColor="#0A6AED"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:chipCornerRadius="16dp"
+                            app:iconStartPadding="8dp"
+                            app:textStartPadding="12dp"
+                            app:textEndPadding="12dp"
+                            app:iconEndPadding="8dp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/lobby_max_players_label"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textColor="#0A6AED"/>
+                        <TextView
+                            android:id="@+id/tvLobbyMaxPlayers"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:textSize="16sp"
+                            android:textColor="#1A1A1A"
+                            tools:text="8"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnUpdateLobby"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/update_button"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    app:icon="@drawable/ic_edit"
+                    app:iconTint="#FFFFFF"
+                    app:iconGravity="start"
+                    app:iconPadding="12dp"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/btn_gradient_blue"
+                    app:rippleColor="#33FFFFFF"
+                    app:cornerRadius="16dp"
+                    android:elevation="8dp"
+                    android:stateListAnimator="@drawable/button_elevation"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDeleteLobby"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/delete_button"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    app:icon="@drawable/ic_delete"
+                    app:iconTint="#FFFFFF"
+                    app:iconGravity="start"
+                    app:iconPadding="12dp"
+                    app:backgroundTint="@null"
+                    android:background="@drawable/btn_red"
+                    app:rippleColor="#33FFFFFF"
+                    app:cornerRadius="16dp"
+                    android:elevation="8dp"
+                    android:stateListAnimator="@drawable/button_elevation"/>
+
+            </LinearLayout>
+
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCalculateRanks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="24dp"
+        android:text="@string/calculate_ranks_button"
+        android:textColor="#FFFFFF"
+        android:drawableStart="@drawable/ic_trophy"
+        android:drawableTint="#FFFFFF"
+        android:drawablePadding="12dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:background="@drawable/btn_gradient_blue"
+        app:rippleColor="#33FFFFFF"
+        android:elevation="8dp"
+        android:stateListAnimator="@drawable/button_elevation"
+        android:contentDescription="Cập nhật xếp hạng người chơi"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
