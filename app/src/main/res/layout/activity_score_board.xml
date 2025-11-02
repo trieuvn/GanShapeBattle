@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F7FF"
+    tools:context=".ScoreBoardActivity">
+
+    <!-- SearchBar -->
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/search_user_hint"
+        app:strokeColor="#0A6AED"
+        app:strokeWidth="1.5dp"
+        style="@style/Widget.Material3.SearchBar.Outlined"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"/>
+
+    <!-- ListView -->
+    <ListView
+        android:id="@+id/lvUsers"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="40dp"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="12dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/bg_list_rounded"
+        app:layout_constraintTop_toBottomOf="@id/searchView" />
+
+    <!-- Nút View -->
+
+    <!-- Nút Tìm kiếm -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

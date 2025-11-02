@@ -7,34 +7,39 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.Toast; // Thêm Toast
+//import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ganshapebattle.R; //
-import com.ganshapebattle.models.Lobby; //
-import com.ganshapebattle.models.Player; //
-import com.ganshapebattle.services.LobbyService; //
-import com.ganshapebattle.services.PlayerService; //
-import com.ganshapebattle.services.SupabaseCallback; //
+// === SỬA LỖI: THAY ĐỔI IMPORT ===
+import androidx.appcompat.widget.SearchView;
+// ================================
+
+import com.ganshapebattle.R;
+import com.ganshapebattle.models.Lobby;
+import com.ganshapebattle.models.Player;
+import com.ganshapebattle.services.LobbyService;
+import com.ganshapebattle.services.PlayerService;
+import com.ganshapebattle.services.SupabaseCallback;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap; // Thêm HashMap
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PlayerCRUDActivity extends AppCompatActivity {
 
-    private static final String TAG = "PlayerCRUDActivity"; // Thêm TAG
+    private static final String TAG = "PlayerCRUDActivity";
 
     private ListView lvPlayers;
     private Button btnAddPlayer;
-    private SearchView searchView;
+    // === SỬA LỖI: THAY ĐỔI KIỂU BIẾN ===
+    private androidx.appcompat.widget.SearchView searchView;
+    // ==================================
 
     private PlayerService playerService;
     private LobbyService lobbyService;
@@ -50,14 +55,14 @@ public class PlayerCRUDActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_player_crud); //
+        setContentView(R.layout.activity_player_crud);
 
-        lvPlayers = findViewById(R.id.lvPlayers); //
-        btnAddPlayer = findViewById(R.id.btnAddPlayer); //
-        searchView = findViewById(R.id.searchViewLobbies); //
+        lvPlayers = findViewById(R.id.lvPlayers);
+        btnAddPlayer = findViewById(R.id.btnAddPlayer);
+        searchView = findViewById(R.id.searchViewLobbies);
 
-        playerService = new PlayerService(); //
-        lobbyService = new LobbyService(); //
+        playerService = new PlayerService();
+        lobbyService = new LobbyService();
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         lvPlayers.setAdapter(adapter);
@@ -81,18 +86,16 @@ public class PlayerCRUDActivity extends AppCompatActivity {
         lvPlayers.setOnItemClickListener((parent, view, position, id) -> {
             if (position >= 0 && position < displayedPlayerList.size()) {
                 Player selectedPlayer = displayedPlayerList.get(position);
-                Intent intent = new Intent(this, PlayerDetailActivity.class); // <<< Mở PlayerDetailActivity
-                // Truyền cả username và lobbyId để xác định Player
+                Intent intent = new Intent(this, PlayerDetailActivity.class);
                 intent.putExtra("PLAYER_USERNAME", selectedPlayer.getUsername());
                 intent.putExtra("PLAYER_LOBBY_ID", selectedPlayer.getLobbyId());
-                startActivity(intent); // <<< Dùng startActivity thông thường
-                // Lưu ý: PlayerDetailActivity cần dùng launcher để mở AddEditPlayerActivity
+                startActivity(intent);
             }
         });
 
         // Mở màn hình THÊM MỚI/CHẤM ĐIỂM khi nhấn nút Add
         btnAddPlayer.setOnClickListener(v -> {
-            Intent intent = new Intent(this, AddEditPlayerActivity.class); //
+            Intent intent = new Intent(this, AddEditPlayerActivity.class);
             addEditPlayerLauncher.launch(intent); // Dùng launcher
         });
 
@@ -115,7 +118,7 @@ public class PlayerCRUDActivity extends AppCompatActivity {
 
     private void loadPlayersAndLobbies() {
         Log.d(TAG, "Bắt đầu tải danh sách players và lobbies...");
-        lobbyService.getAllLobbies(new SupabaseCallback<List<Lobby>>() { //
+        lobbyService.getAllLobbies(new SupabaseCallback<List<Lobby>>() {
             @Override
             public void onSuccess(List<Lobby> lobbies) {
                 Log.d(TAG, "Tải lobbies thành công: " + (lobbies != null ? lobbies.size() : 0));
@@ -123,7 +126,7 @@ public class PlayerCRUDActivity extends AppCompatActivity {
                 if (lobbies != null) {
                     for (Lobby lobby : lobbies) { lobbyMap.put(lobby.getId(), lobby); }
                 }
-                playerService.getAllPlayers(new SupabaseCallback<List<Player>>() { //
+                playerService.getAllPlayers(new SupabaseCallback<List<Player>>() {
                     @Override
                     public void onSuccess(List<Player> players) {
                         Log.d(TAG, "Tải players thành công: " + (players != null ? players.size() : 0));
@@ -139,14 +142,14 @@ public class PlayerCRUDActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Exception e) {
                         Log.e(TAG, "Lỗi tải players: ", e);
-                        runOnUiThread(() -> Toast.makeText(PlayerCRUDActivity.this, "Lỗi tải người chơi", Toast.LENGTH_SHORT).show());
+//                        runOnUiThread(() -> Toast.makeText(PlayerCRUDActivity.this, "Lỗi tải người chơi", Toast.LENGTH_SHORT).show());
                     }
                 });
             }
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi tải lobbies: ", e);
-                runOnUiThread(() -> Toast.makeText(PlayerCRUDActivity.this, "Lỗi tải phòng", Toast.LENGTH_SHORT).show());
+//                runOnUiThread(() -> Toast.makeText(PlayerCRUDActivity.this, "Lỗi tải phòng", Toast.LENGTH_SHORT).show());
             }
         });
     }

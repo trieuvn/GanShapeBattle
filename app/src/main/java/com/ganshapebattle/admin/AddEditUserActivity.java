@@ -15,7 +15,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -131,7 +131,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                 openImagePicker(); // Nếu được cấp quyền, mở thư viện ảnh
             } else {
                 Log.w(TAG, "Quyền đọc ảnh bị từ chối.");
-                Toast.makeText(this, "Cần quyền truy cập bộ nhớ để chọn ảnh", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Cần quyền truy cập bộ nhớ để chọn ảnh", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -152,13 +152,13 @@ public class AddEditUserActivity extends AppCompatActivity {
                         newAvatarBase64 = ImageUtils.bitmapToBase64(bitmap, Bitmap.CompressFormat.PNG, 90); // Chất lượng 90
                         if (newAvatarBase64 == null) {
                             Log.e(TAG, "Lỗi chuyển đổi ảnh mới sang Base64.");
-                            Toast.makeText(this, "Lỗi xử lý ảnh đại diện mới", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(this, "Lỗi xử lý ảnh đại diện mới", Toast.LENGTH_SHORT).show();
                         } else {
                             Log.d(TAG, "Ảnh mới đã được chuyển sang Base64.");
                         }
                     } catch (IOException e) {
                         Log.e(TAG, "Lỗi khi tải ảnh từ Uri: ", e);
-                        Toast.makeText(this, "Không thể tải ảnh đã chọn", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(this, "Không thể tải ảnh đã chọn", Toast.LENGTH_SHORT).show();
                         selectedImageUri = null; // Reset nếu lỗi
                         newAvatarBase64 = null;
                     }
@@ -228,7 +228,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                     // Xử lý trường hợp không tìm thấy user
                     Log.w(TAG, "Không tìm thấy user với username: " + username);
                     runOnUiThread(() -> {
-                        Toast.makeText(AddEditUserActivity.this, "Không tìm thấy người dùng", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(AddEditUserActivity.this, "Không tìm thấy người dùng", Toast.LENGTH_SHORT).show();
                         finish(); // Đóng Activity nếu không có dữ liệu
                     });
                 }
@@ -238,7 +238,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                 // Xử lý lỗi tải user
                 Log.e(TAG, "Lỗi tải thông tin user: ", e);
                 runOnUiThread(() -> {
-                    Toast.makeText(AddEditUserActivity.this, "Lỗi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AddEditUserActivity.this, "Lỗi tải dữ liệu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     finish(); // Đóng Activity nếu lỗi
                 });
             }
@@ -282,7 +282,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (isTargetUserLobbyAdmin) {
                         etUsername.setEnabled(false); // <<< Vô hiệu hóa nếu là admin
-                        Toast.makeText(AddEditUserActivity.this, "Người dùng này là admin phòng, không thể đổi username.", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(AddEditUserActivity.this, "Người dùng này là admin phòng, không thể đổi username.", Toast.LENGTH_SHORT).show();
                     } else {
                         etUsername.setEnabled(true); // <<< Cho phép sửa nếu không phải
                     }
@@ -294,7 +294,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                 Log.e(TAG, "Lỗi khi kiểm tra danh sách lobby: ", e);
                 isTargetUserLobbyAdmin = false; // Tạm coi là không phải nếu lỗi
                 runOnUiThread(() -> {
-                    Toast.makeText(AddEditUserActivity.this, "Lỗi kiểm tra quyền admin lobby.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(AddEditUserActivity.this, "Lỗi kiểm tra quyền admin lobby.", Toast.LENGTH_SHORT).show();
                     etUsername.setEnabled(true); // Tạm cho phép sửa
                     btnSaveUser.setEnabled(true); // Bật nút Lưu
                 });
@@ -376,18 +376,18 @@ public class AddEditUserActivity extends AppCompatActivity {
 
         // Kiểm tra admin lobby và username thay đổi (giữ nguyên)
         if (isTargetUserLobbyAdmin && currentUsername != null && !username.equals(currentUsername)) {
-            Toast.makeText(this, "Không thể thay đổi username của admin phòng.", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Không thể thay đổi username của admin phòng.", Toast.LENGTH_LONG).show();
             return;
         }
 
         // Kiểm tra username trống
         if (username.isEmpty()) {
-            Toast.makeText(this, "Username không được để trống", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Username không được để trống", Toast.LENGTH_SHORT).show();
             return;
         }
         // Email chỉ bắt buộc khi thêm mới
         if (currentUsername == null && email.isEmpty()) {
-            Toast.makeText(this, "Email không được để trống khi tạo người dùng mới", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Email không được để trống khi tạo người dùng mới", Toast.LENGTH_SHORT).show();
             return;
         }
         // === BỎ KIỂM TRA MẬT KHẨU ===
@@ -440,7 +440,7 @@ public class AddEditUserActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String result) {
                 runOnUiThread(() -> {
-                    Toast.makeText(AddEditUserActivity.this, result, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(AddEditUserActivity.this, result, Toast.LENGTH_LONG).show();
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("UPDATED_USERNAME", user.getUsername());
                     setResult(RESULT_OK, resultIntent);
@@ -451,7 +451,7 @@ public class AddEditUserActivity extends AppCompatActivity {
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi lưu user: ", e);
                 runOnUiThread(() -> {
-                    Toast.makeText(AddEditUserActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(AddEditUserActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     btnSaveUser.setEnabled(true);
                     // Bật lại EditText username nếu không phải admin lobby
                     if (!isTargetUserLobbyAdmin) { etUsername.setEnabled(true); }
@@ -470,7 +470,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                 userService.updateUser(currentUserEmail, user, callback); //
             } else {
                 Log.e(TAG, "currentUserEmail là null hoặc rỗng, không thể cập nhật!");
-                Toast.makeText(this, "Lỗi: Không tìm thấy email để cập nhật.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Lỗi: Không tìm thấy email để cập nhật.", Toast.LENGTH_SHORT).show();
                 btnSaveUser.setEnabled(true);
                 if (!isTargetUserLobbyAdmin) etUsername.setEnabled(true);
                 btnSaveUser.setText("Lưu thay đổi");

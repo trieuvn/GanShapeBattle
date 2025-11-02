@@ -7,16 +7,19 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.Toast;
+//import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ganshapebattle.R; //
-import com.ganshapebattle.models.Picture; //
-import com.ganshapebattle.services.PictureService; //
-import com.ganshapebattle.services.SupabaseCallback; //
+// === SỬA LỖI: THAY ĐỔI IMPORT ===
+import androidx.appcompat.widget.SearchView;
+// ================================
+
+import com.ganshapebattle.R;
+import com.ganshapebattle.models.Picture;
+import com.ganshapebattle.services.PictureService;
+import com.ganshapebattle.services.SupabaseCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +31,9 @@ public class PictureCRUDActivity extends AppCompatActivity {
 
     private ListView lvPictures;
     private Button btnAddPicture;
-    private SearchView searchView;
+    // === SỬA LỖI: THAY ĐỔI KIỂU BIẾN ===
+    private androidx.appcompat.widget.SearchView searchView;
+    // ==================================
     private PictureService pictureService;
     private ArrayAdapter<String> adapter;
 
@@ -40,12 +45,12 @@ public class PictureCRUDActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_picture_crud); //
+        setContentView(R.layout.activity_picture_crud);
 
-        lvPictures = findViewById(R.id.lvPictures); //
-        btnAddPicture = findViewById(R.id.btnAddPicture); //
-        searchView = findViewById(R.id.searchViewLobbies); //
-        pictureService = new PictureService(); //
+        lvPictures = findViewById(R.id.lvPictures);
+        btnAddPicture = findViewById(R.id.btnAddPicture);
+        searchView = findViewById(R.id.searchViewLobbies);
+        pictureService = new PictureService();
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
         lvPictures.setAdapter(adapter);
@@ -69,16 +74,15 @@ public class PictureCRUDActivity extends AppCompatActivity {
         lvPictures.setOnItemClickListener((parent, view, position, id) -> {
             if (position >= 0 && position < displayedPictureList.size()) {
                 Picture selectedPicture = displayedPictureList.get(position);
-                Intent intent = new Intent(PictureCRUDActivity.this, PictureDetailActivity.class); // <<< Mở PictureDetailActivity
-                intent.putExtra("PICTURE_ID", selectedPicture.getId()); // <<< Truyền ID
-                startActivity(intent); // <<< Dùng startActivity thông thường
-                // Lưu ý: PictureDetailActivity cần dùng launcher để mở AddEditPictureActivity
+                Intent intent = new Intent(PictureCRUDActivity.this, PictureDetailActivity.class);
+                intent.putExtra("PICTURE_ID", selectedPicture.getId());
+                startActivity(intent);
             }
         });
 
         // Mở màn hình THÊM MỚI khi nhấn nút Add
         btnAddPicture.setOnClickListener(v -> {
-            Intent intent = new Intent(PictureCRUDActivity.this, AddEditPictureActivity.class); //
+            Intent intent = new Intent(PictureCRUDActivity.this, AddEditPictureActivity.class);
             addEditPictureLauncher.launch(intent); // Dùng launcher
         });
 
@@ -101,7 +105,7 @@ public class PictureCRUDActivity extends AppCompatActivity {
 
     private void loadPictures() {
         Log.d(TAG, "Bắt đầu tải danh sách pictures...");
-        pictureService.getAllPictures(new SupabaseCallback<List<Picture>>() { //
+        pictureService.getAllPictures(new SupabaseCallback<List<Picture>>() {
             @Override
             public void onSuccess(List<Picture> result) {
                 Log.d(TAG, "Tải pictures thành công: " + (result != null ? result.size() : 0));
@@ -115,7 +119,7 @@ public class PictureCRUDActivity extends AppCompatActivity {
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi tải pictures: ", e);
-                runOnUiThread(() -> Toast.makeText(PictureCRUDActivity.this, "Lỗi tải hình ảnh: " + e.getMessage(), Toast.LENGTH_LONG).show());
+//                runOnUiThread(() -> Toast.makeText(PictureCRUDActivity.this, "Lỗi tải hình ảnh: " + e.getMessage(), Toast.LENGTH_LONG).show());
             }
         });
     }

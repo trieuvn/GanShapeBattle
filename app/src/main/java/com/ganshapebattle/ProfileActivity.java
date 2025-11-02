@@ -13,6 +13,18 @@ import android.os.Bundle;
 import android.os.Handler; //
 import android.os.Looper; //
 import android.provider.MediaStore; //
+import android.Manifest;
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +37,10 @@ import androidx.annotation.NonNull; //
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat; //
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -49,6 +65,28 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import de.hdodenhof.circleimageview.CircleImageView; //
 
+// === SỬA LỖI IMPORTS ===
+import com.google.android.material.floatingactionbutton.FloatingActionButton; // 1. Dùng import này
+import de.hdodenhof.circleimageview.CircleImageView; // 2. Dùng import này
+// XÓA: import com.google.android.material.imageview.ShapeableImageView;
+// ======================
+
+import com.ganshapebattle.models.Lobby;
+import com.ganshapebattle.models.User;
+import com.ganshapebattle.services.LobbyService;
+import com.ganshapebattle.services.SupabaseCallback;
+import com.ganshapebattle.services.UserService;
+import com.ganshapebattle.utils.ImageUtils;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+
 public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "ProfileActivity";
@@ -67,12 +105,10 @@ public class ProfileActivity extends AppCompatActivity {
     private User currentUserData;
     private boolean isLobbyAdmin = false;
 
-    // Biến cho việc chọn ảnh mới
     private Uri selectedImageUri = null;
     private String newAvatarBase64 = null;
     private boolean isSaving = false;
 
-    // Launchers cho quyền và chọn ảnh
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private ActivityResultLauncher<Intent> pickImageLauncher;
 
@@ -128,9 +164,8 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Khởi tạo các ActivityResultLauncher để xử lý quyền và chọn ảnh.
-     */
+    // (Phần còn lại của tệp file giữ nguyên)
+
     private void setupLaunchers() {
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if (isGranted) {
@@ -179,9 +214,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Tải thông tin hồ sơ của người dùng hiện tại và kiểm tra quyền admin lobby.
-     */
     private void loadUserProfile() {
         Log.d(TAG, "Đang tải hồ sơ cho: " + currentUserEmail);
         btnSaveChanges.setEnabled(false);
@@ -319,9 +351,6 @@ public class ProfileActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    /**
-     * Kiểm tra quyền đọc bộ nhớ và yêu cầu nếu cần, sau đó mở thư viện ảnh.
-     */
     private void checkPermissionAndPickImage() {
         String permission;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -339,19 +368,12 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Mở Intent để người dùng chọn ảnh từ thư viện.
-     */
     private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         pickImageLauncher.launch(intent);
     }
 
-    /**
-     * Thu thập dữ liệu đã thay đổi, gọi API để cập nhật hồ sơ người dùng,
-     * và trả kết quả về MainActivity.
-     */
     private void saveChanges() {
         isSaving = true;
         btnSaveChanges.setEnabled(false);
@@ -366,7 +388,7 @@ public class ProfileActivity extends AppCompatActivity {
             return;
         }
 
-        User updatedUserData = new User(); //
+        User updatedUserData = new User();
         boolean changed = false;
 
         if (!isLobbyAdmin && (currentUserData == null || !newUsername.equals(currentUserData.getUsername()))) {
@@ -406,7 +428,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         Log.d(TAG, "Đang gọi updateUser cho email: " + currentUserEmail);
-        userService.updateUser(currentUserEmail, updatedUserData, new SupabaseCallback<String>() { //
+        userService.updateUser(currentUserEmail, updatedUserData, new SupabaseCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 Log.d(TAG, "Cập nhật hồ sơ thành công trên Supabase: " + result);

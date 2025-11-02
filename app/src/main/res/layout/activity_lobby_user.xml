@@ -8,7 +8,6 @@
     android:background="@drawable/bg_outer_border"
     tools:context=".LobbyUserActivity">
 
-    <!-- Nền và khung ngoài -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +16,6 @@
         android:padding="32dp"
         android:background="@drawable/bg_outer_border">
 
-        <!-- CardView chứa nội dung -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +31,6 @@
                 android:padding="32dp"
                 android:gravity="center_horizontal">
 
-                <!-- Layout: Tham gia phòng -->
                 <LinearLayout
                     android:id="@+id/joinLobbyLayout"
                     android:layout_width="match_parent"
@@ -43,7 +40,6 @@
                     android:visibility="visible"
                     tools:visibility="visible">
 
-                    <!-- Tiêu đề -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -54,7 +50,6 @@
                         android:layout_marginBottom="20dp"
                         android:fontFamily="sans-serif-medium" />
 
-                    <!-- Mô tả -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -66,8 +61,8 @@
                         android:layout_marginBottom="32dp"
                         android:fontFamily="sans-serif" />
 
-                    <!-- Input mã phòng -->
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutLobbyId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="28dp"
@@ -81,7 +76,13 @@
                         app:boxStrokeWidthFocused="2.5dp"
                         app:hintTextColor="#0A6AED"
                         app:startIconDrawable="@drawable/ic_lock"
-                        app:startIconTint="#0A6AED">
+                        app:startIconTint="#0A6AED"
+
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_qr_scan"
+                        app:endIconContentDescription="@string/scan_qr_code_desc"
+                        app:endIconTint="#0A6AED"
+                        >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextLobbyId"
@@ -99,7 +100,6 @@
                             android:paddingStart="48dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Nút Tham gia -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonJoin"
                         android:layout_width="match_parent"
@@ -121,7 +121,6 @@
                         android:stateListAnimator="@drawable/button_elevation" />
                 </LinearLayout>
 
-                <!-- Layout: Đã trong phòng -->
                 <LinearLayout
                     android:id="@+id/inLobbyLayout"
                     android:layout_width="match_parent"
@@ -193,7 +192,6 @@
                         android:stateListAnimator="@drawable/button_elevation" />
                 </LinearLayout>
 
-                <!-- Loading -->
                 <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progressBar"
                     android:layout_width="64dp"

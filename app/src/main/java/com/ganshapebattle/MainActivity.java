@@ -15,8 +15,23 @@ import androidx.activity.result.ActivityResultLauncher; // <<< Import ActivityRe
 import androidx.activity.result.contract.ActivityResultContracts; // <<< Import ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ganshapebattle.admin.AddEditGalleryActivity;
+import com.ganshapebattle.admin.AddEditLobbyActivity;
+import com.ganshapebattle.admin.AddEditPictureActivity;
+import com.ganshapebattle.admin.AddEditPlayerActivity;
+import com.ganshapebattle.admin.Admin;
+import com.ganshapebattle.admin.CreateCategory;
 import com.ganshapebattle.admin.GalleryCRUDActivity; //
+import com.ganshapebattle.admin.GalleryDetailActivity;
+import com.ganshapebattle.admin.LobbyCRUDActivity;
+import com.ganshapebattle.admin.LobbyDetailActivity;
 import com.ganshapebattle.admin.MenuActivity; //
+import com.ganshapebattle.admin.PictureCRUDActivity;
+import com.ganshapebattle.admin.PictureDetailActivity;
+import com.ganshapebattle.admin.PlayerCRUDActivity;
+import com.ganshapebattle.admin.PlayerDetailActivity;
+import com.ganshapebattle.admin.UserCRUDActivity;
+import com.ganshapebattle.admin.UserDetailActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 // <<< Thêm import SessionManager >>>
@@ -62,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
         tvCurrentUsername = findViewById(R.id.tvCurrentUsername); //
         // --- ---
 
+        // === LỖI ĐÃ ĐƯỢC XÓA ===
+        // Intent intent1 = new Intent(MainActivity.this, VerifySignupOtpActivity.class);
+        // startActivity(intent1);
+        // =======================
+
         // <<< Lấy thông tin người dùng từ Session thay vì Intent >>>
         if (sessionManager.isLoggedIn()) {
             HashMap<String, String> userDetails = sessionManager.getUserDetails();
@@ -91,7 +111,15 @@ public class MainActivity extends AppCompatActivity {
         // --- Gắn sự kiện điều hướng cho các nút chức năng ---
         btnJoinGame.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LobbyUserActivity.class).putExtra("username",currentUsername))); //
         btnCreateLobby.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, LobbyActivity.class).putExtra("username",currentUsername))); //
-        btnGoToLeaderboard.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Leaderboard.class))); //
+
+        // === SỬA ĐỔI CHÍNH Ở ĐÂY ===
+        btnGoToLeaderboard.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, LeaderHistoryActivity.class);
+            intent.putExtra("username", currentUsername);
+            startActivity(intent);
+        });
+        // ============================
+
         // Chuyển đến màn hình quản lý Gallery của admin
         btnGoToGallery.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, GalleryCRUDActivity.class))); //
         btnAdminPanel.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, MenuActivity.class))); //

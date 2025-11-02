@@ -7,19 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".admin.UserCRUDActivity">
 
-    <!-- SearchBar (Material 3) -->
-    <com.google.android.material.search.SearchBar
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/searchViewLobbies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="16dp"
-        android:hint="Tìm kiếm theo username..."
-        app:strokeColor="#0A6AED"
-        app:strokeWidth="1.5dp"
-        style="@style/Widget.Material3.SearchBar.Outlined" />
-
-    <!-- ListView (giữ nguyên) -->
+        android:hint="@string/search_user_hint"
+        app:iconifiedByDefault="false"
+        app:queryHint="@string/search_user_hint"
+        android:background="@drawable/bg_soft_blue_gradient"
+        app:cornerRadius="24dp"
+        style="@style/Widget.AppCompat.SearchView.ActionBar" />
     <ListView
         android:id="@+id/lvUsers"
         android:layout_width="match_parent"
@@ -34,14 +33,13 @@
         android:clipToPadding="false"
         android:paddingBottom="16dp" />
 
-    <!-- Nút Thêm người dùng -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddUser"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:text="Thêm người dùng mới"
+        android:text="@string/add_new_user_button"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
