@@ -127,6 +127,8 @@
 
         <activity android:name=".ProfileActivity" />
         <activity android:name=".GameEndActivity" />
+        <activity android:name=".CreatePasswordActivity" android:exported="false" />
+        <activity android:name=".ProfileActivity" android:exported="false" />
         <activity android:name=".QrScanActivity" />
     </application>
 

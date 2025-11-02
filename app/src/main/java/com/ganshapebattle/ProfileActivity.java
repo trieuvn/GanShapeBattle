@@ -1,5 +1,18 @@
-package com.ganshapebattle; // Hoặc package của bạn
+// File: main/java/com/ganshapebattle/ProfileActivity.java
+package com.ganshapebattle;
 
+import android.Manifest; //
+import android.app.DatePickerDialog;
+import android.content.Intent; //
+import android.content.pm.PackageManager; //
+import android.graphics.Bitmap; //
+import android.graphics.drawable.Drawable; //
+import android.net.Uri; //
+import android.os.Build; //
+import android.os.Bundle;
+import android.os.Handler; //
+import android.os.Looper; //
+import android.provider.MediaStore; //
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -20,6 +33,10 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull; //
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat; //
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +45,25 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.ganshapebattle.models.Lobby; //
+import com.ganshapebattle.models.User; //
+import com.ganshapebattle.services.LobbyService; //
+import com.ganshapebattle.services.SupabaseCallback; //
+import com.ganshapebattle.services.UserService; //
+import com.ganshapebattle.utils.ImageUtils; //
+
+import java.io.IOException; //
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List; //
+import java.util.Locale;
+import java.util.concurrent.ExecutorService; //
+import java.util.concurrent.Executors; //
+
+// <<< Import FloatingActionButton >>>
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import de.hdodenhof.circleimageview.CircleImageView; //
 
 // === SỬA LỖI IMPORTS ===
 import com.google.android.material.floatingactionbutton.FloatingActionButton; // 1. Dùng import này
@@ -58,13 +94,11 @@ public class ProfileActivity extends AppCompatActivity {
     // Khai báo các thành phần giao diện và service
     private TextView tvProfileEmail;
     private EditText etProfileUsername, etProfilePhoneNumber, etProfileDateOfBirth;
-
-    // === SỬA LỖI KHAI BÁO BIẾN (Dòng 89-91) ===
+    // === SỬA LỖI Ở ĐÂY ===
     private Button btnSaveChanges;
-    private FloatingActionButton btnSelectAvatar; // Đổi từ Button sang FloatingActionButton
-    private CircleImageView ivProfileAvatar; // Đổi về CircleImageView
-    // =====================================
-
+    private FloatingActionButton btnSelectAvatar; // <<< Đổi từ Button sang FloatingActionButton
+    // ======================
+    private CircleImageView ivProfileAvatar;
     private UserService userService;
     private LobbyService lobbyService;
     private String currentUserEmail;
@@ -78,6 +112,7 @@ public class ProfileActivity extends AppCompatActivity {
     private ActivityResultLauncher<String> requestPermissionLauncher;
     private ActivityResultLauncher<Intent> pickImageLauncher;
 
+    // Executor để xử lý Base64
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -85,23 +120,22 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_profile); //
 
-        // --- Ánh xạ View (Dòng 92-98) ---
-        tvProfileEmail = findViewById(R.id.tvProfileEmail);
-        etProfileUsername = findViewById(R.id.etProfileUsername);
-        etProfilePhoneNumber = findViewById(R.id.etProfilePhoneNumber);
-        etProfileDateOfBirth = findViewById(R.id.etProfileDateOfBirth);
-        btnSaveChanges = findViewById(R.id.btnSaveChanges);
+        // --- Ánh xạ View ---
+        tvProfileEmail = findViewById(R.id.tvProfileEmail); //
+        etProfileUsername = findViewById(R.id.etProfileUsername); //
+        etProfilePhoneNumber = findViewById(R.id.etProfilePhoneNumber); //
+        etProfileDateOfBirth = findViewById(R.id.etProfileDateOfBirth); //
+        btnSaveChanges = findViewById(R.id.btnSaveChanges); //
+        ivProfileAvatar = findViewById(R.id.ivProfileAvatar); //
+        // === SỬA LỖI Ở ĐÂY ===
+        btnSelectAvatar = findViewById(R.id.btnSelectAvatar); // <<< Ánh xạ đúng kiểu FloatingActionButton
+        // ======================
+        // --- ---
 
-        // === SỬA LỖI ÉP KIỂU (Dòng 94 & 95) ===
-        // Các dòng này bây giờ sẽ an toàn nếu XML của bạn khớp
-        ivProfileAvatar = findViewById(R.id.ivProfileAvatar);
-        btnSelectAvatar = findViewById(R.id.btnSelectAvatar);
-        // ====================================
-
-        userService = new UserService();
-        lobbyService = new LobbyService();
+        userService = new UserService(); //
+        lobbyService = new LobbyService(); //
         currentUserEmail = getIntent().getStringExtra("USER_EMAIL");
 
         if (currentUserEmail == null || currentUserEmail.isEmpty()) {
@@ -122,7 +156,7 @@ public class ProfileActivity extends AppCompatActivity {
             if (!isSaving) {
                 if (isLobbyAdmin && currentUserData != null &&
                         !etProfileUsername.getText().toString().trim().equals(currentUserData.getUsername())) {
-                    Toast.makeText(this, "Bạn không thể đổi username khi đang là admin phòng.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Bạn là admin phòng, không thể đổi username.", Toast.LENGTH_LONG).show();
                 } else {
                     saveChanges();
                 }
@@ -133,7 +167,6 @@ public class ProfileActivity extends AppCompatActivity {
     // (Phần còn lại của tệp file giữ nguyên)
 
     private void setupLaunchers() {
-        // Launcher xin quyền
         requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if (isGranted) {
                 Log.d(TAG, "Quyền đọc ảnh đã được cấp.");
@@ -144,10 +177,9 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        // Launcher chọn ảnh từ thư viện
         pickImageLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                selectedImageUri = result.getData().getData(); // Lấy Uri
+                selectedImageUri = result.getData().getData();
                 if (selectedImageUri != null) {
                     Log.d(TAG, "Ảnh đã được chọn: " + selectedImageUri);
                     try {
@@ -156,9 +188,9 @@ public class ProfileActivity extends AppCompatActivity {
                         Log.d(TAG, "Đã cập nhật ImageView với ảnh mới chọn.");
 
                         Log.d(TAG, "Bắt đầu chuyển đổi ảnh mới sang Base64...");
-                        executor.execute(() -> { // Chạy trên background thread
+                        executor.execute(() -> {
                             String base64Result = ImageUtils.bitmapToBase64(bitmap, Bitmap.CompressFormat.PNG, 90); //
-                            handler.post(() -> { // Quay lại main thread
+                            handler.post(() -> {
                                 if (base64Result != null) {
                                     newAvatarBase64 = base64Result;
                                     Log.d(TAG, "Chuyển đổi ảnh mới sang Base64 thành công.");
@@ -184,27 +216,24 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void loadUserProfile() {
         Log.d(TAG, "Đang tải hồ sơ cho: " + currentUserEmail);
-        btnSaveChanges.setEnabled(false); // Vô hiệu hóa nút lưu trong khi tải
+        btnSaveChanges.setEnabled(false);
 
         userService.getUserByEmail(currentUserEmail, new SupabaseCallback<User>() { //
             @Override
             public void onSuccess(User user) {
-                // Chưa bật nút Save, chờ kiểm tra admin lobby
                 if (user != null) {
                     Log.d(TAG, "Tải hồ sơ thành công.");
-                    currentUserData = user; // Lưu lại dữ liệu gốc
-                    runOnUiThread(() -> { // Cập nhật UI trên Main thread
+                    currentUserData = user;
+                    runOnUiThread(() -> {
                         etProfileUsername.setText(user.getUsername());
                         etProfilePhoneNumber.setText(user.getPhoneNumber() != null ? user.getPhoneNumber() : "");
                         etProfileDateOfBirth.setText(user.getDateOfBirth() != null ? user.getDateOfBirth() : "");
-
-                        // Hiển thị Avatar
                         String avatarData = user.getAvatar();
                         if (avatarData != null && !avatarData.isEmpty()) {
-                            if (avatarData.startsWith("http")) { // URL từ Google
+                            if (avatarData.startsWith("http")) {
                                 Log.d(TAG, "Đang tải avatar từ URL: " + avatarData);
                                 Glide.with(ProfileActivity.this).load(avatarData).placeholder(R.drawable.ic_default_avatar).error(R.drawable.ic_default_avatar).into(ivProfileAvatar); //
-                            } else { // Base64
+                            } else {
                                 Log.d(TAG, "Đang giải mã avatar Base64...");
                                 Bitmap avatarBitmap = ImageUtils.base64ToBitmap(avatarData); //
                                 if (avatarBitmap != null) {
@@ -229,7 +258,6 @@ public class ProfileActivity extends AppCompatActivity {
                     });
                 }
             }
-
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi tải hồ sơ: ", e);
@@ -241,6 +269,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Kiểm tra xem username có phải là admin của bất kỳ lobby nào không.
+     */
     private void checkIfUserIsLobbyAdmin(final String usernameToCheck) {
         if (usernameToCheck == null || usernameToCheck.isEmpty()) {
             isLobbyAdmin = false;
@@ -278,7 +309,6 @@ public class ProfileActivity extends AppCompatActivity {
                     btnSaveChanges.setEnabled(true);
                 });
             }
-
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi khi kiểm tra danh sách lobby: ", e);
@@ -292,6 +322,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Hiển thị DatePickerDialog để chọn ngày sinh.
+     */
     private void showDatePickerDialog() {
         final Calendar c = Calendar.getInstance();
         String currentDate = etProfileDateOfBirth.getText().toString();
@@ -342,12 +375,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void saveChanges() {
-        if (isLobbyAdmin && currentUserData != null &&
-                !etProfileUsername.getText().toString().trim().equals(currentUserData.getUsername())) {
-            Toast.makeText(this, "Bạn không thể đổi username khi đang là admin phòng.", Toast.LENGTH_LONG).show();
-            return;
-        }
-
         isSaving = true;
         btnSaveChanges.setEnabled(false);
         btnSaveChanges.setText("Đang lưu...");
@@ -395,7 +422,6 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "Ảnh đại diện mới có lỗi, sẽ không được lưu.", Toast.LENGTH_SHORT).show();
         }
 
-
         if (!changed) {
             showErrorAndResetButton("Không có thay đổi nào để lưu.");
             return;
@@ -418,10 +444,9 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                     setResult(RESULT_OK, resultIntent);
 
-                    finish();
+                    finish(); // <<< Quay về MainActivity
                 });
             }
-
             @Override
             public void onFailure(Exception e) {
                 Log.e(TAG, "Lỗi cập nhật hồ sơ trên Supabase: ", e);
@@ -430,6 +455,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Hiển thị Toast lỗi và kích hoạt lại nút Lưu.
+     */
     private void showErrorAndResetButton(String message) {
         runOnUiThread(() -> {
             Toast.makeText(ProfileActivity.this, message, Toast.LENGTH_LONG).show();
@@ -439,6 +467,9 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Hủy executor khi Activity bị hủy.
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
